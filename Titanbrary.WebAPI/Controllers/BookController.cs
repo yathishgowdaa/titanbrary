@@ -6,8 +6,15 @@ namespace Titanbrary.WebAPI.Controllers
 {
 	public class BookController : ApiController
 	{
-		// GET api/<controller>
-		public IEnumerable<string> Get()
+        protected IBook _book = null;
+        public BookController()
+        {
+            _book = new BookManager();
+        }
+
+
+        // GET api/<controller>
+        public IEnumerable<string> Get()
 		{
 			return new string[] { "value1", "value2" };
 		}

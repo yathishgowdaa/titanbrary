@@ -3,8 +3,8 @@ using Titanbrary.Common.Models;
 
 namespace Titanbrary.Common.Interfaces.Data
 {
-	public interface IBook
+	public interface IBookDAC
 	{
-		List<BookModel> GetAll();
+		List<BookModel> GetAllBooks();
 	}
 }

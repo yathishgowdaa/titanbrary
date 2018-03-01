@@ -5,9 +5,10 @@ using Titanbrary.Common.Models;
 
 namespace Titanbrary.Data.DACs
 {
-	public class Book
+	public class BookDAC
 	{
-		public virtual List<BookModel> GetAll()
+
+		public virtual List<BookModel> GetAllBooks()
 		{
 			List<BookModel> result = new List<BookModel>();
 			using (TitanbraryEntities ctx = new TitanbraryEntities())
@@ -32,5 +33,26 @@ namespace Titanbrary.Data.DACs
 			}
 			return result;
 		}
-	}
+
+
+        public virtual List<GenreModel> GetAllGenres()
+        {
+            List<GenreModel> result = new List<GenreModel>();
+            using (TitanbraryEntities ctx = new TitanbraryEntities())
+            {
+                result = ctx.Genres.Select(g => new GenreModel()
+                {
+                    Title = g.Title,
+                    GenreID = g.GenreID
+
+                }).ToList();
+            }
+            return result;
+        }
+
+
+
+
+
+    }
 }

@@ -40,8 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\BusinessObjects\IBookManager.cs" />
-    <Compile Include="Interfaces\Data\IBook.cs" />
+    <Compile Include="Interfaces\BusinessObjects\IBook.cs" />
+    <Compile Include="Interfaces\Data\IBookDAC.cs" />
     <Compile Include="Models\BookModel.cs" />
     <Compile Include="Models\GenreModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

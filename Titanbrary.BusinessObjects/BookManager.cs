@@ -5,18 +5,18 @@ using Titanbrary.Common.Interfaces.Data;
 
 namespace Titanbrary.BusinessObjects
 {
-	public class BookManager : IBookManager
+	public class BookManager : IBook
 	{
 		//Change how to initialize the interface
-		protected IBook _book = null;
-		public BookManager(IBook book)
+		protected IBookDAC _book = null;
+		public BookManager(IBookDAC book)
 		{
 			_book = book;
 		}
 
-		public virtual List<BookModel> GetAll()
+		public virtual List<BookModel> GetAllBooks()
 		{
-			var list = _book.GetAll();
+			var list = _book.GetAllBooks();
 			return list;
 		}
 	}
