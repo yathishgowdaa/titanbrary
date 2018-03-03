@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Http;
 using Titanbrary.Common.Interfaces.BusinessObjects;
 using Titanbrary.Common.Models;
@@ -29,13 +30,38 @@ namespace Titanbrary.WebAPI.Controllers
 		//}
 
         // POST api/<controller>
-        [Route("GetAll")]
+        [Route("GetAllBooks")]
         [HttpPost]
-		public IHttpActionResult GetAll()
+		public IHttpActionResult GetAllBooks()
 		{
-            //Update to BookManager Interface
-            //var list = _bookManager.GetAll();
             var list = _Book.GetAllBooks();
+			return Ok(list);
+		}
+
+		// POST api/<controller>
+		[Route("GetAllGenres")]
+		[HttpPost]
+		public IHttpActionResult GetAllGenres()
+		{
+			var list = _Book.GetAllGenres();
+			return Ok(list);
+		}
+
+		// POST api/<controller>
+		[Route("GetBooksByGenreID/{genreID}")]
+		[HttpPost]
+		public IHttpActionResult GetBooksByGenreID(Guid genreID)
+		{
+			var list = _Book.GetBooksByGenreID(genreID);
+			return Ok(list);
+		}
+
+		// POST api/<controller>
+		[Route("GetGenresByBookID/{bookID}")]
+		[HttpPost]
+		public IHttpActionResult GetGenresByBookID(Guid bookID)
+		{
+			var list = _Book.GetGenresByBookID(bookID);
 			return Ok(list);
 		}
 

@@ -11,7 +11,7 @@ namespace Titanbrary.Common.Models
 		public int? Edition { get; set; }
 		public DateTime? Year { get; set; }
 		public int Quantity { get; set; }
-		public string Languague { get; set; }
+		public string Language { get; set; }
 		public byte[] Picture { get; set; }
 		public string Keywords { get; set; }
 		public bool Active { get; set; }
