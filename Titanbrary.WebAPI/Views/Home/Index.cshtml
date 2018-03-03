@@ -1,7 +1,7 @@
 ﻿<div class="jumbotron">
     <h1>ASP.NET</h1>
     <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    <button type="submit" class="btn btn-primary" onclick="getAllBooks()">Get All Books</button>
 </div>
 <div class="row">
     <div class="col-md-4">
@@ -22,3 +22,24 @@
         <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301872">Learn more &raquo;</a></p>
     </div>
 </div>
+
+
+<script>
+    function getAllBooks() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var myObj = JSON.parse(this.responseText);
+                console.log(myObj);
+                window.alert("Got books", myObj);
+            }
+        };
+        xhttp.open("POST", "http://localhost:50799/api/Book/GetAll", true);
+        //xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send();
+        //var response = JSON.parse(this.responseText);
+        
+        //console.log("books" + response)
+    }
+
+</script>

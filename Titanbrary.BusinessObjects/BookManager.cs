@@ -7,16 +7,16 @@ namespace Titanbrary.BusinessObjects
 {
 	public class BookManager : IBook
 	{
-		//Change how to initialize the interface
-		protected IBookDAC _book = null;
-		public BookManager(IBookDAC book)
+        //Change how to initialize the interface
+        private readonly IBookDAC _bookDAC;
+		public BookManager(IBookDAC bookDAC)
 		{
-			_book = book;
+			_bookDAC = bookDAC;
 		}
 
 		public virtual List<BookModel> GetAllBooks()
 		{
-			var list = _book.GetAllBooks();
+			var list = _bookDAC.GetAllBooks();
 			return list;
 		}
 	}

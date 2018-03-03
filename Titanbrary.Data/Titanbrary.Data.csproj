@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Titanbrary.Data</RootNamespace>
     <AssemblyName>Titanbrary.Data</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,22 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AspNetRole.cs">
-      <DependentUpon>Titanbrary.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AspNetUser.cs">
-      <DependentUpon>Titanbrary.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AspNetUserClaim.cs">
-      <DependentUpon>Titanbrary.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AspNetUserLogin.cs">
-      <DependentUpon>Titanbrary.tt</DependentUpon>
-    </Compile>
     <Compile Include="Book.cs">
-      <DependentUpon>Titanbrary.tt</DependentUpon>
-    </Compile>
-    <Compile Include="C__MigrationHistory.cs">
       <DependentUpon>Titanbrary.tt</DependentUpon>
     </Compile>
     <Compile Include="DACs\BookDAC.cs" />
@@ -119,13 +105,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Titanbrary.BusinessObjects\Titanbrary.BusinessObjects.csproj">
+      <Project>{42261777-c06e-4d25-a818-2cec44347ec9}</Project>
+      <Name>Titanbrary.BusinessObjects</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Titanbrary.Common\Titanbrary.Common.csproj">
       <Project>{ff343914-a736-445c-9c4f-93e74ba782fa}</Project>
       <Name>Titanbrary.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Titanbrary.WebAPI\Titanbrary.WebAPI.csproj">
-      <Project>{b503fec5-9cca-4413-aff8-1e7dd207c4a5}</Project>
-      <Name>Titanbrary.WebAPI</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
