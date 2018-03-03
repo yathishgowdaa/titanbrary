@@ -9,12 +9,12 @@ namespace Titanbrary.Data.DACs
 	public class BookDAC: IBookDAC
 	{
 
-		public virtual List<BookModel> GetAllBooks()
+		public virtual List<BookModel> GetAllBooksDAC()
 		{
 			List<BookModel> result = new List<BookModel>();
 			using (TitanbraryEntities ctx = new TitanbraryEntities())
 			{
-                var result1 = ctx.Books.Select(row => row);
+                
                 result = ctx.Books.Select(b => new BookModel()
                 {
                     Name = b.Name,

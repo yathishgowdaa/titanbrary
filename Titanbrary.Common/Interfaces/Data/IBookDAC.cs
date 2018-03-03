@@ -5,6 +5,6 @@ namespace Titanbrary.Common.Interfaces.Data
 {
 	public interface IBookDAC
 	{
-		List<BookModel> GetAllBooks();
+		List<BookModel> GetAllBooksDAC();
 	}
 }
