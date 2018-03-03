@@ -93,24 +93,61 @@ namespace Titanbrary.Data.DACs
 		{
 			using (TitanbraryEntities ctx = new TitanbraryEntities())
 			{
-				ctx.Books.Add(new Book
+				try
 				{
-					Name = book.Name,
-					Author = book.Author,
-					Publisher = book.Publisher,
-					ISBN = book.ISBN,
-					Edition = book.Edition,
-					Year = book.Year,
-					Quantity = book.Quantity,
-					Language = book.Language,
-					Picture = book.Picture,
-					Keywords = book.Keywords,
-					Active = book.Active,
-					Description = book.Description,
-					Timestamp = book.Timestamp,
-					BookID = book.BookID
-				});
-				ctx.SaveChanges();
+					ctx.Books.Add(new Book
+					{
+						Name = book.Name,
+						Author = book.Author,
+						Publisher = book.Publisher,
+						ISBN = book.ISBN,
+						Edition = book.Edition,
+						Year = book.Year,
+						Quantity = book.Quantity,
+						Language = book.Language,
+						Picture = book.Picture,
+						Keywords = book.Keywords,
+						Active = book.Active,
+						Description = book.Description,
+						Timestamp = book.Timestamp,
+						BookID = book.BookID
+					});
+					ctx.SaveChanges();
+				}
+				catch
+				{
+					return false;
+				}				
+			}
+			return true;
+		}
+
+		public virtual bool UpdateBook(BookModel book)
+		{
+			using (TitanbraryEntities ctx = new TitanbraryEntities())
+			{
+				try
+				{
+					var oldBook = ctx.Books.SingleOrDefault(b => b.BookID == book.BookID);
+					oldBook.Active = book.Active;
+					oldBook.Author = book.Author;
+					oldBook.Description = book.Description;
+					oldBook.Edition = book.Edition;
+					oldBook.ISBN = book.ISBN;
+					oldBook.Keywords = book.Keywords;
+					oldBook.Language = book.Language;
+					oldBook.Name = book.Name;
+					oldBook.Picture = book.Picture;
+					oldBook.Publisher = book.Publisher;
+					oldBook.Quantity = book.Quantity;
+					oldBook.Timestamp = book.Timestamp;
+					oldBook.Year = book.Year;
+					ctx.SaveChanges();
+				}
+				catch
+				{
+					return false;
+				}
 			}
 			return true;
 		}
@@ -159,6 +196,46 @@ namespace Titanbrary.Data.DACs
 				}).ToList();
 			}
 			return result[0];
+		}
+
+		public virtual bool CreateGenre(GenreModel genre)
+		{
+			using (TitanbraryEntities ctx = new TitanbraryEntities())
+			{
+				try
+				{
+					ctx.Genres.Add(new Genre
+					{
+						Title = genre.Title,
+						GenreID = genre.GenreID
+					});
+					ctx.SaveChanges();
+				}
+				catch
+				{
+					return false;
+				}
+
+			}
+			return true;
+		}
+
+		public virtual bool UpdateGenre(GenreModel genre)
+		{
+			using (TitanbraryEntities ctx = new TitanbraryEntities())
+			{
+				try
+				{
+					var oldGenre = ctx.Genres.SingleOrDefault(g => g.GenreID == genre.GenreID);
+					oldGenre.Title = genre.Title;
+					ctx.SaveChanges();
+				}
+				catch
+				{
+					return false;
+				}				
+			}
+			return true;
 		}
 
 		#endregion

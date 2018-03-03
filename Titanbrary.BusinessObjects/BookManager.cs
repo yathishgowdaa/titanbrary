@@ -28,6 +28,24 @@ namespace Titanbrary.BusinessObjects
 			return list;
 		}
 
+		public virtual BookModel GetBookByBookID(Guid bookID)
+		{
+			var book = _bookDAC.GetBookByBookID(bookID);
+			return book;
+		}
+
+		public virtual bool CreateBook(BookModel book)
+		{
+			var result = _bookDAC.CreateBook(book);
+			return result;
+		}
+
+		public virtual bool UpdateBook(BookModel book)
+		{
+			var result = _bookDAC.UpdateBook(book);
+			return result;
+		}
+
 		#endregion
 
 		#region Genre
@@ -42,6 +60,24 @@ namespace Titanbrary.BusinessObjects
 		{
 			var list = _bookDAC.GetGenresByBookID(bookID);
 			return list;
+		}
+
+		public virtual GenreModel GetGenreByGenreID(Guid genreID)
+		{
+			var genre = _bookDAC.GetGenreByGenreID(genreID);
+			return genre;
+		}
+
+		public virtual bool CreateGenre(GenreModel genre)
+		{
+			var result = _bookDAC.CreateGenre(genre);
+			return result;
+		}
+
+		public virtual bool UpdateGenre(GenreModel genre)
+		{
+			var result = _bookDAC.UpdateGenre(genre);
+			return result;
 		}
 
 		#endregion

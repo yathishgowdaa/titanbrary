@@ -17,33 +17,14 @@ namespace Titanbrary.WebAPI.Controllers
             _Book = _book;
         }
 
-  //      // GET api/<controller>
-  //      public IEnumerable<string> Get()
-		//{
-		//	return new string[] { "value1", "value2" };
-		//}
+		#region Book
 
-		//// GET api/<controller>/5
-		//public string Get(int id)
-		//{
-		//	return "value";
-		//}
-
-        // POST api/<controller>
-        [Route("GetAllBooks")]
+		// POST api/<controller>
+		[Route("GetAllBooks")]
         [HttpPost]
 		public IHttpActionResult GetAllBooks()
 		{
             var list = _Book.GetAllBooks();
-			return Ok(list);
-		}
-
-		// POST api/<controller>
-		[Route("GetAllGenres")]
-		[HttpPost]
-		public IHttpActionResult GetAllGenres()
-		{
-			var list = _Book.GetAllGenres();
 			return Ok(list);
 		}
 
@@ -57,6 +38,46 @@ namespace Titanbrary.WebAPI.Controllers
 		}
 
 		// POST api/<controller>
+		[Route("GetBookByBookID/{bookID}")]
+		[HttpPost]
+		public IHttpActionResult GetBookByBookID(Guid bookID)
+		{
+			var list = _Book.GetBookByBookID(bookID);
+			return Ok(list);
+		}
+
+		// POST api/<controller>
+		[Route("CreateBook")]
+		[HttpPost]
+		public IHttpActionResult CreateBook([FromBody] BookModel book)
+		{
+			var list = _Book.CreateBook(book);
+			return Ok(list);
+		}
+
+		// POST api/<controller>
+		[Route("UpdateBook")]
+		[HttpPost]
+		public IHttpActionResult UpdateBook([FromBody] BookModel book)
+		{
+			var list = _Book.UpdateBook(book);
+			return Ok(list);
+		}
+
+		#endregion
+
+		#region Genre
+
+		// POST api/<controller>
+		[Route("GetAllGenres")]
+		[HttpPost]
+		public IHttpActionResult GetAllGenres()
+		{
+			var list = _Book.GetAllGenres();
+			return Ok(list);
+		}
+
+		// POST api/<controller>
 		[Route("GetGenresByBookID/{bookID}")]
 		[HttpPost]
 		public IHttpActionResult GetGenresByBookID(Guid bookID)
@@ -65,14 +86,33 @@ namespace Titanbrary.WebAPI.Controllers
 			return Ok(list);
 		}
 
-		//// PUT api/<controller>/5
-		//public void Put(int id, [FromBody]string value)
-		//{
-		//}
+		// POST api/<controller>
+		[Route("GetGenreByGenreID/{genreID}")]
+		[HttpPost]
+		public IHttpActionResult GetGenreByGenreID(Guid genreID)
+		{
+			var list = _Book.GetGenreByGenreID(genreID);
+			return Ok(list);
+		}
 
-		//// DELETE api/<controller>/5
-		//public void Delete(int id)
-		//{
-		//}
+		// POST api/<controller>
+		[Route("CreateGenre")]
+		[HttpPost]
+		public IHttpActionResult CreateGenre([FromBody] GenreModel genre)
+		{
+			var list = _Book.CreateGenre(genre);
+			return Ok(list);
+		}
+
+		// POST api/<controller>
+		[Route("UpdateGenre")]
+		[HttpPost]
+		public IHttpActionResult UpdateGenre([FromBody] GenreModel genre)
+		{
+			var list = _Book.UpdateGenre(genre);
+			return Ok(list);
+		}
+
+		#endregion
 	}
 }
