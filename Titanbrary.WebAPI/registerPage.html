@@ -1,0 +1,182 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Register Page</title>
+    <style type="text/css">
+        .auto-style2 {
+            width: 198px;
+        }
+        .auto-style3 {
+            height: 30px;
+        }
+        </style>
+</head>
+<body>
+    <div class="header" style="color:midnightblue; padding:20px; border-color:midnightblue; border:double; height:150px;">
+        <h1>Titanbrary</h1>
+        <ul style="list-style-type:none;">
+            <li style="padding: 15px; display:block; float:left; width:150px; text-align:center; border-color:wheat; border:solid;"><a href="loginPage.html">Home</a></li>
+            <li style="padding: 15px; display:block; float:left; width:150px; text-align:center; border-color:wheat; border:solid;"><a href="registerPage.html">Register</a></li>
+            <li style="padding: 15px; display:block; float:left; width:150px; text-align:center; border-color:wheat; border:solid;"><a href="helpPage.html">Help</a></li>
+        </ul>
+    </div>
+    <div class="container" style="padding:30px;">
+       <h2>Register</h2>
+       <form> <!--action="" method=""-->
+           <label>Username : *</label>
+           <input id="username" type="text" maxlength="15" required/>
+           <br />
+
+           <label>Password : *</label>
+           <input id="password" type="password" maxlength="15" required/>
+           <br />   
+
+           <label>Confirm Password : *</label>
+           <input id="confirmPassword" type="password" maxlength="15" required/>
+           <br />
+
+           <label>Student ID : *</label>
+           <input id="studentID" type="number" onKeyPress="if(this.value.length == 9) return false;" required/>
+           <br />
+
+           <label>First Name : *</label>
+           <input id="firstName" type="text" maxlength="50" required/>
+           <br />
+        
+           <label>Last Name : *</label>
+           <input id="lastName" type="text" maxlength="50" required/>
+           <br />
+            
+           <label>Date of Birth : </label>
+           <input id="dob" type="date" />
+           <br />         
+        
+           <label>Address : </label>
+           <input id="address" type="text" maxlength="100" />
+           <br />
+            
+           <label>City : </label>
+           <input id="city" type="text" maxlength="50" />
+           <br />
+
+           <label>State :</label>
+           <select id="state" name="state">
+                <option disabled selected value> -- select an option -- </option>
+                <option>Alabama</option>
+                <option>Alaska</option>
+                <option>Arizona</option>
+                <option>Arkansas</option>
+                <option>California</option>
+                <option>Colorado</option>
+                <option>Connecticut</option>
+                <option>Delaware</option>
+                <option>Florida</option>
+                <option>Georgia</option>
+                <option>Hawaii</option>
+                <option>Idaho</option>
+                <option>Illinois</option>
+                <option>Indiana</option>
+                <option>Iowa</option>
+                <option>Kansas</option>
+                <option>Kentucky</option>
+                <option>Louisiana</option>
+                <option>Maine</option>
+                <option>Maryland</option>
+                <option>Massachusetts</option>
+                <option>Michigan</option>
+                <option>Minnesota</option>
+                <option>Mississippi</option>
+                <option>Missouri</option>
+                <option>Montana</option>
+                <option>Nebraska</option>
+                <option>Nevada</option>
+                <option>New Hampshire</option>
+                <option>New Jersey</option>
+                <option>New Mexico</option>
+                <option>New York</option>
+                <option>North Carolina</option>
+                <option>North Dakota</option>
+                <option>Ohio</option>
+                <option>Oklahoma</option>
+                <option>Oregon</option>
+                <option>Pennsylvania</option>
+                <option>Rhode Island</option>
+                <option>South Carolina</option>
+                <option>South Dakota</option>
+                <option>Tennessee</option>
+                <option>Texas</option>
+                <option>Utah</option>
+                <option>Vermont</option>
+                <option>Virginia</option>
+                <option>Washington</option>
+                <option>West Virginia</option>
+                <option>Wisconsin</option>
+                <option>Wyoming</option>                        
+           </select>
+           <br />
+
+            <label>Zip Code : </label>
+            <input id="zip" type="number" onKeyPress="if(this.value.length == 5) return false;"/>
+            <br />
+
+            <label>Phone : *</label>
+            <input id="phone" type="tel" onKeyPress="if(this.value.length == 9) return false;" required/>
+            <br />
+
+            <label>Email : *</label>
+            <input id="email" type="email" maxlength="100" required/>
+            <br />
+
+            <label>Gender : </label>
+                <input name="gender" type="radio" value="female" />Female
+                <input name="gender" type="radio" value="male" />Male
+                <input name="gender" type="radio" value="none" />Prefer not to say
+            <br />
+
+            <label>Security Question # 1 : *</label>
+                <select id="securityQ1" name="question1"  required>
+                    <option disabled selected value> -- select an option -- </option>
+                    <option>What is your major?</option>
+                    <option>What is your favorite color?</option>
+                    <option>What is your zodiac sign?</option>
+                </select>
+            <br />
+            
+            <label>Answer : *</label>
+                <input id="answerQ1" type="text" maxlength="100" required/>
+            <br />
+
+            <label>Security Question # 2 : *</label>
+                <select id="securityQ2" name="question2" required>
+                    <option disabled selected value> -- select an option -- </option>
+                    <option>What is your major?</option>
+                    <option>What is your favorite color?</option>
+                    <option>What is your zodiac sign?</option>
+                </select>
+            <br />
+            
+            <label>Answer : *</label>
+                <input id="answerQ2" type="text" maxlength="100" required/>
+            <br />
+
+            <label>Security Question # 3 : *</label>
+                <select id="securityQ3" name="question3" required>
+                    <option disabled selected value> -- select an option -- </option>
+                    <option>What is your major?</option>
+                    <option>What is your favorite color?</option>
+                    <option>What is your zodiac sign?</option>
+                </select>
+            <br />
+            
+            <label>Answer : *</label>
+                <input id="answerQ3" type="text" maxlength="100" required/>
+            <br />
+        
+        <a href="http://www.google.com"><input id="submit" type="submit" value="Submit" style="margin:10px" /></a>
+        <input id="clearAll" type="reset" value="Clear All" style="margin:10px"/>
+        </form>
+
+    </div>
+</body>
+</html>
