@@ -92,6 +92,7 @@
   <ItemGroup>
     <Content Include="Tables\dbo.Book.sql" />
     <Content Include="Tables\dbo.BookXGenre.sql" />
+    <Content Include="Tables\dbo.Cart.sql" />
     <Content Include="Tables\dbo.Genre.sql" />
     <Content Include="Titanbrary.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

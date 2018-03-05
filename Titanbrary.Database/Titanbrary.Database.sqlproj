@@ -68,6 +68,8 @@
     <Build Include="Tables\Book.sql" />
     <Build Include="Tables\Genre.sql" />
     <Build Include="Tables\BookXGenre.sql" />
+    <Build Include="Tables\Cart.sql" />
+    <Build Include="Tables\CartXBook.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="PostDeployment\main-postDeployment.sql" />
