@@ -1,0 +1,197 @@
+﻿
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Register Page</title>
+    <style>
+        html, body {
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            font-family: "Helvetica Neue", Helvetica, sans-serif;
+            background :url(tittanbrary.jpg) no-repeat #999;
+        }
+
+        .Registercontent {
+            position:relative;
+            width: 500px;
+            height: 1350px;
+            top: -20%;
+            left: 40%;
+            margin-top: 50px;
+            margin-left: -175px;
+            background: #333333;
+            padding-top: 20px;
+        }
+        .Registerheading {
+            border-bottom: solid 1px #ECF2F5;
+            padding-left: 18px;
+            padding-bottom: 10px;
+            color: #ffffff;
+            font-size: 30px;
+            font-weight: bold;
+            font-family: sans-serif;
+        }
+        label {
+            color: #ffffff;
+            display: inline-block;
+            margin-left: 18px;
+            padding-top: 10px;
+            font-size: 15px;
+        }
+        input[type=text], input[type=password], input[type=email] {
+            font-size: 14px;
+            padding-left: 10px;
+            margin: 10px;
+            margin-top: 12px;
+            margin-left: 18px;
+            width: 300px;
+            height: 35px;
+            border: 1px solid #ccc;
+            border-radius: 2px;
+            box-shadow: inset 0 1.5px 3px rgba(190, 190, 190, .4), 0 0 0 5px #f5f5f5;
+            font-size: 14px;
+        }
+        
+        .signinbtn {
+            float: right;
+            margin-right: 20px;
+            margin-top: 3px;
+            padding: 6px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #ffffff;
+            background-color: #2e39b3;
+            background-image: linear-gradient(top left 90deg, #333333 0%, #6EE4E8 100%);
+            border-radius: 30px;
+            border: 1px solid #333333;
+            cursor: pointer;
+            height: 35px;
+        }
+        .signinbtn:hover {
+                background-image: -webkit-gradient(linear, left top, left bottom, from(#b6e2ff), to(#6ec2e8));
+                background-image: -moz-linear-gradient(top left 90deg, #b6e2ff 0%, #6ec2e8 100%);
+                background-image: linear-gradient(top left 90deg, #b6e2ff 0%, #6ec2e8 100%);
+            }
+         p{
+  font-size:12px;
+  text-decoration: none;
+  color:#ffffff;
+}
+
+    </style>
+    
+</head>
+<body>
+    <div class="Registercontent">
+        <div class="Registerheading">
+            Register
+        </div>
+        <p>
+            <label for="usernamesignup" class="uname" data-icon="u">Username</label>
+            <input id="usernamesignup" name="usernamesignup" required="required" type="text" placeholder="mysuperusername690" />
+        </p>
+        <p>
+            <label for="emailsignup" class="youmail" data-icon="e"> Email</label>
+            <input id="emailsignup" name="emailsignup" required="required" type="email" placeholder="mysupermail@mail.com" />
+        </p>
+        <p>
+            <label for="passwordsignup" class="youpasswd" data-icon="p"> Password </label>
+            <input id="passwordsignup" name="passwordsignup" required="required" type="password" placeholder="eg. X8df!90EO" />
+        </p>
+        <p>
+            <label for="passwordsignup_confirm" class="youpasswd" data-icon="p">Confirm password </label>
+            <input id="passwordsignup_confirm" name="passwordsignup_confirm" required="required" type="password" placeholder="eg. X8df!90EO" />
+        </p>
+        <p>
+            <label for="firstname" class="fname" data-icon="p">First name</label>
+            <input id="firstname" name="firstname" required="required" type="text" placeholder="eg. leonidas" />
+        </p>
+        <p>
+            <label for="lastname" class="lname" data-icon="p">Last name</label>
+            <input id="lastname" name="lastname" required="required" type="text" placeholder="eg. beneke" />
+        </p>
+        <p>
+            <label for="Student_ID" class="sid" data-icon="p">Student ID</label>
+            <input id="Student_ID" name="Student_ID" required="required" type="text" placeholder="123456789" />
+        </p>
+        <p>
+            <label for="Date_of_birth" class="dob" data-icon="p">Date_of_birth</label>
+            <input id="Date_of_birth" name="Date_of_birth" required="required" type="text" placeholder="07/12/1992" />
+        </p>
+        <p>
+            <label for="Gender" class="gender" data-icon="p">Gender</label>
+            <input type="radio" name="gender" value="male"> Male
+            <input type="radio" name="gender" value="female"> Female
+            <input type="radio" name="gender" value="other"> Prefer not to say
+        </p>
+        <p>
+            <label for="phonenumbersignup" class="pnumber" data-icon="p">Phonenumber</label>
+            <input id="phonenumbersignup" name="phonenumbersignup" required="required" type="text" placeholder="1234567890" />
+        </p>
+        <p>
+            <label for="Address" class="addr" data-icon="p">Address</label>
+            <input id="Address" name="Address" required="required" type="text" placeholder="eg. 2404 nutwood ave f30" />
+        </p>
+        <p>
+            <label for="City" class="city" data-icon="p">City</label>
+            <input id="City" name="City" required="required" type="text" placeholder="eg. Fullerton" />
+        </p>
+        <p>
+            <label for="State" class="state" data-icon="p">State</label>
+            <input id="State" name="State" required="required" type="text" placeholder="eg. California" />
+        </p>
+        <p>
+            <label for="Country" class="country" data-icon="p">Country</label>
+            <input id="Country" name="Country" required="required" type="text" placeholder="eg. United States" />
+        </p>
+        <p>
+            <label for="Zipcode" class="zipcode" data-icon="p">Zipcode</label>
+            <input id="Zipcode" name="Zipcode" required="required" type="text" placeholder="eg. 92831" />
+        </p>
+        <p>
+            <label for="Securityquestion1" class="sques1" data-icon="p">Security question 1</label>
+            <select name="my_html_select_box">
+
+                <option>Select your 1st question</option>
+                <option>what is the name of  your favourite movie?</option>
+                <option>Your mother's maiden name?</option>
+                <option>what is the name of  your favourite color ?</option>
+
+            </select>
+        </p>
+        <p>
+            <label for="Answer1" class="ans1" data-icon="p">Answer</label>
+            <input id="Answer" name="Answer" required="required" type="text" placeholder="" />
+        </p>
+        <p>
+            <label for="Securityquestion2" class="sques2" data-icon="p">Security question 2</label>
+            <select name="my_html_select_box">
+
+                <option>Select your 2nd question</option>
+                <option>what is the name of  your favourite place ?</option>
+                <option>what is the name of  your first car?</option>
+                <option>what is the name of  your pet ?</option>
+
+            </select>
+        </p>
+        <p>
+            <label for="Answer2" class="ans2" data-icon="p">Answer</label>
+            <input id="Answer" name="Answer" required="required" type="text" placeholder="" />
+        </p>
+
+
+        <p>
+             <input type="submit" class="signinbtn" value="Sign up" id="btnSubmit" />
+        </p>
+        <p class="change_link">
+            Already a member ?
+            <a href="#tologin" class="to_register"> Go and log in </a>
+        </p>
+    </div>
+    
+
+</body>
+</html>
