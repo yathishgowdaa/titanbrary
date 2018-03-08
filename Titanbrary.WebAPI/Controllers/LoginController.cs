@@ -11,7 +11,7 @@ namespace Titanbrary.WebAPI.Controllers
         // GET: Login
         public ActionResult Index()
         {
-            ViewBag.Title = "Login Page";
+            ViewBag.Title = "Login";
             return View();
         }
     }

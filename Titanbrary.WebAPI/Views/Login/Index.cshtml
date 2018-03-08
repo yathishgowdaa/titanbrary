@@ -1,5 +1,13 @@
-﻿
-<h2>Login Title</h2>
+﻿<h1>@ViewBag.Title</h1>
 
-<h1>@ViewBag.Title</h1>
+<body>
+    <form>
+        <div class="jumbotron" style="padding:50px; text-align:center">
+            Username : <input id="username" type="text" style="width: 300px; margin: 20px;" required /><br />
+            Password : <input id="password" type="password" style="width: 300px; margin: 20px;" required /><br />
 
+            <input id="submit" type="submit" value="Submit" style="width:150px; margin:20px" />
+            <input id="reset" type="reset" value="Cancel" style="width:150px; margin:20px"/>
+        </div>
+    </form>
+</body>

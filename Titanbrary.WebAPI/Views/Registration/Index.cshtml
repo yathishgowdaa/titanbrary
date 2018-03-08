@@ -1,28 +1,185 @@
-﻿
-@{
-    ViewBag.Title = "Registration title";
-}
+﻿<head>
+    <style type="text/css">
+        .textboxwidth {
+            width: 200px;
+        }
+    </style>
 
-<h2>Registration</h2>
+    <style type="text/css">
+        .labelwidth {
+            width: 200px;
+        }
+    </style>
 
-<h2>@ViewBag.Title</h2>
 
-<body>
-    <div class="header" style="color:midnightblue; padding:20px; border-color:midnightblue; border:double; height:150px;">
-        <h1>Titanbrary</h1>
-        <ul style="list-style-type:none;">
-            <li style="padding: 15px; display:block; float:left; width:150px; text-align:center; border-color:wheat; border:solid;"><a href="loginPage.html">Home</a></li>
-            <li style="padding: 15px; display:block; float:left; width:150px; text-align:center; border-color:wheat; border:solid;"><a href="registerPage.html">Register</a></li>
-            <li style="padding: 15px; display:block; float:left; width:150px; text-align:center; border-color:wheat; border:solid;"><a href="helpPage.html">Help</a></li>
-        </ul>
-    </div>
-    <div class="container" style="padding:50px; text-align:center">
-        Username : <input id="username" type="text" /><br />
-        Password : <input id="password" type="password" /><br />
+</head>
+
+<script>
+    function submitBtn() {
+        alert("Submit button works!");
+    }
+</script>
+
+<h1>@ViewBag.Title</h1>
+
+<div class="container" style="padding:30px;">
+    <p style="color:red;">* Indicates required field.</p>
+    <form method="post">
+        <!--action="" method=""-->
+        <label class="labelwidth" style="margin:20px">Username : *</label>
+        <input class="textboxwidth" id="username" type="text" maxlength="50" style="margin:20px" required/>
         <br />
-        <input id="submit" type="submit" value="Submit" style="margin:10px" />
-        <a href="registerPage.html"><input id="register" type="button" value="Register" style="margin:10px" /></a>
 
-    </div>
-</body>
+        <label class="labelwidth" style="margin:20px">Password : *</label>
+        <input class="textboxwidth" id="password" type="password" maxlength="50" style="margin:20px" required/>
+        <br />
+
+        <label class="labelwidth" style="margin:20px">Confirm Password : *</label>
+        <input class="textboxwidth" id="confirmPassword" type="password" maxlength="50" style="margin:20px" required/>
+        <br />
+
+        <label class="labelwidth" style="margin:20px">Student ID : *</label>
+        <input class="textboxwidth" id="studentID" type="number" onKeyPress="if(this.value.length == 9) return false;" style="margin:20px" required />
+        <br />
+
+        <label class="labelwidth" style="margin:20px">First Name : *</label>
+        <input class="textboxwidth" id="firstName" type="text" maxlength="50" style="margin:20px" required />
+        <br />
+
+        <label class="labelwidth" style="margin:20px">Last Name : *</label>
+        <input class="textboxwidth" id="lastName" type="text" maxlength="50" style="margin:20px" required />
+        <br />
+
+        <label class="labelwidth" style="margin:20px">Date of Birth : </label>
+        <input class="textboxwidth" id="dob" type="date" style="margin:20px"/>
+        <br />
+
+        <label class="labelwidth" style="margin:20px">Address : </label>
+        <input class="textboxwidth" id="address" type="text" maxlength="100" style="margin:20px" />
+        <br />
+
+        <label class="labelwidth" style="margin:20px">City : </label>
+        <input class="textboxwidth" id="city" type="text" maxlength="50" style="margin:20px" />
+        <br />
+
+        <label class="labelwidth" style="margin:20px">State :</label>
+        <select class="textboxwidth" id="state" name="state" style="margin:20px">
+            <option disabled selected value> -- select an option -- </option>
+            <option>Alabama</option>
+            <option>Alaska</option>
+            <option>Arizona</option>
+            <option>Arkansas</option>
+            <option>California</option>
+            <option>Colorado</option>
+            <option>Connecticut</option>
+            <option>Delaware</option>
+            <option>Florida</option>
+            <option>Georgia</option>
+            <option>Hawaii</option>
+            <option>Idaho</option>
+            <option>Illinois</option>
+            <option>Indiana</option>
+            <option>Iowa</option>
+            <option>Kansas</option>
+            <option>Kentucky</option>
+            <option>Louisiana</option>
+            <option>Maine</option>
+            <option>Maryland</option>
+            <option>Massachusetts</option>
+            <option>Michigan</option>
+            <option>Minnesota</option>
+            <option>Mississippi</option>
+            <option>Missouri</option>
+            <option>Montana</option>
+            <option>Nebraska</option>
+            <option>Nevada</option>
+            <option>New Hampshire</option>
+            <option>New Jersey</option>
+            <option>New Mexico</option>
+            <option>New York</option>
+            <option>North Carolina</option>
+            <option>North Dakota</option>
+            <option>Ohio</option>
+            <option>Oklahoma</option>
+            <option>Oregon</option>
+            <option>Pennsylvania</option>
+            <option>Rhode Island</option>
+            <option>South Carolina</option>
+            <option>South Dakota</option>
+            <option>Tennessee</option>
+            <option>Texas</option>
+            <option>Utah</option>
+            <option>Vermont</option>
+            <option>Virginia</option>
+            <option>Washington</option>
+            <option>West Virginia</option>
+            <option>Wisconsin</option>
+            <option>Wyoming</option>
+        </select>
+        <br />
+
+        <label class="labelwidth" style="margin:20px">Zip Code : </label>
+        <input class="textboxwidth" id="zip" type="number" onKeyPress="if(this.value.length == 5) return false;" style="margin:20px"/>
+        <br />
+
+        <label class="labelwidth" style="margin:20px">Phone : *</label>
+        <input class="textboxwidth" id="phone" type="tel" onKeyPress="if(this.value.length == 9) return false;" style="margin:20px" required />
+        <br />
+
+        <label class="labelwidth" style="margin:20px">Email : *</label>
+        <input class="textboxwidth" id="email" type="email" maxlength="100" style="margin:20px" required />
+        <br />
+
+        <label class="labelwidth" style="margin:20px">Gender : </label>
+        <input name="gender" type="radio" value="female" style="margin:20px"/> Female
+        <input name="gender" type="radio" value="male" style="margin-left:10px; margin:20px"/> Male
+        <input name="gender" type="radio" value="none" style="margin-left:10px; margin:20px"/> Prefer not to say
+        <br />
+
+        <label class="labelwidth" style="margin:20px">Security Question # 1 : *</label>
+        <select class="textboxwidth" id="securityQ1" name="question1" style="margin:20px" required>
+            <option disabled selected value> -- select an option -- </option>
+            <option>What is your major?</option>
+            <option>What is your favorite color?</option>
+            <option>What is your zodiac sign?</option>
+        </select>
+        <br />
+
+        <label class="labelwidth" style="margin:20px">Answer : *</label>
+        <input class="textboxwidth" id="answerQ1" type="text" maxlength="100" style="margin:20px" required />
+        <br />
+
+        <label class="labelwidth" style="margin:20px">Security Question # 2 : *</label>
+        <select class="textboxwidth" id="securityQ2" name="question2" style="margin:20px" required>
+            <option disabled selected value> -- select an option -- </option>
+            <option>What is your major?</option>
+            <option>What is your favorite color?</option>
+            <option>What is your zodiac sign?</option>
+        </select>
+        <br />
+
+        <label class="labelwidth" style="margin:20px">Answer : *</label>
+        <input class="textboxwidth" id="answerQ2" type="text" maxlength="100" style="margin:20px" required />
+        <br />
+
+        <label class="labelwidth" style="margin:20px">Security Question # 3 : *</label>
+        <select class="textboxwidth" id="securityQ3" name="question3" style="margin:20px" required>
+            <option disabled selected value> -- select an option -- </option>
+            <option>What is your major?</option>
+            <option>What is your favorite color?</option>
+            <option>What is your zodiac sign?</option>
+        </select>
+        <br />
+
+        <label class="labelwidth" style="margin:20px">Answer : *</label>
+        <input class="textboxwidth" id="answerQ3" type="text" maxlength="100" style="margin:20px" required />
+        <br />
+
+        <div class="buttonRegister" style="text-align:center">
+        <input class="btn btn-default" id="submit" type="submit" value="Submit" style="margin:10px"/>
+        <input id="clearAll" type="reset" value="Clear All" style="margin:10px" />
+            </div>
+    </form>
+
+</div>
 

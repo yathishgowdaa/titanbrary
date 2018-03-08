@@ -6,12 +6,12 @@ using System.Web.Mvc;
 
 namespace Titanbrary.WebAPI.Controllers
 {
-    public class RegistrationController : Controller
+    public class HelpsController : Controller
     {
-        // GET: Registration
+        // GET: Help
         public ActionResult Index()
         {
-            ViewBag.Title = "Register";
+            ViewBag.Title = "Help Page";
             return View();
         }
     }
