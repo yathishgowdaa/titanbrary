@@ -70,8 +70,12 @@
     <Build Include="Tables\BookXGenre.sql" />
     <Build Include="Tables\Cart.sql" />
     <Build Include="Tables\CartXBook.sql" />
+    <Build Include="Tables\Waitlist.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="PostDeployment\main-postDeployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="Titanbrary.Database.refactorlog" />
   </ItemGroup>
 </Project>

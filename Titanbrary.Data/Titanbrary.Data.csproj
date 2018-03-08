@@ -90,11 +90,6 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Tables\dbo.Book.sql" />
-    <Content Include="Tables\dbo.BookXGenre.sql" />
-    <Content Include="Tables\dbo.Cart.sql" />
-    <Content Include="Tables\dbo.CartXBook.sql" />
-    <Content Include="Tables\dbo.Genre.sql" />
     <Content Include="Titanbrary.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Titanbrary.edmx</DependentUpon>
