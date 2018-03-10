@@ -18,6 +18,10 @@ namespace Titanbrary.Common.Interfaces.BusinessObjects
 
 		bool UpdateBook(BookModel book);
 
+		List<BookModel> SearchBooks(string searchString);
+
+		bool AddBookToCart(Guid bookID);
+
 		#endregion
 
 		#region Genre

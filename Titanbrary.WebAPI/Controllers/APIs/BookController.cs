@@ -64,6 +64,24 @@ namespace Titanbrary.WebAPI.Controllers
 			return Ok(list);
 		}
 
+		// POST api/<controller>
+		[Route("SearchBooks/{searchString?}")]
+		[HttpPost]
+		public IHttpActionResult SearchBooks(string searchString)
+		{
+			var list = _Book.SearchBooks(searchString);
+			return Ok(list);
+		}
+
+		// POST api/<controller>
+		[Route("AddBookToCart/{bookID}")]
+		[HttpPost]
+		public IHttpActionResult AddBookToCart(Guid bookID)
+		{
+			var list = _Book.AddBookToCart(bookID);
+			return Ok(list);
+		}
+
 		#endregion
 
 		#region Genre

@@ -152,6 +152,58 @@ namespace Titanbrary.Data.DACs
 			return true;
 		}
 
+		public virtual List<BookModel> SearchBooks(string searchString)
+		{
+			List<BookModel> result = new List<BookModel>();
+			using (TitanbraryEntities ctx = new TitanbraryEntities())
+			{
+				result = ctx.Books.Where(b => b.Author.Contains(searchString) ||
+											  b.Publisher.Contains(searchString) ||
+											  b.ISBN.Contains(searchString) ||
+											  b.Language.Contains(searchString) ||
+											  b.Keywords.Contains(searchString) ||
+											  b.Name.Contains(searchString) ||
+											  b.Description.Contains(searchString)).Select(b => new BookModel()
+				{
+					Name = b.Name,
+					Author = b.Author,
+					Publisher = b.Publisher,
+					ISBN = b.ISBN,
+					Edition = b.Edition,
+					Year = b.Year,
+					Quantity = b.Quantity,
+					Language = b.Language,
+					Picture = b.Picture,
+					Keywords = b.Keywords,
+					Active = b.Active,
+					Description = b.Description,
+					Timestamp = b.Timestamp,
+					BookID = b.BookID
+				}).ToList();
+			}
+			return result;
+		}
+
+		public virtual bool AddBookToCart(Guid bookID)
+		{
+			using (TitanbraryEntities ctx = new TitanbraryEntities())
+			{
+				try
+				{
+					//ctx.CartXBook.Add(new CartXBook
+					//{
+						
+					//});
+					ctx.SaveChanges();
+				}
+				catch
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
 		#endregion
 
 		#region Genre

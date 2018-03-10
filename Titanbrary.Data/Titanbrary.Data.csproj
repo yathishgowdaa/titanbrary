@@ -55,6 +55,7 @@
       <DependentUpon>Titanbrary.tt</DependentUpon>
     </Compile>
     <Compile Include="DACs\BookDAC.cs" />
+    <Compile Include="DACs\CartDAC.cs" />
     <Compile Include="Genre.cs">
       <DependentUpon>Titanbrary.tt</DependentUpon>
     </Compile>

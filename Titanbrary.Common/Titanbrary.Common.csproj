@@ -42,8 +42,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfaces\BusinessObjects\IBook.cs" />
+    <Compile Include="Interfaces\BusinessObjects\ICart.cs" />
     <Compile Include="Interfaces\Data\IBookDAC.cs" />
+    <Compile Include="Interfaces\Data\ICartDAC.cs" />
     <Compile Include="Models\BookModel.cs" />
+    <Compile Include="Models\CartModel.cs" />
     <Compile Include="Models\GenreModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
