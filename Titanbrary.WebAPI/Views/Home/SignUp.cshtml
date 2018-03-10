@@ -2,7 +2,7 @@
 <section id="intro" class="wrapper style1 fullscreen fade-up">
     <div class="inner">
         <h1>@ViewBag.Title</h1>
-        <form method="post" action="#">
+        <form  id="registrationForm" method="post" action="api/Account/Registration" enctype="application/x-www-form-urlencoded">
             <div class="row uniform">
                 <div class="6u 12u$(xsmall)">
                     <input type="text" name="demo-name" id="demo-name" value="" placeholder="First Name" />
@@ -10,10 +10,19 @@
                 <div class="6u$ 12u$(xsmall)">
                     <input type="text" name="demo-email" id="demo-email" value="" placeholder="Last Name" />
                 </div>
-                <div class="6u$ 12u$(xsmall)">
+                <div class="6u 12u$(xsmall)">
                     <input type="email" name="demo-email" id="demo-email" value="" placeholder="Email" />
                 </div>
-                <div class="12u$">
+                <div class="6u$ 12u$(xsmall)">
+                    <input type="email" name="demo-email" id="demo-email" value="" placeholder="Re-enter Email" />
+                </div>
+                <div class="6u 12u$(xsmall)">
+                    <input type="password" name="demo-email" id="demo-email" value="" placeholder="Password" />
+                </div>
+                <div class="6u$ 12u$(xsmall)">
+                    <input type="password" name="demo-email" id="demo-email" value="" placeholder="Password" />
+                </div>
+                @*<div class="12u$">
                     <div class="select-wrapper">
                         <select name="demo-category" id="demo-category">
                             <option value="">- Category -</option>
@@ -23,8 +32,8 @@
                             <option value="1">Human Resources</option>
                         </select>
                     </div>
-                </div>
-                <div class="4u 12u$(small)">
+                </div>*@
+                @*<div class="4u 12u$(small)">
                     <input type="radio" id="demo-priority-low" name="demo-priority" checked>
                     <label for="demo-priority-low">Low</label>
                 </div>
@@ -35,21 +44,21 @@
                 <div class="4u$ 12u$(small)">
                     <input type="radio" id="demo-priority-high" name="demo-priority">
                     <label for="demo-priority-high">High</label>
-                </div>
-                <div class="6u 12u$(small)">
+                </div>*@
+                @*<div class="6u 12u$(small)">
                     <input type="checkbox" id="demo-copy" name="demo-copy">
                     <label for="demo-copy">Email me a copy</label>
                 </div>
                 <div class="6u$ 12u$(small)">
                     <input type="checkbox" id="demo-human" name="demo-human" checked>
                     <label for="demo-human">Not a robot</label>
-                </div>
-                <div class="12u$">
+                </div>*@
+                @*<div class="12u$">
                     <textarea name="demo-message" id="demo-message" placeholder="Enter your message" rows="6"></textarea>
-                </div>
+                </div>*@
                 <div class="12u$">
                     <ul class="actions">
-                        <li><input type="submit" value="Send Message" class="special" /></li>
+                        <li><input type="submit" value="Submit" class="special" /></li>
                         <li><input type="reset" value="Reset" /></li>
                     </ul>
                 </div>
@@ -57,3 +66,18 @@
         </form>
     </div>
 </section>
+
+<script type="text/javascript">
+    $("#registrationForm").submit(function () {
+        var jqxhr = $.post('api/Account/Registration', $('#registrationForm').serialize())
+            .success(function () {
+                var loc = jqxhr.getResponseHeader('Location');
+                var a = $('<a/>', { href: loc, text: loc });
+                $('#message').html(a);
+            })
+            .error(function () {
+                $('#message').html("Error posting the update.");
+            });
+        return false;
+    });
+</script>
