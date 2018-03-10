@@ -18,7 +18,7 @@ namespace Titanbrary.Data
         public Book()
         {
             this.Genres = new HashSet<Genre>();
-            this.Carts = new HashSet<Cart>();
+            this.CartXBooks = new HashSet<CartXBook>();
         }
     
         public string Name { get; set; }
@@ -39,6 +39,6 @@ namespace Titanbrary.Data
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Genre> Genres { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Cart> Carts { get; set; }
+        public virtual ICollection<CartXBook> CartXBooks { get; set; }
     }
 }

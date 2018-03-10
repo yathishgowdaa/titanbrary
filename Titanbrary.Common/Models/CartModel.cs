@@ -8,16 +8,16 @@ namespace Titanbrary.Common.Models
 {
 	public class CartModel
 	{
-		Guid CartID { get; set; }
-		Guid UserID { get; set; }
-		DateTime Date { get; set; }
-		List<CartXBookModel> BookList { get; set; }
+		public Guid CartID { get; set; }
+		public Guid UserID { get; set; }
+		public DateTime CreatedDate { get; set; }
+		public DateTime ModifiedDate { get; set; }
+		public List<CartXBookModel> BookList { get; set; }
 	}
 
 	public class CartXBookModel
 	{
-		Guid BookID { get; set; }
-		int Quantity { get; set; }
-		int LineNumber { get; set; }
+		public Guid BookID { get; set; }
+		public int Quantity { get; set; }
 	}
 }

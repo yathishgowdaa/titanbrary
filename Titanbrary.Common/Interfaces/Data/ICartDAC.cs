@@ -9,6 +9,8 @@ namespace Titanbrary.Common.Interfaces.Data
 {
 	public interface ICartDAC
 	{
+		bool CreateCart(CartModel cart);
+
 		CartModel GetCart(Guid cartID);
 	}
 }

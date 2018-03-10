@@ -114,7 +114,7 @@ namespace Titanbrary.Data.DACs
 					});
 					ctx.SaveChanges();
 				}
-				catch
+				catch (Exception ex)
 				{
 					return false;
 				}				
@@ -144,7 +144,7 @@ namespace Titanbrary.Data.DACs
 					oldBook.Year = book.Year;
 					ctx.SaveChanges();
 				}
-				catch
+				catch (Exception ex)
 				{
 					return false;
 				}
@@ -184,19 +184,42 @@ namespace Titanbrary.Data.DACs
 			return result;
 		}
 
-		public virtual bool AddBookToCart(Guid bookID)
+		public virtual bool AddBookToCart(Guid cartID, CartXBookModel cartXBook)
 		{
 			using (TitanbraryEntities ctx = new TitanbraryEntities())
 			{
 				try
 				{
-					//ctx.CartXBook.Add(new CartXBook
-					//{
-						
-					//});
+					ctx.CartXBooks.Add(new CartXBook
+					{
+						BookID = cartXBook.BookID,
+						CartID = cartID,
+						Quantity = cartXBook.Quantity
+					});
 					ctx.SaveChanges();
 				}
-				catch
+				catch (Exception ex)
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
+		public virtual bool DeleteBookFromCart(Guid cartID, Guid bookID)
+		{
+			using (TitanbraryEntities ctx = new TitanbraryEntities())
+			{
+				try
+				{
+					ctx.CartXBooks.Remove(new CartXBook
+					{
+						BookID = bookID,
+						CartID = cartID
+					});
+					ctx.SaveChanges();
+				}
+				catch (Exception ex)
 				{
 					return false;
 				}
@@ -263,7 +286,7 @@ namespace Titanbrary.Data.DACs
 					});
 					ctx.SaveChanges();
 				}
-				catch
+				catch (Exception ex)
 				{
 					return false;
 				}
@@ -282,7 +305,7 @@ namespace Titanbrary.Data.DACs
 					oldGenre.Title = genre.Title;
 					ctx.SaveChanges();
 				}
-				catch
+				catch (Exception ex)
 				{
 					return false;
 				}				

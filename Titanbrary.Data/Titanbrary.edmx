@@ -38,10 +38,8 @@
           </Key>
           <Property Name="CartID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="UserID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Date" Type="int" Nullable="false" />
-          <Property Name="Quantity" Type="int" Nullable="false" />
-          <Property Name="Type" Type="int" Nullable="false" />
-          <Property Name="Waitlist" Type="bit" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="CartXBook">
           <Key>
@@ -50,6 +48,7 @@
           </Key>
           <Property Name="CartID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="BookID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Genre">
           <Key>
@@ -79,6 +78,7 @@
           <Property Name="SQAnwer1" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="SQAnswer2" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="SQAnswer3" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserType" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Waitlist">
           <Key>
@@ -185,7 +185,7 @@
           <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="BookID" Type="Guid" Nullable="false" />
           <NavigationProperty Name="Genres" Relationship="Self.BookXGenre" FromRole="Book" ToRole="Genre" />
-          <NavigationProperty Name="Carts" Relationship="TitanbraryModel.CartXBook" FromRole="Book" ToRole="Cart" />
+          <NavigationProperty Name="CartXBooks" Relationship="TitanbraryModel.FK_Book_CartXBook" FromRole="Book" ToRole="CartXBook" />
         </EntityType>
         <EntityType Name="Genre">
           <Key>
@@ -208,11 +208,16 @@
           </AssociationSet>
           <EntitySet Name="Carts" EntityType="TitanbraryModel.Cart" />
           <EntitySet Name="Waitlists" EntityType="TitanbraryModel.Waitlist" />
-          <AssociationSet Name="CartXBook" Association="TitanbraryModel.CartXBook">
-            <End Role="Book" EntitySet="Books" />
-            <End Role="Cart" EntitySet="Carts" />
-          </AssociationSet>
           <EntitySet Name="Users" EntityType="TitanbraryModel.User" />
+          <EntitySet Name="CartXBooks" EntityType="TitanbraryModel.CartXBook" />
+          <AssociationSet Name="FK_Book_CartXBook" Association="TitanbraryModel.FK_Book_CartXBook">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="CartXBook" EntitySet="CartXBooks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cart_BookXGenre" Association="TitanbraryModel.FK_Cart_BookXGenre">
+            <End Role="Cart" EntitySet="Carts" />
+            <End Role="CartXBook" EntitySet="CartXBooks" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Cart">
           <Key>
@@ -220,11 +225,9 @@
           </Key>
           <Property Name="CartID" Type="Guid" Nullable="false" />
           <Property Name="UserID" Type="Guid" Nullable="false" />
-          <Property Name="Date" Type="Int32" Nullable="false" />
-          <Property Name="Quantity" Type="Int32" Nullable="false" />
-          <Property Name="Type" Type="Int32" Nullable="false" />
-          <Property Name="Waitlist" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Books" Relationship="TitanbraryModel.CartXBook" FromRole="Cart" ToRole="Book" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="CartXBooks" Relationship="TitanbraryModel.FK_Cart_BookXGenre" FromRole="Cart" ToRole="CartXBook" />
         </EntityType>
         <EntityType Name="Waitlist">
           <Key>
@@ -235,10 +238,6 @@
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="WaitlistID" Type="Guid" Nullable="false" />
         </EntityType>
-        <Association Name="CartXBook">
-          <End Type="TitanbraryModel.Book" Role="Book" Multiplicity="*" />
-          <End Type="TitanbraryModel.Cart" Role="Cart" Multiplicity="*" />
-        </Association>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="UserID" />
@@ -260,7 +259,43 @@
           <Property Name="SQAnwer1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="SQAnswer2" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="SQAnswer3" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserType" Type="Int32" Nullable="false" />
         </EntityType>
+        <EntityType Name="CartXBook">
+          <Key>
+            <PropertyRef Name="CartID" />
+            <PropertyRef Name="BookID" />
+          </Key>
+          <Property Name="CartID" Type="Guid" Nullable="false" />
+          <Property Name="BookID" Type="Guid" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Book" Relationship="TitanbraryModel.FK_Book_CartXBook" FromRole="CartXBook" ToRole="Book" />
+          <NavigationProperty Name="Cart" Relationship="TitanbraryModel.FK_Cart_BookXGenre" FromRole="CartXBook" ToRole="Cart" />
+        </EntityType>
+        <Association Name="FK_Book_CartXBook">
+          <End Type="TitanbraryModel.Book" Role="Book" Multiplicity="1" />
+          <End Type="TitanbraryModel.CartXBook" Role="CartXBook" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookID" />
+            </Principal>
+            <Dependent Role="CartXBook">
+              <PropertyRef Name="BookID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cart_BookXGenre">
+          <End Type="TitanbraryModel.Cart" Role="Cart" Multiplicity="1" />
+          <End Type="TitanbraryModel.CartXBook" Role="CartXBook" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cart">
+              <PropertyRef Name="CartID" />
+            </Principal>
+            <Dependent Role="CartXBook">
+              <PropertyRef Name="CartID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -306,10 +341,8 @@
           <EntitySetMapping Name="Carts">
             <EntityTypeMapping TypeName="TitanbraryModel.Cart">
               <MappingFragment StoreEntitySet="Cart">
-                <ScalarProperty Name="Waitlist" ColumnName="Waitlist" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="CartID" ColumnName="CartID" />
               </MappingFragment>
@@ -325,17 +358,10 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="CartXBook" TypeName="TitanbraryModel.CartXBook" StoreEntitySet="CartXBook">
-            <EndProperty Name="Cart">
-              <ScalarProperty Name="CartID" ColumnName="CartID" />
-            </EndProperty>
-            <EndProperty Name="Book">
-              <ScalarProperty Name="BookID" ColumnName="BookID" />
-            </EndProperty>
-          </AssociationSetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="TitanbraryModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
                 <ScalarProperty Name="SQAnswer3" ColumnName="SQAnswer3" />
                 <ScalarProperty Name="SQAnswer2" ColumnName="SQAnswer2" />
                 <ScalarProperty Name="SQAnwer1" ColumnName="SQAnwer1" />
@@ -353,6 +379,15 @@
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="LoginName" ColumnName="LoginName" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CartXBooks">
+            <EntityTypeMapping TypeName="TitanbraryModel.CartXBook">
+              <MappingFragment StoreEntitySet="CartXBook">
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="BookID" ColumnName="BookID" />
+                <ScalarProperty Name="CartID" ColumnName="CartID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

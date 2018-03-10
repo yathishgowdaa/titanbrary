@@ -52,7 +52,9 @@ namespace Titanbrary.WebAPI.Controllers
 		public IHttpActionResult CreateBook([FromBody] BookModel book)
 		{
 			var list = _Book.CreateBook(book);
-			return Ok(list);
+			if (list)
+				return Ok();
+			return BadRequest();
 		}
 
 		// POST api/<controller>
@@ -61,7 +63,9 @@ namespace Titanbrary.WebAPI.Controllers
 		public IHttpActionResult UpdateBook([FromBody] BookModel book)
 		{
 			var list = _Book.UpdateBook(book);
-			return Ok(list);
+			if (list)
+				return Ok();
+			return BadRequest();
 		}
 
 		// POST api/<controller>
@@ -74,12 +78,25 @@ namespace Titanbrary.WebAPI.Controllers
 		}
 
 		// POST api/<controller>
-		[Route("AddBookToCart/{bookID}")]
+		[Route("AddBookToCart/{cartID}")]
 		[HttpPost]
-		public IHttpActionResult AddBookToCart(Guid bookID)
+		public IHttpActionResult AddBookToCart(Guid cartID, [FromBody] CartXBookModel cartXBook)
 		{
-			var list = _Book.AddBookToCart(bookID);
-			return Ok(list);
+			var list = _Book.AddBookToCart(cartID, cartXBook);
+			if (list)
+				return Ok();
+			return BadRequest();
+		}
+
+		// POST api/<controller>
+		[Route("DeleteBookFromCart/{cartID}/{bookID}")]
+		[HttpPost]
+		public IHttpActionResult DeleteBookFromCart(Guid cartID, Guid bookID)
+		{
+			var list = _Book.DeleteBookFromCart(cartID, bookID);
+			if (list)
+				return Ok();
+			return BadRequest();
 		}
 
 		#endregion
@@ -119,7 +136,9 @@ namespace Titanbrary.WebAPI.Controllers
 		public IHttpActionResult CreateGenre([FromBody] GenreModel genre)
 		{
 			var list = _Book.CreateGenre(genre);
-			return Ok(list);
+			if (list)
+				return Ok();
+			return BadRequest();
 		}
 
 		// POST api/<controller>
@@ -128,7 +147,9 @@ namespace Titanbrary.WebAPI.Controllers
 		public IHttpActionResult UpdateGenre([FromBody] GenreModel genre)
 		{
 			var list = _Book.UpdateGenre(genre);
-			return Ok(list);
+			if (list)
+				return Ok();
+			return BadRequest();
 		}
 
 		#endregion

@@ -20,7 +20,9 @@ namespace Titanbrary.Common.Interfaces.BusinessObjects
 
 		List<BookModel> SearchBooks(string searchString);
 
-		bool AddBookToCart(Guid bookID);
+		bool AddBookToCart(Guid cartID, CartXBookModel cartXBook);
+
+		bool DeleteBookFromCart(Guid cartID, Guid bookID);
 
 		#endregion
 

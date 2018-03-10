@@ -8,10 +8,12 @@
         <EntityTypeShape EntityType="TitanbraryModel.Book" Width="1.5" PointX="0.75" PointY="7" IsExpanded="true" />
         <EntityTypeShape EntityType="TitanbraryModel.Genre" Width="1.5" PointX="3" PointY="8.125" IsExpanded="true" />
         <AssociationConnector Association="TitanbraryModel.BookXGenre" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="TitanbraryModel.Cart" Width="1.5" PointX="3.375" PointY="10.875" />
+        <EntityTypeShape EntityType="TitanbraryModel.Cart" Width="1.5" PointX="3.375" PointY="10.875" IsExpanded="true" />
         <EntityTypeShape EntityType="TitanbraryModel.Waitlist" Width="1.5" PointX="0.75" PointY="0.75" />
-        <AssociationConnector Association="TitanbraryModel.CartXBook" />
         <EntityTypeShape EntityType="TitanbraryModel.User" Width="1.5" PointX="3.375" PointY="0.75" />
+        <EntityTypeShape EntityType="TitanbraryModel.CartXBook" Width="1.5" PointX="5.625" PointY="9" />
+        <AssociationConnector Association="TitanbraryModel.FK_Book_CartXBook" />
+        <AssociationConnector Association="TitanbraryModel.FK_Cart_BookXGenre" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

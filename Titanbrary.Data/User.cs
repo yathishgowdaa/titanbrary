@@ -31,5 +31,6 @@ namespace Titanbrary.Data
         public string SQAnwer1 { get; set; }
         public string SQAnswer2 { get; set; }
         public string SQAnswer3 { get; set; }
+        public int UserType { get; set; }
     }
 }

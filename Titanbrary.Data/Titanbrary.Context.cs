@@ -30,5 +30,6 @@ namespace Titanbrary.Data
         public virtual DbSet<Cart> Carts { get; set; }
         public virtual DbSet<Waitlist> Waitlists { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<CartXBook> CartXBooks { get; set; }
     }
 }

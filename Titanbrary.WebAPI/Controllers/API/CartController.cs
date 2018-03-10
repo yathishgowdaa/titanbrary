@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Titanbrary.Common.Interfaces.BusinessObjects;
+using Titanbrary.Common.Models;
 
 namespace Titanbrary.WebAPI.Controllers
 {
@@ -34,6 +35,15 @@ namespace Titanbrary.WebAPI.Controllers
 		public IHttpActionResult GetBook(Guid bookID)
 		{
 			var list = _Book.GetBookByBookID(bookID);
+			return Ok(list);
+		}
+
+		// POST api/<controller>
+		[Route("CreateCart")]
+		[HttpPost]
+		public IHttpActionResult CreateCart([FromBody] CartModel cart)
+		{
+			var list = _Cart.CreateCart(cart);
 			return Ok(list);
 		}
 	}

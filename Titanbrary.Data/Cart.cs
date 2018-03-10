@@ -17,17 +17,15 @@ namespace Titanbrary.Data
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Cart()
         {
-            this.Books = new HashSet<Book>();
+            this.CartXBooks = new HashSet<CartXBook>();
         }
     
         public System.Guid CartID { get; set; }
         public System.Guid UserID { get; set; }
-        public int Date { get; set; }
-        public int Quantity { get; set; }
-        public int Type { get; set; }
-        public bool Waitlist { get; set; }
+        public System.DateTime CreatedDate { get; set; }
+        public System.DateTime ModifiedDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Book> Books { get; set; }
+        public virtual ICollection<CartXBook> CartXBooks { get; set; }
     }
 }

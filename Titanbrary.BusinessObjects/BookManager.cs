@@ -52,9 +52,15 @@ namespace Titanbrary.BusinessObjects
 			return list;
 		}
 
-		public virtual bool AddBookToCart(Guid bookID)
+		public virtual bool AddBookToCart(Guid cartID, CartXBookModel cartXBook)
 		{
-			var book = _BookDAC.AddBookToCart(bookID);
+			var book = _BookDAC.AddBookToCart(cartID, cartXBook);
+			return book;
+		}
+
+		public virtual bool DeleteBookFromCart(Guid cartID, Guid bookID)
+		{
+			var book = _BookDAC.DeleteBookFromCart(cartID, bookID);
 			return book;
 		}
 

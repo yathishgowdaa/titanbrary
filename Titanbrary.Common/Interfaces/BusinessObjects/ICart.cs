@@ -9,6 +9,8 @@ namespace Titanbrary.Common.Interfaces.BusinessObjects
 {
 	public interface ICart
 	{
+		bool CreateCart(CartModel cart);
+
 		CartModel GetCart(Guid cartID);
 	}
 }
