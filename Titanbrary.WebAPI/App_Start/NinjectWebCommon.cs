@@ -70,9 +70,11 @@ namespace Titanbrary.WebAPI.App_Start
         {
             //Biz
             kernel.Bind<IBook>().To<BusinessObjects.BookManager>();
+            kernel.Bind<IAccount>().To<BusinessObjects.AccountManager>();
 
             //Dac
             kernel.Bind<IBookDAC>().To<Data.DACs.BookDAC>();
+            kernel.Bind<IAccountDAC>().To<Data.DACs.AccountDAC>();
 
         }        
     }

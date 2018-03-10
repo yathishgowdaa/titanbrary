@@ -5,31 +5,38 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Titanbrary.Common.Interfaces.BusinessObjects;
 using Titanbrary.WebAPI.Models;
 
 
 namespace Titanbrary.WebAPI.Controllers.API
 {
-    [RoutePrefix("Account")]
+    [RoutePrefix("api/Registration")]
     public class RegistrationController : ApiController
     {
-        private ApplicationUserManager _userManager;
+        private ApplicationUserManager _UserManager;
+        private readonly IAccount _Account;
 
         public ApplicationUserManager UserManager
         {
             get
             {
-                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                return _UserManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
             }
             private set
             {
-                _userManager = value;
+                _UserManager = value;
             }
         }
+
+        public RegistrationController(IAccount _account)
+        {
+            _Account = _account;
+        }
+
+        [Route("Register")]
         [HttpPost]
-        [AllowAnonymous]
-        [Route("Registration")]
-        public async Task<IHttpActionResult> Register(ApplicationUser model)
+        public async Task<IHttpActionResult> Register([FromBody] ApplicationUser model)
         {
             if (!ModelState.IsValid)
             {
@@ -38,7 +45,7 @@ namespace Titanbrary.WebAPI.Controllers.API
 
             var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
 
-            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+            var result = await UserManager.CreateAsync(user, model.Password);
 
             if (!result.Succeeded)
             {

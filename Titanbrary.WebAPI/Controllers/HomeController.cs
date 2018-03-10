@@ -18,8 +18,8 @@ namespace Titanbrary.WebAPI.Controllers
        
         public ActionResult SignUp()
         {
-            ViewBag.Title = "Sign Up!"
-;            return View();
+            ViewBag.Title = "Sign Up!";
+            return View();
         }
     }
 }

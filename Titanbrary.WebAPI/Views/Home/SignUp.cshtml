@@ -2,60 +2,30 @@
 <section id="intro" class="wrapper style1 fullscreen fade-up">
     <div class="inner">
         <h1>@ViewBag.Title</h1>
-        <form  id="registrationForm" method="post" action="api/Account/Registration" enctype="application/x-www-form-urlencoded">
+
+
+
+        <form id="registrationForm" action="/">
             <div class="row uniform">
                 <div class="6u 12u$(xsmall)">
-                    <input type="text" name="demo-name" id="demo-name" value="" placeholder="First Name" />
+                    <input type="text" id="firstName" placeholder="First Name" />
                 </div>
                 <div class="6u$ 12u$(xsmall)">
-                    <input type="text" name="demo-email" id="demo-email" value="" placeholder="Last Name" />
+                    <input type="text" id="lastName" placeholder="Last Name" />
                 </div>
                 <div class="6u 12u$(xsmall)">
-                    <input type="email" name="demo-email" id="demo-email" value="" placeholder="Email" />
+                    <input type="email" id="email" placeholder="Email" />
                 </div>
                 <div class="6u$ 12u$(xsmall)">
-                    <input type="email" name="demo-email" id="demo-email" value="" placeholder="Re-enter Email" />
+                    <input type="email" id="email2" placeholder="Re-enter Email" />
                 </div>
                 <div class="6u 12u$(xsmall)">
-                    <input type="password" name="demo-email" id="demo-email" value="" placeholder="Password" />
+                    <input type="password" id="password" placeholder="Password" />
                 </div>
                 <div class="6u$ 12u$(xsmall)">
-                    <input type="password" name="demo-email" id="demo-email" value="" placeholder="Password" />
+                    <input type="password" id="password2" value="" placeholder="Password" />
                 </div>
-                @*<div class="12u$">
-                    <div class="select-wrapper">
-                        <select name="demo-category" id="demo-category">
-                            <option value="">- Category -</option>
-                            <option value="1">Manufacturing</option>
-                            <option value="1">Shipping</option>
-                            <option value="1">Administration</option>
-                            <option value="1">Human Resources</option>
-                        </select>
-                    </div>
-                </div>*@
-                @*<div class="4u 12u$(small)">
-                    <input type="radio" id="demo-priority-low" name="demo-priority" checked>
-                    <label for="demo-priority-low">Low</label>
-                </div>
-                <div class="4u 12u$(small)">
-                    <input type="radio" id="demo-priority-normal" name="demo-priority">
-                    <label for="demo-priority-normal">Normal</label>
-                </div>
-                <div class="4u$ 12u$(small)">
-                    <input type="radio" id="demo-priority-high" name="demo-priority">
-                    <label for="demo-priority-high">High</label>
-                </div>*@
-                @*<div class="6u 12u$(small)">
-                    <input type="checkbox" id="demo-copy" name="demo-copy">
-                    <label for="demo-copy">Email me a copy</label>
-                </div>
-                <div class="6u$ 12u$(small)">
-                    <input type="checkbox" id="demo-human" name="demo-human" checked>
-                    <label for="demo-human">Not a robot</label>
-                </div>*@
-                @*<div class="12u$">
-                    <textarea name="demo-message" id="demo-message" placeholder="Enter your message" rows="6"></textarea>
-                </div>*@
+
                 <div class="12u$">
                     <ul class="actions">
                         <li><input type="submit" value="Submit" class="special" /></li>
@@ -66,18 +36,97 @@
         </form>
     </div>
 </section>
-
 <script type="text/javascript">
+
+   
+
     $("#registrationForm").submit(function () {
-        var jqxhr = $.post('api/Account/Registration', $('#registrationForm').serialize())
-            .success(function () {
-                var loc = jqxhr.getResponseHeader('Location');
-                var a = $('<a/>', { href: loc, text: loc });
-                $('#message').html(a);
-            })
-            .error(function () {
-                $('#message').html("Error posting the update.");
-            });
-        return false;
+
+        var obj = {
+            'FirstName': document.getElementById("firstName").value,
+            'LastName': document.getElementById("lastName").value,
+            'Email': document.getElementById("email").value,
+            'Password': document.getElementById("password").value
+        };
+
+        console.log(obj);
+
+        $.post('http://localhost:50799/api/Registration/Register', obj, function (data, status) {
+            callBackFunction(data);
+
+        });
+
+        function callBackFunction(data) {
+            // you can operate on data here
+            console.log(data);
+        }
+        //var jqxhr = $.post('http://localhost:50799/api/Registration/Register', $('#registrationForm').serialize())
+        //    .success(function () {
+        //        var loc = jqxhr.getResponseHeader('Location');
+        //        var a = $('<a/>', { href: loc, text: loc });
+        //        $('#message').html(a);
+        //    })
+        //    .error(function () {
+        //        $('#message').html("Error posting the update.");
+        //    });
+        //return false;
+
+
+
+        //var xhttp = new XMLHttpRequest();
+        //xhttp.onreadystatechange = function () {
+        //    if (this.readyState == 4 && this.status == 200) {
+        //        var myObj = JSON.parse(this.responseText);
+        //        console.log(myObj);
+        //        window.alert("Registered!", responseText);
+        //    } else {
+        //        var myObj = JSON.parse(this.responseText);
+        //        window.alert("Error", responseText);
+        //    }
+        //};
+        //xhttp.open("POST", "http://localhost:50799/api/Registration/Register", true);
+        //xhttp.send(data);
+
+
     });
+
 </script>
+
+@*<script>
+        function submitRegistration() {
+
+            var email = document.getElementById("email");
+            var email2 = document.getElementById("email-2");
+
+            //if (email !== email2) {
+            //    alert("Email is not matching!");
+            //}
+
+            //Create Ojbect
+            var formData = new FormData();
+            //Appen property of the object
+            formData.append("firstName", document.getElementById("firstName"));
+            formData.append("lastName", document.getElementById("lastName"));
+            formData.append("email", document.getElementById("email"));
+            formData.append("password", document.getElementById("password"));
+
+            console.log(formData.values);
+
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var myObj = JSON.parse(this.responseText);
+                    console.log(myObj);
+                    window.alert("Registered!", responseText);
+                } else {
+                    var myObj = JSON.parse(this.responseText);
+                    window.alert("Error", responseText);
+                }
+            };
+            xhttp.open("POST", "http://localhost:50799/api/Registration/Register", true);
+            xhttp.send();
+
+
+        }
+    </script>*@

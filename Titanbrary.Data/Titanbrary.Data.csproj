@@ -51,9 +51,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AspNetRole.cs">
+      <DependentUpon>Titanbrary.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AspNetUser.cs">
+      <DependentUpon>Titanbrary.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AspNetUserClaim.cs">
+      <DependentUpon>Titanbrary.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AspNetUserLogin.cs">
+      <DependentUpon>Titanbrary.tt</DependentUpon>
+    </Compile>
     <Compile Include="Book.cs">
       <DependentUpon>Titanbrary.tt</DependentUpon>
     </Compile>
+    <Compile Include="DACs\AccountDAC.cs" />
     <Compile Include="DACs\BookDAC.cs" />
     <Compile Include="Genre.cs">
       <DependentUpon>Titanbrary.tt</DependentUpon>

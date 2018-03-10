@@ -266,7 +266,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\API\RegistrationController.cs" />
     <Compile Include="Controllers\API\RoleController.cs" />
-    <Compile Include="Controllers\BookController.cs" />
+    <Compile Include="Controllers\API\BookController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
