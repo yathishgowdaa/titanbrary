@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="1f59cb85c5f643cd82605d9de0a3548f" Name="Diagram1" ZoomLevel="52">
+      <Diagram DiagramId="1f59cb85c5f643cd82605d9de0a3548f" Name="Diagram1" ZoomLevel="98">
         <EntityTypeShape EntityType="TitanbraryModel.Book" Width="1.5" PointX="0.75" PointY="7" IsExpanded="true" />
         <EntityTypeShape EntityType="TitanbraryModel.Genre" Width="1.5" PointX="3" PointY="8.125" IsExpanded="true" />
         <AssociationConnector Association="TitanbraryModel.BookXGenre" ManuallyRouted="false" />

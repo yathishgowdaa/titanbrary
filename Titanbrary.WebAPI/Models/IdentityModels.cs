@@ -11,8 +11,8 @@ namespace Titanbrary.WebAPI.Models
     {
         public string Password { get; set; }
         public string UserRoles { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        //public string FirstName { get; set; }
+        //public string LastName { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager, string authenticationType)
         {

@@ -2,9 +2,6 @@
 <section id="intro" class="wrapper style1 fullscreen fade-up">
     <div class="inner">
         <h1>@ViewBag.Title</h1>
-
-
-
         <form id="registrationForm" action="/">
             <div class="row uniform">
                 <div class="6u 12u$(xsmall)">
@@ -38,8 +35,6 @@
 </section>
 <script type="text/javascript">
 
-   
-
     $("#registrationForm").submit(function () {
 
         var obj = {
@@ -51,82 +46,26 @@
 
         console.log(obj);
 
-        $.post('http://localhost:50799/api/Registration/Register', obj, function (data, status) {
-            callBackFunction(data);
+        var settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": "http://localhost:50799/api/Registration/Register",
+            "method": "POST",
+            "headers": {
+                "Content-Type": "application/json",
+                "Cache-Control": "no-cache",
+                "Postman-Token": "a70ac5c5-4a8e-45c7-99b8-9ce4a5e76dfb"
+            },
+            "processData": false,
+            "data": JSON.stringify(obj)
+        }
 
+        $.ajax(settings).done(function (response) {
+            console.log(response);
         });
 
-        function callBackFunction(data) {
-            // you can operate on data here
-            console.log(data);
-        }
-        //var jqxhr = $.post('http://localhost:50799/api/Registration/Register', $('#registrationForm').serialize())
-        //    .success(function () {
-        //        var loc = jqxhr.getResponseHeader('Location');
-        //        var a = $('<a/>', { href: loc, text: loc });
-        //        $('#message').html(a);
-        //    })
-        //    .error(function () {
-        //        $('#message').html("Error posting the update.");
-        //    });
-        //return false;
-
-
-
-        //var xhttp = new XMLHttpRequest();
-        //xhttp.onreadystatechange = function () {
-        //    if (this.readyState == 4 && this.status == 200) {
-        //        var myObj = JSON.parse(this.responseText);
-        //        console.log(myObj);
-        //        window.alert("Registered!", responseText);
-        //    } else {
-        //        var myObj = JSON.parse(this.responseText);
-        //        window.alert("Error", responseText);
-        //    }
-        //};
-        //xhttp.open("POST", "http://localhost:50799/api/Registration/Register", true);
-        //xhttp.send(data);
 
 
     });
 
 </script>
-
-@*<script>
-        function submitRegistration() {
-
-            var email = document.getElementById("email");
-            var email2 = document.getElementById("email-2");
-
-            //if (email !== email2) {
-            //    alert("Email is not matching!");
-            //}
-
-            //Create Ojbect
-            var formData = new FormData();
-            //Appen property of the object
-            formData.append("firstName", document.getElementById("firstName"));
-            formData.append("lastName", document.getElementById("lastName"));
-            formData.append("email", document.getElementById("email"));
-            formData.append("password", document.getElementById("password"));
-
-            console.log(formData.values);
-
-
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    var myObj = JSON.parse(this.responseText);
-                    console.log(myObj);
-                    window.alert("Registered!", responseText);
-                } else {
-                    var myObj = JSON.parse(this.responseText);
-                    window.alert("Error", responseText);
-                }
-            };
-            xhttp.open("POST", "http://localhost:50799/api/Registration/Register", true);
-            xhttp.send();
-
-
-        }
-    </script>*@

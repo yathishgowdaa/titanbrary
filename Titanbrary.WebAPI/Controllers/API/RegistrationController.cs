@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Titanbrary.Common.Interfaces.BusinessObjects;
+using Titanbrary.Common.Models;
 using Titanbrary.WebAPI.Models;
 
 
@@ -35,17 +36,22 @@ namespace Titanbrary.WebAPI.Controllers.API
         }
 
         [Route("Register")]
+        [AllowAnonymous]
         [HttpPost]
-        public async Task<IHttpActionResult> Register([FromBody] ApplicationUser model)
+        public async Task<IHttpActionResult> Register([FromBody] UserModel model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+            var user = new ApplicationUser() {
+                UserName = model.Email,
+                Email = model.Email,
+                Password = model.Password
+            };
 
-            var result = await UserManager.CreateAsync(user, model.Password);
+            var result = await UserManager.CreateAsync(user, user.Password);
 
             if (!result.Succeeded)
             {
@@ -53,7 +59,7 @@ namespace Titanbrary.WebAPI.Controllers.API
                 return ResponseMessage(response);  
             }
             
-            await UserManager.AddToRoleAsync(user.Id, model.UserRoles);
+            //await UserManager.AddToRoleAsync(user.Id, model.UserRoles);
 
             return Ok("Account was created");
         }
