@@ -54,6 +54,9 @@
     <Compile Include="Book.cs">
       <DependentUpon>Titanbrary.tt</DependentUpon>
     </Compile>
+    <Compile Include="Cart.cs">
+      <DependentUpon>Titanbrary.tt</DependentUpon>
+    </Compile>
     <Compile Include="DACs\BookDAC.cs" />
     <Compile Include="Genre.cs">
       <DependentUpon>Titanbrary.tt</DependentUpon>
@@ -73,6 +76,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Titanbrary.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="User.cs">
+      <DependentUpon>Titanbrary.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Waitlist.cs">
+      <DependentUpon>Titanbrary.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
