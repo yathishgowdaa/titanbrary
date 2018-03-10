@@ -15,7 +15,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Titanbrary.WebAPI</RootNamespace>
     <AssemblyName>Titanbrary.WebAPI</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
@@ -26,6 +26,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,19 +47,28 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.7.0\lib\net45\CommonServiceLocator.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.2.0.0\lib\net45-full\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Common, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.Common.3.2.3.0\lib\net45-full\Ninject.Web.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.WebApi, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.WebApi.3.2.4.0\lib\net45-full\Ninject.Web.WebApi.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
@@ -111,6 +121,31 @@
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Unity.Abstractions, Version=3.3.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Abstractions.3.3.0\lib\net45\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Configuration, Version=5.2.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.7.0\lib\net45\Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.7.0.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Container.5.7.0\lib\net45\Unity.Container.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Interception, Version=5.5.0.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.7.0\lib\net45\Unity.Interception.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Interception.Configuration, Version=5.1.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.7.0\lib\net45\Unity.Interception.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RegistrationByConvention, Version=2.1.5.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.7.0\lib\net45\Unity.RegistrationByConvention.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ServiceLocation, Version=2.1.0.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.7.0\lib\net45\Unity.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.2.0\lib\net40\WebActivatorEx.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
@@ -196,6 +231,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -228,14 +264,20 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\API\RegistrationController.cs" />
+    <Compile Include="Controllers\API\RoleController.cs" />
+    <Compile Include="Controllers\API\BookController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Injection\UnityActionFilterProvider.cs" />
+    <Compile Include="Injection\UnityResolver.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -243,8 +285,89 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
+    <Content Include="Areas\HelpPage\TestClient.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\jquery-ui.css" />
+    <Content Include="Content\themes\base\jquery.ui.accordion.css" />
+    <Content Include="Content\themes\base\jquery.ui.all.css" />
+    <Content Include="Content\themes\base\jquery.ui.autocomplete.css" />
+    <Content Include="Content\themes\base\jquery.ui.base.css" />
+    <Content Include="Content\themes\base\jquery.ui.button.css" />
+    <Content Include="Content\themes\base\jquery.ui.core.css" />
+    <Content Include="Content\themes\base\jquery.ui.datepicker.css" />
+    <Content Include="Content\themes\base\jquery.ui.dialog.css" />
+    <Content Include="Content\themes\base\jquery.ui.menu.css" />
+    <Content Include="Content\themes\base\jquery.ui.progressbar.css" />
+    <Content Include="Content\themes\base\jquery.ui.resizable.css" />
+    <Content Include="Content\themes\base\jquery.ui.selectable.css" />
+    <Content Include="Content\themes\base\jquery.ui.slider.css" />
+    <Content Include="Content\themes\base\jquery.ui.spinner.css" />
+    <Content Include="Content\themes\base\jquery.ui.tabs.css" />
+    <Content Include="Content\themes\base\jquery.ui.theme.css" />
+    <Content Include="Content\themes\base\jquery.ui.tooltip.css" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\minified\jquery-ui.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.accordion.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.autocomplete.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.button.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.core.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.datepicker.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.dialog.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.menu.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.progressbar.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.resizable.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.selectable.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.spinner.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
+    <Content Include="Content\titanbrarytheme\css\font-awesome.min.css" />
+    <Content Include="Content\titanbrarytheme\css\ie8.css" />
+    <Content Include="Content\titanbrarytheme\css\ie9.css" />
+    <Content Include="Content\titanbrarytheme\css\images\intro.svg" />
+    <Content Include="Content\titanbrarytheme\css\main.css" />
+    <Content Include="Content\titanbrarytheme\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\titanbrarytheme\images\pic01.jpg" />
+    <Content Include="Content\titanbrarytheme\images\pic02.jpg" />
+    <Content Include="Content\titanbrarytheme\images\pic03.jpg" />
+    <Content Include="Content\titanbrarytheme\images\pic04.jpg" />
+    <Content Include="Content\titanbrarytheme\images\pic05.jpg" />
+    <Content Include="Content\titanbrarytheme\images\pic06.jpg" />
+    <Content Include="Content\titanbrarytheme\js\ie\html5shiv.js" />
+    <Content Include="Content\titanbrarytheme\js\ie\respond.min.js" />
+    <Content Include="Content\titanbrarytheme\js\jquery.min.js" />
+    <Content Include="Content\titanbrarytheme\js\jquery.scrollex.min.js" />
+    <Content Include="Content\titanbrarytheme\js\jquery.scrolly.min.js" />
+    <Content Include="Content\titanbrarytheme\js\main.js" />
+    <Content Include="Content\titanbrarytheme\js\skel.min.js" />
+    <Content Include="Content\titanbrarytheme\js\util.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -272,18 +395,58 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\TestClientReferences.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\TestClientDialogs.cshtml" />
+    <Content Include="Content\titanbrarytheme\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\titanbrarytheme\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\titanbrarytheme\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\titanbrarytheme\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\titanbrarytheme\fonts\FontAwesome.otf" />
+    <Content Include="Content\titanbrarytheme\sass\ie8.scss" />
+    <Content Include="Content\titanbrarytheme\sass\ie9.scss" />
+    <Content Include="Content\titanbrarytheme\sass\main.scss" />
+    <Content Include="Content\titanbrarytheme\sass\base\_page.scss" />
+    <Content Include="Content\titanbrarytheme\sass\base\_typography.scss" />
+    <Content Include="Content\titanbrarytheme\sass\components\_box.scss" />
+    <Content Include="Content\titanbrarytheme\sass\components\_button.scss" />
+    <Content Include="Content\titanbrarytheme\sass\components\_features.scss" />
+    <Content Include="Content\titanbrarytheme\sass\components\_form.scss" />
+    <Content Include="Content\titanbrarytheme\sass\components\_icon.scss" />
+    <Content Include="Content\titanbrarytheme\sass\components\_image.scss" />
+    <Content Include="Content\titanbrarytheme\sass\components\_list.scss" />
+    <Content Include="Content\titanbrarytheme\sass\components\_section.scss" />
+    <Content Include="Content\titanbrarytheme\sass\components\_split.scss" />
+    <Content Include="Content\titanbrarytheme\sass\components\_spotlights.scss" />
+    <Content Include="Content\titanbrarytheme\sass\components\_table.scss" />
+    <Content Include="Content\titanbrarytheme\sass\components\_wrapper.scss" />
+    <Content Include="Content\titanbrarytheme\sass\layout\_footer.scss" />
+    <Content Include="Content\titanbrarytheme\sass\layout\_header.scss" />
+    <Content Include="Content\titanbrarytheme\sass\layout\_intro.scss" />
+    <Content Include="Content\titanbrarytheme\sass\layout\_sidebar.scss" />
+    <Content Include="Content\titanbrarytheme\sass\layout\_wrapper.scss" />
+    <Content Include="Content\titanbrarytheme\sass\libs\_functions.scss" />
+    <Content Include="Content\titanbrarytheme\sass\libs\_mixins.scss" />
+    <Content Include="Content\titanbrarytheme\sass\libs\_skel.scss" />
+    <Content Include="Content\titanbrarytheme\sass\libs\_vars.scss" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-ui-1.9.2.js" />
+    <Content Include="Scripts\jquery-ui-1.9.2.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\knockout-2.2.0.debug.js" />
+    <Content Include="Scripts\knockout-2.2.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Scripts\WebApiTestClient.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -297,9 +460,11 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\SignUp.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Role\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -313,6 +478,20 @@
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Titanbrary.BusinessObjects\Titanbrary.BusinessObjects.csproj">
+      <Project>{42261777-c06e-4d25-a818-2cec44347ec9}</Project>
+      <Name>Titanbrary.BusinessObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Titanbrary.Common\Titanbrary.Common.csproj">
+      <Project>{ff343914-a736-445c-9c4f-93e74ba782fa}</Project>
+      <Name>Titanbrary.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Titanbrary.Data\Titanbrary.Data.csproj">
+      <Project>{dc7c9781-418a-4d78-a12a-5e7ca589aabc}</Project>
+      <Name>Titanbrary.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

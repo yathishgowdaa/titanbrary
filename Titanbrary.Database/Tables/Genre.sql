@@ -1,0 +1,6 @@
+﻿CREATE TABLE [dbo].[Genre]
+(
+	[GenreID] UNIQUEIDENTIFIER NOT NULL,
+    [Title]   NVARCHAR (50)    NOT NULL,
+    CONSTRAINT [PK_Genre] PRIMARY KEY CLUSTERED ([GenreID] ASC)
+)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
@@ -25,6 +26,19 @@ namespace Titanbrary.WebAPI
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            MediaTypeHeaderValue appXmlType = config.Formatters.XmlFormatter.SupportedMediaTypes.FirstOrDefault(t => t.MediaType == "application/xml");
+            config.Formatters.XmlFormatter.SupportedMediaTypes.Remove(appXmlType);
+
+            var json = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
+
+            //WebApi: This is what transforms all the Json into camelcase for us.
+            json.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
+            ////WebApi: Accept multipartFormData
+            json.SupportedMediaTypes.Add(new MediaTypeHeaderValue("multipart/form-data"));
+
+            json.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/json"));
         }
     }
 }

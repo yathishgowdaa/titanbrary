@@ -10,8 +10,15 @@ namespace Titanbrary.WebAPI.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Title = "Home Page";
+            ViewBag.Title = "Titanbrary";
+          
+            return View();
+        }
 
+       
+        public ActionResult SignUp()
+        {
+            ViewBag.Title = "Sign Up!";
             return View();
         }
     }

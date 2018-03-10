@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Titanbrary.Common
+namespace Titanbrary.Common.Interfaces.BusinessObjects
 {
-    public class Class1
+    public interface IAccount
     {
     }
 }

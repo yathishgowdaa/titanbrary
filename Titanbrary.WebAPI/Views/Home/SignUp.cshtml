@@ -1,0 +1,71 @@
+﻿<!-- Intro -->
+<section id="intro" class="wrapper style1 fullscreen fade-up">
+    <div class="inner">
+        <h1>@ViewBag.Title</h1>
+        <form id="registrationForm" action="/">
+            <div class="row uniform">
+                <div class="6u 12u$(xsmall)">
+                    <input type="text" id="firstName" placeholder="First Name" />
+                </div>
+                <div class="6u$ 12u$(xsmall)">
+                    <input type="text" id="lastName" placeholder="Last Name" />
+                </div>
+                <div class="6u 12u$(xsmall)">
+                    <input type="email" id="email" placeholder="Email" />
+                </div>
+                <div class="6u$ 12u$(xsmall)">
+                    <input type="email" id="email2" placeholder="Re-enter Email" />
+                </div>
+                <div class="6u 12u$(xsmall)">
+                    <input type="password" id="password" placeholder="Password" />
+                </div>
+                <div class="6u$ 12u$(xsmall)">
+                    <input type="password" id="password2" value="" placeholder="Password" />
+                </div>
+
+                <div class="12u$">
+                    <ul class="actions">
+                        <li><input type="submit" value="Submit" class="special" /></li>
+                        <li><input type="reset" value="Reset" /></li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+<script type="text/javascript">
+
+    $("#registrationForm").submit(function () {
+
+        var obj = {
+            'FirstName': document.getElementById("firstName").value,
+            'LastName': document.getElementById("lastName").value,
+            'Email': document.getElementById("email").value,
+            'Password': document.getElementById("password").value
+        };
+
+        console.log(obj);
+
+        var settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": "http://localhost:50799/api/Registration/Register",
+            "method": "POST",
+            "headers": {
+                "Content-Type": "application/json",
+                "Cache-Control": "no-cache",
+                "Postman-Token": "a70ac5c5-4a8e-45c7-99b8-9ce4a5e76dfb"
+            },
+            "processData": false,
+            "data": JSON.stringify(obj)
+        }
+
+        $.ajax(settings).done(function (response) {
+            console.log(response);
+        });
+
+
+
+    });
+
+</script>
