@@ -14,5 +14,12 @@ namespace Titanbrary.WebAPI.Controllers
           
             return View();
         }
+
+       
+        public ActionResult SignUp()
+        {
+            ViewBag.Title = "Sign Up!"
+;            return View();
+        }
     }
 }

@@ -33,4 +33,11 @@ namespace Titanbrary.WebAPI.Models
             return new ApplicationDbContext();
         }
     }
+
+    public class ApplicationRole: IdentityRole
+    {
+        public ApplicationRole() : base() { }
+        public ApplicationRole(string roleName) : base(roleName) { }
+    }
+
 }
