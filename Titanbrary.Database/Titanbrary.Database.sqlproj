@@ -61,7 +61,6 @@
     <Folder Include="PostDeployment" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Local.publish.xml" />
     <None Include="PostDeployment\addBooks.sql" />
     <None Include="Titanbrary.Database.publish.xml" />
   </ItemGroup>

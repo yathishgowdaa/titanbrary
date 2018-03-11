@@ -266,6 +266,8 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\API\BookController.cs" />
     <Compile Include="Controllers\API\CartController.cs" />
+    <Compile Include="Controllers\API\RegistrationController.cs" />
+    <Compile Include="Controllers\API\RoleController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -276,6 +278,7 @@
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -346,6 +349,26 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
+    <Content Include="Content\titanbrarytheme\css\font-awesome.min.css" />
+    <Content Include="Content\titanbrarytheme\css\ie8.css" />
+    <Content Include="Content\titanbrarytheme\css\ie9.css" />
+    <Content Include="Content\titanbrarytheme\css\images\intro.svg" />
+    <Content Include="Content\titanbrarytheme\css\main.css" />
+    <Content Include="Content\titanbrarytheme\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\titanbrarytheme\images\pic01.jpg" />
+    <Content Include="Content\titanbrarytheme\images\pic02.jpg" />
+    <Content Include="Content\titanbrarytheme\images\pic03.jpg" />
+    <Content Include="Content\titanbrarytheme\images\pic04.jpg" />
+    <Content Include="Content\titanbrarytheme\images\pic05.jpg" />
+    <Content Include="Content\titanbrarytheme\images\pic06.jpg" />
+    <Content Include="Content\titanbrarytheme\js\ie\html5shiv.js" />
+    <Content Include="Content\titanbrarytheme\js\ie\respond.min.js" />
+    <Content Include="Content\titanbrarytheme\js\jquery.min.js" />
+    <Content Include="Content\titanbrarytheme\js\jquery.scrollex.min.js" />
+    <Content Include="Content\titanbrarytheme\js\jquery.scrolly.min.js" />
+    <Content Include="Content\titanbrarytheme\js\main.js" />
+    <Content Include="Content\titanbrarytheme\js\skel.min.js" />
+    <Content Include="Content\titanbrarytheme\js\util.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -375,6 +398,37 @@
     </Content>
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\TestClientReferences.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\TestClientDialogs.cshtml" />
+    <Content Include="Content\titanbrarytheme\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\titanbrarytheme\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\titanbrarytheme\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\titanbrarytheme\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\titanbrarytheme\fonts\FontAwesome.otf" />
+    <Content Include="Content\titanbrarytheme\sass\ie8.scss" />
+    <Content Include="Content\titanbrarytheme\sass\ie9.scss" />
+    <Content Include="Content\titanbrarytheme\sass\main.scss" />
+    <Content Include="Content\titanbrarytheme\sass\base\_page.scss" />
+    <Content Include="Content\titanbrarytheme\sass\base\_typography.scss" />
+    <Content Include="Content\titanbrarytheme\sass\components\_box.scss" />
+    <Content Include="Content\titanbrarytheme\sass\components\_button.scss" />
+    <Content Include="Content\titanbrarytheme\sass\components\_features.scss" />
+    <Content Include="Content\titanbrarytheme\sass\components\_form.scss" />
+    <Content Include="Content\titanbrarytheme\sass\components\_icon.scss" />
+    <Content Include="Content\titanbrarytheme\sass\components\_image.scss" />
+    <Content Include="Content\titanbrarytheme\sass\components\_list.scss" />
+    <Content Include="Content\titanbrarytheme\sass\components\_section.scss" />
+    <Content Include="Content\titanbrarytheme\sass\components\_split.scss" />
+    <Content Include="Content\titanbrarytheme\sass\components\_spotlights.scss" />
+    <Content Include="Content\titanbrarytheme\sass\components\_table.scss" />
+    <Content Include="Content\titanbrarytheme\sass\components\_wrapper.scss" />
+    <Content Include="Content\titanbrarytheme\sass\layout\_footer.scss" />
+    <Content Include="Content\titanbrarytheme\sass\layout\_header.scss" />
+    <Content Include="Content\titanbrarytheme\sass\layout\_intro.scss" />
+    <Content Include="Content\titanbrarytheme\sass\layout\_sidebar.scss" />
+    <Content Include="Content\titanbrarytheme\sass\layout\_wrapper.scss" />
+    <Content Include="Content\titanbrarytheme\sass\libs\_functions.scss" />
+    <Content Include="Content\titanbrarytheme\sass\libs\_mixins.scss" />
+    <Content Include="Content\titanbrarytheme\sass\libs\_skel.scss" />
+    <Content Include="Content\titanbrarytheme\sass\libs\_vars.scss" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -407,9 +461,11 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\SignUp.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Role\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

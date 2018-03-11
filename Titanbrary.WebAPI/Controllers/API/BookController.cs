@@ -6,25 +6,25 @@ using Titanbrary.Common.Models;
 
 namespace Titanbrary.WebAPI.Controllers
 {
-    [RoutePrefix("api/Book")]
-    public class BookController : ApiController
+	[RoutePrefix("api/Book")]
+	public class BookController : ApiController
 	{
-        
-        private readonly IBook _Book;
-      
-        public BookController(IBook _book)
-        {
-            _Book = _book;
-        }
+
+		private readonly IBook _Book;
+
+		public BookController(IBook _book)
+		{
+			_Book = _book;
+		}
 
 		#region Book
 
 		// POST api/<controller>
 		[Route("GetAllBooks")]
-        [HttpPost]
+		[HttpPost]
 		public IHttpActionResult GetAllBooks()
 		{
-            var list = _Book.GetAllBooks();
+			var list = _Book.GetAllBooks();
 			return Ok(list);
 		}
 
