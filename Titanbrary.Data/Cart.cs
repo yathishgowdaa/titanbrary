@@ -12,32 +12,19 @@ namespace Titanbrary.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class Book
+    public partial class Cart
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Book()
+        public Cart()
         {
-            this.Genres = new HashSet<Genre>();
             this.CartXBooks = new HashSet<CartXBook>();
         }
     
-        public string Name { get; set; }
-        public string Author { get; set; }
-        public string Publisher { get; set; }
-        public string ISBN { get; set; }
-        public Nullable<int> Edition { get; set; }
-        public Nullable<System.DateTime> Year { get; set; }
-        public int Quantity { get; set; }
-        public string Language { get; set; }
-        public byte[] Picture { get; set; }
-        public string Keywords { get; set; }
-        public bool Active { get; set; }
-        public string Description { get; set; }
-        public System.DateTime Timestamp { get; set; }
-        public System.Guid BookID { get; set; }
+        public System.Guid CartID { get; set; }
+        public System.Guid UserID { get; set; }
+        public System.DateTime CreatedDate { get; set; }
+        public System.DateTime ModifiedDate { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Genre> Genres { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CartXBook> CartXBooks { get; set; }
     }

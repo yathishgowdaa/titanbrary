@@ -1,0 +1,8 @@
+﻿CREATE TABLE [dbo].[Waitlist]
+(
+	[BookID] UNIQUEIDENTIFIER NOT NULL , 
+    [UserID] UNIQUEIDENTIFIER NOT NULL, 
+    [Date] DATETIME NOT NULL, 
+    [WaitlistID] UNIQUEIDENTIFIER NOT NULL, 
+    PRIMARY KEY ([WaitlistID])
+)

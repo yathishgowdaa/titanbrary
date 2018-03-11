@@ -66,8 +66,15 @@
     <Compile Include="Book.cs">
       <DependentUpon>Titanbrary.tt</DependentUpon>
     </Compile>
+    <Compile Include="Cart.cs">
+      <DependentUpon>Titanbrary.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CartXBook.cs">
+      <DependentUpon>Titanbrary.tt</DependentUpon>
+    </Compile>
     <Compile Include="DACs\AccountDAC.cs" />
     <Compile Include="DACs\BookDAC.cs" />
+    <Compile Include="DACs\CartDAC.cs" />
     <Compile Include="Genre.cs">
       <DependentUpon>Titanbrary.tt</DependentUpon>
     </Compile>
@@ -87,6 +94,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Titanbrary.edmx</DependentUpon>
     </Compile>
+    <Compile Include="User.cs">
+      <DependentUpon>Titanbrary.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Waitlist.cs">
+      <DependentUpon>Titanbrary.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
@@ -103,9 +116,6 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Tables\dbo.Book.sql" />
-    <Content Include="Tables\dbo.BookXGenre.sql" />
-    <Content Include="Tables\dbo.Genre.sql" />
     <Content Include="Titanbrary.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Titanbrary.edmx</DependentUpon>

@@ -12,6 +12,18 @@ namespace Titanbrary.Common.Interfaces.BusinessObjects
 
 		List<BookModel> GetBooksByGenreID(Guid bookID);
 
+		BookModel GetBookByBookID(Guid bookID);
+
+		bool CreateBook(BookModel book);
+
+		bool UpdateBook(BookModel book);
+
+		List<BookModel> SearchBooks(string searchString);
+
+		bool AddBookToCart(Guid cartID, CartXBookModel cartXBook);
+
+		bool DeleteBookFromCart(Guid cartID, Guid bookID);
+
 		#endregion
 
 		#region Genre
@@ -19,6 +31,12 @@ namespace Titanbrary.Common.Interfaces.BusinessObjects
 		List<GenreModel> GetAllGenres();
 
 		List<GenreModel> GetGenresByBookID(Guid bookID);
+
+		GenreModel GetGenreByGenreID(Guid genreID);
+
+		bool CreateGenre(GenreModel genre);
+
+		bool UpdateGenre(GenreModel genre);
 
 		#endregion
 	}
