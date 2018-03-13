@@ -1,0 +1,30 @@
+﻿<section id="intro" class="wrapper style1 fullscreen fade-up">
+    <div class="inner">
+        <h1>@ViewBag.Title</h1>
+        <form id="signInForm" action="/">
+            <div class="row uniform">
+                <div class="12u$">
+                    <input type="email" id="email" placeholder="Email" />
+                </div>
+                <div class="12u$">
+                    <input type="password" id="password" placeholder="Password" />
+                </div>
+                <div class="12u$">
+                    <ul class="actions">
+                        <li><input type="submit" value="Sign In" class="special" /></li>
+                    </ul>
+                </div>
+                </div>
+        </form>
+    </div>
+</section>
+<script type="text/javascript">
+
+    $("signInForm").submit(function () {
+
+        var obj = {
+            'Email': document.getElementById("email").value,
+            'Password': document.getElementById("password").value
+        };
+    })
+</script>
