@@ -63,5 +63,14 @@ namespace Titanbrary.WebAPI.Controllers.API
 
             return Ok("Account was created");
         }
+
+
+        [HttpPost]
+        [Authorize]
+        [Route ("Test")]
+        public IHttpActionResult TestMyApI()
+        {
+            return Ok("You were authorized");
+        }
     }
 }

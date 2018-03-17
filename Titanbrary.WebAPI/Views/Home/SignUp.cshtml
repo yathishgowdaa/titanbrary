@@ -54,15 +54,25 @@
             "headers": {
                 "Content-Type": "application/json",
                 "Cache-Control": "no-cache",
-                "Postman-Token": "a70ac5c5-4a8e-45c7-99b8-9ce4a5e76dfb"
+                
             },
             "processData": false,
-            "data": JSON.stringify(obj)
+            "data": JSON.stringify(obj),
+            success: function (data, textStatus, jQxhr) {
+                window.alert("success" + data);
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+                window.alert("failed" + errorThrown)
+            }
         }
 
-        $.ajax(settings).done(function (response) {
-            console.log(response);
-        });
+        $.ajax(settings)
+        //    .done(function (response) {
+        //    window.alert("Data Loaded: " + response);
+        //}).fail(function (response) {
+        //    window.alert("Didnt save" + response);
+        //});
+            
 
 
 

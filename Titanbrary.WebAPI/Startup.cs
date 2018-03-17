@@ -4,8 +4,11 @@ using System.Linq;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
+using Microsoft.Owin.Security.OAuth;
 using Owin;
 using Titanbrary.WebAPI.Models;
+using System.Web.Http;
+using Microsoft.Owin.Cors;
 
 [assembly: OwinStartup(typeof(Titanbrary.WebAPI.Startup))]
 
@@ -15,7 +18,11 @@ namespace Titanbrary.WebAPI
     {
         public void Configuration(IAppBuilder app)
         {
+            HttpConfiguration config = new HttpConfiguration();
             ConfigureAuth(app);
+            //WebApiConfig.Register(config);
+            app.UseCors(CorsOptions.AllowAll);
+            app.UseWebApi(config);
             createRolesAndUsers();
         }
 

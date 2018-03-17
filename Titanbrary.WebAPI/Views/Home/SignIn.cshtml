@@ -1,0 +1,86 @@
+﻿<!-- Intro -->
+<section id="intro" class="wrapper style1 fullscreen fade-up">
+    <div class="inner">
+        <h1>@ViewBag.Title</h1>
+        <form id="SignInForm" action="/">
+            <div class="row uniform">
+                <div class="6u 12u$(xsmall)">
+                    <input type="text" id="userName" placeholder="username" />
+                </div>
+                <div class="6u$ 12u$(xsmall)">
+                    <input type="password" id="password" placeholder="password" />
+                </div>
+               
+
+                <div class="12u$">
+                    <ul class="actions">
+                        <li><input type="submit" value="Sign In" class="special" /></li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+<script type="text/javascript">
+
+    $("#SignInForm").submit(function () {
+
+        var obj = {
+            'UserName': document.getElementById("userName").value,
+            'Password': document.getElementById("password").value
+        };
+
+        console.log(obj);
+
+        //var settings = {
+        //    "async": true,
+        //    "crossDomain": true,
+        //    "url": "http://localhost:50799/api/Registration/Register",
+        //    "method": "POST",
+        //    "headers": {
+        //        "Content-Type": "application/json",
+        //        "Cache-Control": "no-cache",
+                
+        //    },
+        //    "processData": false,
+        //    "data": JSON.stringify(obj),
+        //    success: function (data, textStatus, jQxhr) {
+        //        window.alert("success" + data);
+        //    },
+        //    error: function (jqXhr, textStatus, errorThrown) {
+        //        window.alert("failed" + errorThrown)
+        //    }
+        //}
+
+        //$.ajax(settings)
+        ////    .done(function (response) {
+        ////    window.alert("Data Loaded: " + response);
+        ////}).fail(function (response) {
+        ////    window.alert("Didnt save" + response);
+        ////});
+
+
+        var data = "Grant_type=password&username=" + obj.UserName + "&password=" + obj.Password;
+
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+                window.alert("Log in!" + this.responseText);
+                console.log(this.responseText);
+                
+            }
+        });
+
+        xhr.open("POST", "http://localhost:50799/Token");
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.setRequestHeader("Cache-Control", "no-cache");
+
+        xhr.send(data);
+
+
+
+    });
+
+</script>
