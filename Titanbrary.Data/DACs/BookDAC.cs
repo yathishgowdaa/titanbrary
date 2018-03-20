@@ -227,6 +227,50 @@ namespace Titanbrary.Data.DACs
 			return true;
 		}
 
+		public virtual List<BookModel> FeaturedBooks()
+		{
+			List<BookModel> result = new List<BookModel>();
+			using (TitanbraryEntities ctx = new TitanbraryEntities())
+			{
+				var bookXCart = ctx.CartXBooks.GroupBy(b => b.BookID).Select(c => new { BookID = c.Key, Total = c.Sum(d => d.Quantity) }).OrderByDescending(e => e.Total);
+				result = ctx.Books.GroupJoin(bookXCart, b => b.BookID, cb => cb.BookID, (b, cb) => new
+				{
+					Name = b.Name,
+					Author = b.Author,
+					Publisher = b.Publisher,
+					ISBN = b.ISBN,
+					Edition = b.Edition,
+					Year = b.Year,
+					Quantity = b.Quantity,
+					Language = b.Language,
+					Picture = b.Picture,
+					Keywords = b.Keywords,
+					Active = b.Active,
+					Description = b.Description,
+					Timestamp = b.Timestamp,
+					BookID = b.BookID,
+					Total = cb.Where(a => a.BookID == b.BookID).Select(x => x.Total).FirstOrDefault()
+				}).OrderByDescending(x => x.Total).Select(b => new BookModel()
+				{
+					Name = b.Name,
+					Author = b.Author,
+					Publisher = b.Publisher,
+					ISBN = b.ISBN,
+					Edition = b.Edition,
+					Year = b.Year,
+					Quantity = b.Quantity,
+					Language = b.Language,
+					Picture = b.Picture,
+					Keywords = b.Keywords,
+					Active = b.Active,
+					Description = b.Description,
+					Timestamp = b.Timestamp,
+					BookID = b.BookID
+				}).Take(3).ToList();
+			}
+			return result;
+		}
+
 		#endregion
 
 		#region Genre
@@ -239,7 +283,8 @@ namespace Titanbrary.Data.DACs
 				result = ctx.Genres.Select(g => new GenreModel()
 				{
 					Title = g.Title,
-					GenreID = g.GenreID
+					GenreID = g.GenreID,
+					Description = g.Description
 				}).ToList();
 			}
 			return result;
@@ -253,7 +298,8 @@ namespace Titanbrary.Data.DACs
 				result = ctx.Genres.Where(g => g.Books.Any(b => b.BookID == bookID)).Select(g => new GenreModel()
 				{
 					Title = g.Title,
-					GenreID = g.GenreID
+					GenreID = g.GenreID,
+					Description = g.Description
 				}).ToList();
 			}
 			return result;
@@ -267,7 +313,8 @@ namespace Titanbrary.Data.DACs
 				result = ctx.Genres.Where(g => g.GenreID == genreID).Select(g => new GenreModel()
 				{
 					Title = g.Title,
-					GenreID = g.GenreID
+					GenreID = g.GenreID,
+					Description = g.Description
 				}).ToList();
 			}
 			return result[0];
@@ -282,7 +329,8 @@ namespace Titanbrary.Data.DACs
 					ctx.Genres.Add(new Genre
 					{
 						Title = genre.Title,
-						GenreID = genre.GenreID
+						GenreID = genre.GenreID,
+						Description = genre.Description
 					});
 					ctx.SaveChanges();
 				}
@@ -303,6 +351,7 @@ namespace Titanbrary.Data.DACs
 				{
 					var oldGenre = ctx.Genres.SingleOrDefault(g => g.GenreID == genre.GenreID);
 					oldGenre.Title = genre.Title;
+					oldGenre.Description = genre.Description;
 					ctx.SaveChanges();
 				}
 				catch (Exception ex)

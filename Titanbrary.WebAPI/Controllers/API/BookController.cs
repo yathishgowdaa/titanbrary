@@ -99,6 +99,15 @@ namespace Titanbrary.WebAPI.Controllers
 			return BadRequest();
 		}
 
+		// POST api/<controller>
+		[Route("FeaturedBooks")]
+		[HttpPost]
+		public IHttpActionResult FeaturedBooks()
+		{
+			var list = _Book.FeaturedBooks();
+			return Ok(list);
+		}
+
 		#endregion
 
 		#region Genre

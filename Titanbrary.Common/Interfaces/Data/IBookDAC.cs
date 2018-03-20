@@ -24,6 +24,8 @@ namespace Titanbrary.Common.Interfaces.Data
 
 		bool DeleteBookFromCart(Guid cartID, Guid bookID);
 
+		List<BookModel> FeaturedBooks();
+
 		#endregion
 
 		#region Genre

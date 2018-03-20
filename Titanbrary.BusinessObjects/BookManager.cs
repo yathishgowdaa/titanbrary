@@ -64,6 +64,12 @@ namespace Titanbrary.BusinessObjects
 			return book;
 		}
 
+		public virtual List<BookModel> FeaturedBooks()
+		{
+			var list = _BookDAC.FeaturedBooks();
+			return list;
+		}
+
 		#endregion
 
 		#region Genre
