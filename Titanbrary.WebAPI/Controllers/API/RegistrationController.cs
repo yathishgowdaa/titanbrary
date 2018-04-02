@@ -48,7 +48,8 @@ namespace Titanbrary.WebAPI.Controllers.API
             var user = new ApplicationUser() {
                 UserName = model.Email,
                 Email = model.Email,
-                Password = model.Password
+                Password = model.Password,
+                UserRoles = "Customer"
             };
 
             var result = await UserManager.CreateAsync(user, user.Password);
@@ -58,8 +59,8 @@ namespace Titanbrary.WebAPI.Controllers.API
                 var response = Request.CreateResponse(HttpStatusCode.BadRequest, result.Errors);
                 return ResponseMessage(response);  
             }
-            
-            //await UserManager.AddToRoleAsync(user.Id, model.UserRoles);
+            var userInfo = UserManager.FindByEmail(model.Email);
+            await UserManager.AddToRoleAsync(userInfo.Id, user.UserRoles);
 
             return Ok("Account was created");
         }

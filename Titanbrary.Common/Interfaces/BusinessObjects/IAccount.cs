@@ -5,9 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using Titanbrary.Common.Models;
 
+
 namespace Titanbrary.Common.Interfaces.BusinessObjects
 {
     public interface IAccount
     {
+        string UserName { get; }
+        string BearerToken { get; }
+
+        UserModel GetUserInfo(ApplicationUser currentUser);
+        bool SaveAccount(UserModel model);
     }
 }

@@ -10,6 +10,7 @@ using Microsoft.Owin.Security.OAuth;
 using Owin;
 using Titanbrary.WebAPI.Providers;
 using Titanbrary.WebAPI.Models;
+using Titanbrary.Common.Models;
 
 namespace Titanbrary.WebAPI
 {
@@ -27,6 +28,8 @@ namespace Titanbrary.WebAPI
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
             //Configure Roles
             app.CreatePerOwinContext<ApplicationRoleManager>(ApplicationRoleManager.Create);
+            //Configure SignIn
+            app.CreatePerOwinContext<ApplicationSignInManager>(ApplicationSignInManager.Create);
             // Enable the application to use a cookie to store information for the signed in user
             // and to use a cookie to temporarily store information about a user logging in with a third party login provider
             app.UseCookieAuthentication(new CookieAuthenticationOptions());

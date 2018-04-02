@@ -9,6 +9,7 @@ using Owin;
 using Titanbrary.WebAPI.Models;
 using System.Web.Http;
 using Microsoft.Owin.Cors;
+using Titanbrary.Common.Models;
 
 [assembly: OwinStartup(typeof(Titanbrary.WebAPI.Startup))]
 
@@ -23,6 +24,11 @@ namespace Titanbrary.WebAPI
             //WebApiConfig.Register(config);
             app.UseCors(CorsOptions.AllowAll);
             app.UseWebApi(config);
+            app.UseCookieAuthentication(new Microsoft.Owin.Security.Cookies.CookieAuthenticationOptions
+            {
+                AuthenticationType = "ApplicationCookie",
+                LoginPath = new PathString("/Home/SignIn"),
+            });
             createRolesAndUsers();
         }
 
@@ -39,8 +45,10 @@ namespace Titanbrary.WebAPI
                 if (!roleManager.RoleExists("Admin"))
                 {
                     //create admin role
-                    var role = new IdentityRole();
+                    var role = new RoleModel();
                     role.Name = "Admin";
+                    role.RoleId = Guid.NewGuid().ToString();
+                    role.RoleName = role.Name;
                     roleManager.Create(role);
 
                     //create admin account
@@ -62,16 +70,21 @@ namespace Titanbrary.WebAPI
                 //Create Manager role
                 if (!roleManager.RoleExists("Manager"))
                 {
-                    var role = new IdentityRole();
+                    var role = new RoleModel();
                     role.Name = "Manager";
+                    role.RoleId = Guid.NewGuid().ToString();
+                    role.RoleName = role.Name;
+
                     roleManager.Create(role);
                 }
 
                 //Create Customer role
                 if (!roleManager.RoleExists("Customer"))
                 {
-                    var role = new IdentityRole();
+                    var role = new RoleModel();
                     role.Name = "Customer";
+                    role.RoleId = Guid.NewGuid().ToString();
+                    role.RoleName = role.Name;
                     roleManager.Create(role);
                 }
 

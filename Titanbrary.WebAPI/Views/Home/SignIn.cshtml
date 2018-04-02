@@ -1,16 +1,21 @@
-﻿<!-- Intro -->
+﻿@model Titanbrary.Common.Models.LoginModel
+<!-- Intro -->
 <section id="intro" class="wrapper style1 fullscreen fade-up">
     <div class="inner">
         <h1>@ViewBag.Title</h1>
-        <form id="SignInForm" action="/">
+       
+        @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
             <div class="row uniform">
                 <div class="6u 12u$(xsmall)">
-                    <input type="text" id="userName" placeholder="username" />
+                    @*<input type="text" id="userName" placeholder="username" />*@
+                    @Html.TextBoxFor(model => model.Email, new { placeholder = "Username"})
                 </div>
                 <div class="6u$ 12u$(xsmall)">
-                    <input type="password" id="password" placeholder="password" />
+                    @*<input type="password" id="password" placeholder="password" />*@
+                    @Html.PasswordFor(model => model.Password, new { placeholder = "Password"})
                 </div>
-               
+
 
                 <div class="12u$">
                     <ul class="actions">
@@ -18,10 +23,12 @@
                     </ul>
                 </div>
             </div>
-        </form>
+
+        }
+
     </div>
 </section>
-<script type="text/javascript">
+@*<script type="text/javascript">
 
     $("#SignInForm").submit(function () {
 
@@ -40,7 +47,7 @@
         //    "headers": {
         //        "Content-Type": "application/json",
         //        "Cache-Control": "no-cache",
-                
+
         //    },
         //    "processData": false,
         //    "data": JSON.stringify(obj),
@@ -69,7 +76,7 @@
             if (this.readyState === 4) {
                 window.alert("Log in!" + this.responseText);
                 console.log(this.responseText);
-                
+
             }
         });
 
@@ -83,4 +90,4 @@
 
     });
 
-</script>
+</script>*@

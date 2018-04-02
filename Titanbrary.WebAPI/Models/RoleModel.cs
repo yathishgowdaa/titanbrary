@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Titanbrary.WebAPI.Models
 {
-    public class RoleModel : ApplicationRole
+    public class RoleModel : IdentityRole
     {
 
         public string RoleId { get; set; }

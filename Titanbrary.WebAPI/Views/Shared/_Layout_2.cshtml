@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@model Titanbrary.Common.Models.UserModel
+
+<!DOCTYPE html>
 <html>
 <head>
 
@@ -20,17 +22,18 @@
             <nav>
                 <ul>
                     @*<li>@Html.ActionLink("Welcome", "Index", "Home", new { area = ""}, null) </li>*@
-                    <li><a href="#home">Welcome</a></li>
-                    <li><a href="#one">Best Sellers</a></li>
+                    <li>Welcome @Model.FirstName</li>
+                    <li>@Html.ActionLink("Log out", "Logout", "Home")</li>
+                    @*<li><a href="#one">Best Sellers</a></li>
                     <li><a href="#two">Search Books</a></li>
-                    <li><a href="#three">Get in touch</a></li>
+                    <li><a href="#three">Get in touch</a></li>*@
                 </ul>
             </nav>
         </div>
     </section>
     <div id="wrapper">
         @RenderBody()
-       
+
     </div>
     <!-- Footer -->
     <footer id="footer" class="wrapper style1-alt">
