@@ -5,7 +5,9 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
 using Owin;
+using Hangfire;
 using Titanbrary.WebAPI.Models;
+using Titanbrary.Data;
 
 [assembly: OwinStartup(typeof(Titanbrary.WebAPI.Startup))]
 
@@ -15,6 +17,14 @@ namespace Titanbrary.WebAPI
     {
         public void Configuration(IAppBuilder app)
         {
+            GlobalConfiguration.Configuration
+                .UseSqlServerStorage("DefaultConnection");
+
+            app.UseHangfireDashboard();
+            app.UseHangfireServer();
+
+            RecurringJob.AddOrUpdate(() => deleteOldCarts(), Cron.Daily);
+
             ConfigureAuth(app);
             createRolesAndUsers();
         }
@@ -73,6 +83,19 @@ namespace Titanbrary.WebAPI
 
 
             
+        }
+
+        private void deleteOldCarts()
+        {
+            using (TitanbraryEntities ctx = new TitanbraryEntities())
+            {
+                var carts = ctx.Carts.Where(c => c.ModifiedDate <= DateTime.Now.AddDays(-7) && c.Completed == false);
+                foreach (var cart in carts)
+                {
+                    ctx.CartXBooks.RemoveRange(ctx.CartXBooks.Where(cb => cb.CartID == cart.CartID));
+                }
+                ctx.Carts.RemoveRange(carts);              
+            }
         }
     } 
 }

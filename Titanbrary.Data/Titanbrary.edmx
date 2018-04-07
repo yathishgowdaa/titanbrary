@@ -96,6 +96,7 @@
           <Property Name="UserID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+          <Property Name="Completed" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="CartXBook">
           <Key>
@@ -465,6 +466,7 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="CartXBooks" Relationship="TitanbraryModel.FK_Cart_BookXGenre" FromRole="Cart" ToRole="CartXBook" />
+          <Property Name="Completed" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Waitlist">
           <Key>
@@ -637,6 +639,7 @@
           <EntitySetMapping Name="Carts">
             <EntityTypeMapping TypeName="TitanbraryModel.Cart">
               <MappingFragment StoreEntitySet="Cart">
+                <ScalarProperty Name="Completed" ColumnName="Completed" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />

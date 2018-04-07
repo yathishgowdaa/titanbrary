@@ -64,7 +64,25 @@ namespace Titanbrary.BusinessObjects
 			return book;
 		}
 
-		public virtual List<BookModel> FeaturedBooks()
+        public virtual bool AddBookToWaitlist(Guid bookID, Guid userID)
+        {
+            var book = _BookDAC.AddBookToWaitlist(bookID, userID);
+            return book;
+        }
+
+        public virtual bool IsBookInWaitlist(Guid bookID)
+        {
+            var book = _BookDAC.IsBookInWaitlist(bookID);
+            return book;
+        }
+
+        public virtual Guid GetUserInWaitlist(Guid bookID)
+        {
+            var userID = _BookDAC.GetUserInWaitlist(bookID);
+            return userID;
+        }
+
+        public virtual List<BookModel> FeaturedBooks()
 		{
 			var list = _BookDAC.FeaturedBooks();
 			return list;

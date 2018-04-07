@@ -122,13 +122,15 @@ namespace Titanbrary.Data.DACs
 			return true;
 		}
 
-		public virtual bool UpdateBook(BookModel book)
+		public virtual bool UpdateBook(BookModel book, ref bool isQuantityChanged)
 		{
 			using (TitanbraryEntities ctx = new TitanbraryEntities())
 			{
 				try
 				{
 					var oldBook = ctx.Books.SingleOrDefault(b => b.BookID == book.BookID);
+                    if (oldBook.Quantity < book.Quantity)
+                        isQuantityChanged = true;
 					oldBook.Active = book.Active;
 					oldBook.Author = book.Author;
 					oldBook.Description = book.Description;
@@ -227,7 +229,57 @@ namespace Titanbrary.Data.DACs
 			return true;
 		}
 
-		public virtual List<BookModel> FeaturedBooks()
+        public virtual bool AddBookToWaitlist(Guid bookID, Guid userID)
+        {
+            using (TitanbraryEntities ctx = new TitanbraryEntities())
+            {
+                try
+                {
+                    ctx.Waitlists.Add(new Waitlist
+                    {
+                        BookID = bookID,
+                        UserID = userID,
+                        Date = DateTime.Now,
+                        WaitlistID = new Guid()
+                    });
+                    ctx.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public virtual bool IsBookInWaitlist(Guid bookID)
+        {
+            using (TitanbraryEntities ctx = new TitanbraryEntities())
+            {
+                try
+                {
+                    if (ctx.Waitlists.Any(w => w.BookID == bookID))
+                        return true;
+                    else
+                        return false;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+        }
+
+        public virtual Guid GetUserInWaitlist(Guid bookID)
+        {
+            using (TitanbraryEntities ctx = new TitanbraryEntities())
+            {
+                Guid userID = ctx.Waitlists.Where(w => w.BookID == bookID).OrderBy(w => w.Date).Select(w => w.UserID).FirstOrDefault();
+                return userID;
+            }
+        }
+
+        public virtual List<BookModel> FeaturedBooks()
 		{
 			List<BookModel> result = new List<BookModel>();
 			using (TitanbraryEntities ctx = new TitanbraryEntities())

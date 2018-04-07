@@ -21,7 +21,8 @@ namespace Titanbrary.Data.DACs
 						CartID = cart.CartID,
 						CreatedDate = cart.CreatedDate,
 						ModifiedDate = cart.ModifiedDate,
-						UserID = cart.UserID
+						UserID = cart.UserID,
+                        Completed = false
 					});
 					ctx.SaveChanges();
 				}
@@ -38,7 +39,7 @@ namespace Titanbrary.Data.DACs
 			List<CartModel> result = new List<CartModel>();
 			using (TitanbraryEntities ctx = new TitanbraryEntities())
 			{
-				result = ctx.Carts.Where(c => c.CartID == cartID).Select(c => new CartModel
+				result = ctx.Carts.Where(c => c.CartID == cartID && c.Completed == false).Select(c => new CartModel
 				{
 					CartID = c.CartID,
 					UserID = c.UserID,
@@ -53,5 +54,44 @@ namespace Titanbrary.Data.DACs
 			}
 			return result[0];
 		}
+
+        public virtual CartModel GetCartByUserID(Guid userID)
+        {
+            List<CartModel> result = new List<CartModel>();
+            using (TitanbraryEntities ctx = new TitanbraryEntities())
+            {
+                result = ctx.Carts.Where(c => c.CartID == userID && c.Completed == false).Select(c => new CartModel
+                {
+                    CartID = c.CartID,
+                    UserID = c.UserID,
+                    CreatedDate = c.CreatedDate,
+                    ModifiedDate = c.ModifiedDate,
+                    BookList = c.CartXBooks.Where(cb => cb.CartID == c.CartID).Select(cb => new CartXBookModel
+                    {
+                        BookID = cb.BookID,
+                        Quantity = cb.Quantity
+                    }).ToList()
+                }).ToList();
+            }
+            return result[0];
+        }
+
+        public virtual bool Checkout(Guid cartID)
+        {
+            using (TitanbraryEntities ctx = new TitanbraryEntities())
+            {
+                try
+                {
+                    var oldCart = ctx.Carts.SingleOrDefault(c => c.CartID == cartID);
+                    oldCart.Completed = true;
+                    ctx.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
 	}
 }

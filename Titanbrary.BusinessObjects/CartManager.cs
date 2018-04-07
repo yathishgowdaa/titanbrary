@@ -28,5 +28,17 @@ namespace Titanbrary.BusinessObjects
 			var cart = _CartDAC.GetCart(cartID);
 			return cart;
 		}
-	}
+
+        public virtual CartModel GetCartByUserID(Guid userID)
+        {
+            var cart = _CartDAC.GetCartByUserID(userID);
+            return cart;
+        }
+
+        public virtual bool Checkout(Guid cartID)
+        {
+            var result = _CartDAC.Checkout(cartID);
+            return result;
+        }
+    }
 }
