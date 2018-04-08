@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Newtonsoft.Json;
@@ -152,7 +153,7 @@ namespace Titanbrary.WebAPI.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<ActionResult> Login(LoginModel model)
+        public ActionResult Login(LoginModel model)
         {
 
             Dictionary<string, string> tokenDetails = null;
@@ -183,13 +184,18 @@ namespace Titanbrary.WebAPI.Controllers
                 options.AllowRefresh = true;
                 options.IsPersistent = true;
                 options.ExpiresUtc = DateTime.UtcNow.AddSeconds(int.Parse(tokenDetails["expires_in"]));
-
+                
+                var userInfo = UserManager.FindByEmail(model.Email);
+              
+                //var role = await UserManager.GetRolesAsync()
                 var claims = new[]
                 {
                     new Claim(ClaimTypes.Name, model.Email),
-                    new Claim("AcessToken", string.Format("Bearer {0}", tokenDetails["access_token"]))
-                    
+                    new Claim("Bearer", string.Format("{0}", tokenDetails["access_token"])),
+                    new Claim(ClaimTypes.Role, userInfo.UserRoles)
+
                 };
+                
                 //save to cookie
                 HttpCookie TokenCookies = new HttpCookie("AuthenticationToken");
                 TokenCookies.Value = claims[1].ToString();

@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <title>@ViewBag.Title</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" href="~/Content/titanbrarytheme/css/main.css" />
+    <!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+    <!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+    <!--<script src="~/Content/titanbrarytheme/js/jquery.min.js"></script>-->
+    <!--<script src="~/Scripts/jquery-3.3.1.min.js"></script>-->
+    @Scripts.Render("~/bundles/jquery")
+</head>
+<body>
+    <!-- Sidebar -->
+    <section id="sidebar">
+        <div class="inner">
+            <nav>
+                <ul>               
+                    <li>@Html.ActionLink("Back", "Index", "Home")</li>
+                </ul>
+            </nav>
+        </div>
+    </section>
+    <div id="wrapper">
+        @RenderBody()
+
+    </div>
+    <!-- Footer -->
+    <footer id="footer" class="wrapper style1-alt">
+        <div class="inner">
+            <ul class="menu">
+                <li>&copy; Titanbrary. All rights reserved. 2018</li>
+                <li></li>
+            </ul>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="~/Content/titanbrarytheme/js/jquery.min.js"></script>
+    <script src="~/Content/titanbrarytheme/js/jquery.scrollex.min.js"></script>
+    <script src="~/Content/titanbrarytheme/js/jquery.scrolly.min.js"></script>
+    <script src="~/Content/titanbrarytheme/js/skel.min.js"></script>
+    <script src="~/Content/titanbrarytheme/js/util.js"></script>
+    <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+    <script src="~/Content/titanbrarytheme/js/main.js"></script>
+
+
+</body>
+</html>

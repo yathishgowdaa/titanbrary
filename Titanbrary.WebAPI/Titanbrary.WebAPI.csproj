@@ -90,6 +90,7 @@
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.4\lib\net45\System.Web.Http.Cors.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Runtime.Serialization" />
@@ -281,6 +282,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Filter\TitanbraryAuthorization.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -480,12 +482,24 @@
     <Content Include="Views\Home\SignUp.cshtml" />
     <Content Include="Views\Home\SignIn.cshtml" />
     <Content Include="Views\Test\Index.cshtml" />
-    <Content Include="Views\Shared\_Layout_2.cshtml" />
+    <Content Include="Views\Shared\_Layout_Admin.cshtml" />
     <Content Include="Views\Dashboard\Index.cshtml" />
+    <Content Include="Views\Shared\AuthorizeFailed.cshtml" />
+    <Content Include="Views\Dashboard\Admin.cshtml" />
+    <Content Include="Views\Dashboard\Manager.cshtml" />
+    <Content Include="Views\Shared\_Layout_Customer.cshtml" />
+    <Content Include="Views\Shared\_Layout_Manager.cshtml" />
+    <Content Include="Views\Shared\_Layout_Signup.cshtml" />
+    <Content Include="Views\Dashboard\Book\Index.cshtml" />
+    <Content Include="Views\Dashboard\Book\Create.cshtml" />
+    <Content Include="Views\Dashboard\Genre\Create.cshtml" />
+    <Content Include="Views\Dashboard\Book\Update.cshtml" />
+    <Content Include="Views\Dashboard\Book\BookProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Role\" />
+    <Folder Include="Views\Dashboard\Role\" />
+    <Folder Include="Views\Dashboard\User\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

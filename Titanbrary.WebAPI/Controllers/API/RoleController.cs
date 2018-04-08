@@ -48,7 +48,7 @@ namespace Titanbrary.WebAPI.Controllers.API
             {
                 return BadRequest(ModelState);
             }
-            var roleName = new ApplicationRole() { Name = model.RoleName };
+            var roleName = new ApplicationRole() { Name = model.Name };
             await RoleManager.CreateAsync(roleName);
            
 

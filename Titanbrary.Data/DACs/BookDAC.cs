@@ -95,22 +95,22 @@ namespace Titanbrary.Data.DACs
 			{
 				try
 				{
-					ctx.Books.Add(new Book
-					{
-						Name = book.Name,
-						Author = book.Author,
-						Publisher = book.Publisher,
-						ISBN = book.ISBN,
-						Edition = book.Edition,
-						Year = book.Year,
-						Quantity = book.Quantity,
-						Language = book.Language,
-						Picture = book.Picture,
-						Keywords = book.Keywords,
-						Active = book.Active,
-						Description = book.Description,
-						Timestamp = book.Timestamp,
-						BookID = book.BookID
+                    ctx.Books.Add(new Book
+                    {
+                        Name = book.Name,
+                        Author = book.Author,
+                        Publisher = book.Publisher,
+                        ISBN = book.ISBN,
+                        Edition = book.Edition,
+                        Year = book.Year,
+                        Quantity = book.Quantity,
+                        Language = book.Language,
+                        Picture = book.Picture,
+                        Keywords = book.Keywords,
+                        Active = book.Active,
+                        Description = book.Description,
+                        Timestamp = DateTime.UtcNow,
+                        BookID = Guid.NewGuid()
 					});
 					ctx.SaveChanges();
 				}
@@ -279,10 +279,10 @@ namespace Titanbrary.Data.DACs
 			{
 				try
 				{
-					ctx.Genres.Add(new Genre
-					{
-						Title = genre.Title,
-						GenreID = genre.GenreID
+                    ctx.Genres.Add(new Genre
+                    {
+                        Title = genre.Title,
+                        GenreID = Guid.NewGuid()
 					});
 					ctx.SaveChanges();
 				}

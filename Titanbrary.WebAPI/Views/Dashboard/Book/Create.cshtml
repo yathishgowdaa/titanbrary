@@ -1,0 +1,170 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+
+<!-- Intro -->
+<section id="intro" class="wrapper style1 fullscreen fade-up">
+    <div class="inner">
+        <h1>Create a Book</h1>
+        <form id="BookForm" action="">
+            <div class="row uniform">
+                <div class="6u 12u$(xsmall)">
+                    <input type="text" id="bookName" placeholder="Book Name" required />
+                </div>
+                <div class="6u 12u$(xsmall)">
+                    <input type="text" id="bookAuthor" placeholder="Book Author" required />
+                </div>
+                <div class="6u 12u$(xsmall)">
+                    <input type="text" id="publisher" placeholder="Publisher" required />
+                </div>
+                <div class="6u 12u$(xsmall)">
+                    <input type="text" id="year" placeholder="Year" required />
+                </div>
+                <div class="6u 12u$(xsmall)">
+                    <input type="text" id="isbn" placeholder="ISBN" required />
+                </div>
+                <div class="6u 12u$(xsmall)">
+                    <input type="text" id="edition" placeholder="Edition" required />
+                </div>
+              
+                <div class="6u 12u$(xsmall)">
+                    <input type="text" id="language" placeholder="Language" required />
+                </div>
+                <div class="6u 12u$(xsmall)">
+                    <textarea rows="2" cols="20" id="description" placeholder="Description" required></textarea>
+                </div>
+                <div class="6u 12u$(xsmall)">
+                    <input type="text" id="keywords" placeholder="keywords" required />
+                </div>
+                <div class="6u 12u$(xsmall)">
+                    <input type="text" id="quantity" placeholder="Quantity" style="background-color:#5e42a6" required />
+                </div>
+                <div class="6u 12u$(xsmall)">
+                    <select id="active">
+                        <option value="true">Active</option>
+                        <option value="false">Inactive</option>
+                    </select>
+                </div>
+                <div class="6u 12u$(xsmall)">
+                    <input type="file" id="picture" placeholder="Upload picture" />
+                </div>
+                <div class="6u 12u$(xsmall)">
+                   <select id="listGenre">
+
+                   </select>
+                </div>
+                
+
+                <div class="12u$">
+                    <ul class="actions">
+                        <li><input type="submit" value="Submit" class="special" onclick="submitBookForm()" /></li>
+                        <li><input type="reset" value="Reset" /></li>
+                    </ul>
+                </div>
+            </div>
+
+        </form>
+
+
+    </div>
+</section>
+<script type="text/javascript">
+    window.onload = function () {
+        //get all genre API
+        var listOfGenre = {};
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+               
+                var listOfGenre = JSON.parse(this.responseText);
+               
+                toObject(listOfGenre);
+            }
+        });
+
+        xhr.open("POST", "http://localhost:50799/api/Book/GetAllGenres");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("Cache-Control", "no-cache");
+        xhr.send();
+
+        function toObject(genre) {
+            var rv = {};
+            for (var i = 0; i < genre.length; ++i)
+                rv[i] = genre[i];
+
+            $.each(rv, function (key, value) {
+                $('#listGenre')
+                    .append($("<option></option>")
+                               .attr("value", rv[key].genreID)
+                               .text(rv[key].title));
+            });
+
+        }
+
+
+    }
+
+    function submitBookForm() {
+
+        //get authorization token
+        var cookie = document.cookie
+        console.log(cookie)
+        var authToken = cookie.split(":")
+        var token = authToken[1]
+        
+        var date = Date.now();
+        var bookName = document.getElementById("bookName").value
+        var bookAuthor = document.getElementById("bookAuthor").value
+        var publisher = document.getElementById("publisher").value
+        var isbn =  document.getElementById("isbn").value
+        var edition = document.getElementById("edition").value
+        var year = document.getElementById("year").value
+        var quantity = document.getElementById("quantity").value
+        var language = document.getElementById("language").value
+        var picture = document.getElementById("picture").value
+        var keywords = document.getElementById("keywords").value
+        var active =  document.getElementById("active").value
+        var description = document.getElementById("description").value
+        var genre = document.getElementById("listGenre").value
+
+        var data = JSON.stringify({
+            "name": bookName,
+            "author": bookAuthor,
+            "publisher": publisher,
+            "isbn": isbn,
+            "edition": edition,
+            "year": year,
+            "quantity": quantity,
+            "language": language,
+            "picture": picture,
+            "keywords": keywords,
+            "active": active,
+            "description": description,
+            "genreID": genre
+        });
+
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+                console.log(this.responseText);
+                window.alert("Book Created!");
+            }
+        });
+
+        xhr.open("POST", "http://localhost:50799/api/Book/CreateBook");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("Cache-Control", "no-cache");
+        xhr.setRequestHeader("Authorization", "Bearer" + token)
+        xhr.send(data);
+
+    }
+    
+
+
+</script>
+
+

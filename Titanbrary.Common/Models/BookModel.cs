@@ -9,7 +9,7 @@ namespace Titanbrary.Common.Models
 		public string Publisher { get; set; }
 		public string ISBN { get; set; }
 		public int? Edition { get; set; }
-		public DateTime? Year { get; set; }
+		public string Year { get; set; }
 		public int Quantity { get; set; }
 		public string Language { get; set; }
 		public byte[] Picture { get; set; }
@@ -18,5 +18,6 @@ namespace Titanbrary.Common.Models
 		public string Description { get; set; }
 		public DateTime Timestamp { get; set; }
 		public Guid BookID { get; set; }
+        public Guid GenreID { get; set; }
 	}
 }

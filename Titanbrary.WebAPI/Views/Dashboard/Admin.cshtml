@@ -1,27 +1,14 @@
-﻿@{
-    Layout = "~/Views/Shared/_Layout_Customer.cshtml";
+﻿@model Titanbrary.Common.Models.UserModel
+
+@{
+    ViewBag.Title = "Admin";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
 }
-
-@model Titanbrary.Common.Models.UserModel
-
 <!-- Dashboard -->
 <section class="wrapper style3 fade-up">
     <div class="inner">
-        <h2>Overview</h2>
-        @*<div class="row uniform">
-            <div class="6u 12u$(xsmall)">
-                <input type="text" id="searchBook" placeholder="Enter book name" />
-                <br />
-            </div>
-            <div class="6u 12u$(xsmall)">
-                <ul class="actions">
-                    <li><input type="submit" value="Search" class="special" /></li>
-                </ul>
-                <br />
-            </div>
-        </div>*@
-
-        <div class="features">
+        <h2>Dashboard</h2>
+        <div class="features" style="display: none">
             <section>
                 <span class="icon major fa-book "></span>
                 <h3>Users</h3>
@@ -54,14 +41,5 @@
                 <p>Check out a book that will expand your imagination behind your wildest beliefs.</p>
             </section>
         </div>
-        <ul class="actions">
-            <li><a href="#" class="button">Learn more</a></li>
-        </ul>
-    </div>
-</section>
-<section id="intro" class="wrapper style1 fullscreen fade-up">
-    <div class="inner">
-        <h1>@ViewBag.Title</h1>  
-
     </div>
 </section>

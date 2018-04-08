@@ -5,22 +5,15 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="1f59cb85c5f643cd82605d9de0a3548f" Name="Diagram1" ZoomLevel="98">
-        <EntityTypeShape EntityType="TitanbraryModel.Book" Width="1.5" PointX="0.75" PointY="7" IsExpanded="true" />
-        <EntityTypeShape EntityType="TitanbraryModel.Genre" Width="1.5" PointX="3" PointY="8.125" IsExpanded="true" />
-        <AssociationConnector Association="TitanbraryModel.BookXGenre" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="TitanbraryModel.AspNetRole" Width="1.5" PointX="0.875" PointY="1.125" />
-        <EntityTypeShape EntityType="TitanbraryModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="1.125" />
-        <EntityTypeShape EntityType="TitanbraryModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="3.625" />
-        <EntityTypeShape EntityType="TitanbraryModel.AspNetUser" Width="1.5" PointX="3" PointY="1.125" />
-        <AssociationConnector Association="TitanbraryModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
-        <AssociationConnector Association="TitanbraryModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
-        <AssociationConnector Association="TitanbraryModel.AspNetUserRoles" />
+        <EntityTypeShape EntityType="TitanbraryModel.Genre" Width="1.5" PointX="5.625" PointY="7.125" IsExpanded="true" />
         <EntityTypeShape EntityType="TitanbraryModel.Cart" Width="1.5" PointX="3.375" PointY="10.875" IsExpanded="true" />
         <EntityTypeShape EntityType="TitanbraryModel.Waitlist" Width="1.5" PointX="9" PointY="0.875" />
         <EntityTypeShape EntityType="TitanbraryModel.User" Width="1.5" PointX="7.25" PointY="1" />
         <EntityTypeShape EntityType="TitanbraryModel.CartXBook" Width="1.5" PointX="5.625" PointY="9" />
-        <AssociationConnector Association="TitanbraryModel.FK_Book_CartXBook" />
         <AssociationConnector Association="TitanbraryModel.FK_Cart_BookXGenre" />
+        <EntityTypeShape EntityType="TitanbraryModel.Book" Width="1.5" PointX="0.75" PointY="7.5" />
+        <AssociationConnector Association="TitanbraryModel.FK_Book_CartXBook" />
+        <AssociationConnector Association="TitanbraryModel.BookXGenre" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

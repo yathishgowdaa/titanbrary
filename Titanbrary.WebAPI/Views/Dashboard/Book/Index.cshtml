@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "Book Overview";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+
+<!-- Dashboard -->
+<section class="wrapper style3 fade-up">
+    <div class="inner">
+        <h2>Book Overview</h2>
+        <div class="features">
+            <section>
+                <span class="icon major fa-book"></span>
+                <h3>Book</h3>
+                <p>Create a new book.</p>
+                @Html.ActionLink("Create Book", "CreateBook", "Dashboard", null, new { @class = "button" })
+            </section>
+            <section>
+                <span class="icon major fa-book"></span>
+                <h3>Genre</h3>
+                <p>Create a new genre.</p>
+                @Html.ActionLink("Create Genre", "CreateGenre", "Dashboard", null, new { @class = "button" })
+            </section>
+            <section>
+                <span class="icon major fa-book "></span>
+                <h3>Update</h3>
+                <p>Update a book.</p>
+                @Html.ActionLink("Update Book", "UpdateBook", "Dashboard", null, new { @class = "button" })
+            </section>
+            <section>
+                <span class="icon major fa-book "></span>
+                <h3>Search</h3>
+                <p>Search book by filters.</p>
+                @Html.ActionLink("Search Book", "SearchBook", "Dashboard",null, new { @class = "button" })
+            </section>
+        </div>
+    </div>
+</section>
+
+

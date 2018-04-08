@@ -5,7 +5,7 @@
     [Publisher]   NVARCHAR (50)    NULL,
     [ISBN]        NVARCHAR (13)    NULL,
     [Edition]     INT              NULL,
-    [Year]        DATETIME         NULL,
+    [Year]        NVARCHAR(50)         NULL,
     [Quantity]    INT              NOT NULL,
     [Language]    NVARCHAR (20)    NULL,
     [Picture]     IMAGE            NULL,

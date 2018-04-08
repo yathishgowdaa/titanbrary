@@ -10,6 +10,8 @@ using Titanbrary.WebAPI.Models;
 using System.Web.Http;
 using Microsoft.Owin.Cors;
 using Titanbrary.Common.Models;
+using Titanbrary.BusinessObjects;
+using Titanbrary.Data;
 
 [assembly: OwinStartup(typeof(Titanbrary.WebAPI.Startup))]
 
@@ -30,11 +32,23 @@ namespace Titanbrary.WebAPI
                 LoginPath = new PathString("/Home/SignIn"),
             });
             createRolesAndUsers();
+            //ConfigureServices();
         }
+
+        //private void ConfigureServices(IServiceCollection services)
+        //{
+        //    services.AddMvc();
+
+        //    services.AddAuthorization(options =>
+        //    {
+        //        options.AddPolicy("RequireAdministratorRole", policy => policy.RequireRole("Administrator"));
+        //    });
+        //}
 
         // In this method we will create default User roles and Admin user for login 
         private void createRolesAndUsers()
         {
+            
 
             using (ApplicationDbContext ctx = new ApplicationDbContext())
             {
@@ -45,24 +59,51 @@ namespace Titanbrary.WebAPI
                 if (!roleManager.RoleExists("Admin"))
                 {
                     //create admin role
-                    var role = new RoleModel();
-                    role.Name = "Admin";
-                    role.RoleId = Guid.NewGuid().ToString();
-                    role.RoleName = role.Name;
+                    //var role = new RoleModel();
+                    //role.Name = "Admin";
+                    //role.RoleId = Guid.NewGuid().ToString();
+                    //role.RoleName = role.Name;
+                    IdentityRole role = new IdentityRole("Admin");
+                    
                     roleManager.Create(role);
 
                     //create admin account
                     var user = new ApplicationUser();
-                    user.UserName = "admin";
+                    user.UserName = "admin@titanbrary.com";
                     user.Email = "admin@titanbrary.com";
                     //create a password 
-                    string pwd = "admin";
+                    string pwd = "Admin123!";
+                    user.UserRoles = "Admin";
                     var adminUser = UserManager.Create(user, pwd);
 
                     //add default user to admin role
                     if (adminUser.Succeeded)
                     {
-                        var result = UserManager.AddToRole(user.Id, "Admin");
+                        var result = UserManager.AddToRole(user.Id, user.UserRoles);
+                    }
+                    using (TitanbraryEntities ct = new TitanbraryEntities())
+                    {
+                        //save to user account
+                        var target = new User();
+                        target.UserID = new Guid(user.Id);
+                        target.FirstName = "John";
+                        target.LastName = "Doe";
+                        target.LoginName = user.Email;
+                        target.Email = user.Email;
+                        target.Password = "";
+                        target.Address = "123 Avenue";
+                        target.City = "Fullerton";
+                        target.State = "CA";
+                        target.ZipCode = "92832";
+                        target.Phone = "1114445555";
+                        target.SQAnwer1 = "yellow";
+                        target.SQAnswer2 = "black";
+                        target.SQAnswer3 = "red";
+                        target.DateOfBirth = DateTime.Now;
+                        target.MemberSince = DateTime.Now;
+
+                        ct.Users.Add(target);
+                        ct.SaveChanges();
                     }
 
                 }
@@ -70,21 +111,63 @@ namespace Titanbrary.WebAPI
                 //Create Manager role
                 if (!roleManager.RoleExists("Manager"))
                 {
-                    var role = new RoleModel();
-                    role.Name = "Manager";
-                    role.RoleId = Guid.NewGuid().ToString();
-                    role.RoleName = role.Name;
-
+                    //var role = new RoleModel();
+                    //role.Name = "Manager";
+                    //role.RoleId = Guid.NewGuid().ToString();
+                    //role.RoleName = role.Name;
+                    IdentityRole role = new IdentityRole("Manager");
                     roleManager.Create(role);
+
+                    //create admin account
+                    var user = new ApplicationUser();
+                    user.UserName = "manager@titanbrary.com";
+                    user.Email = "manager@titanbrary.com";
+                    //create a password 
+                    string pwd = "Manager123!";
+                    user.UserRoles = "Manager";
+                    var adminUser = UserManager.Create(user, pwd);
+
+                    //add default user to admin role
+                    if (adminUser.Succeeded)
+                    {
+                        var result = UserManager.AddToRole(user.Id, user.UserRoles); 
+                    }
+
+                    using (TitanbraryEntities ct = new TitanbraryEntities())
+                    {
+                        //save to user account
+                        var target = new User();
+                        target.UserID = new Guid(user.Id);
+                        target.FirstName = "Jane";
+                        target.LastName = "Doe";
+                        target.LoginName = user.Email;
+                        target.Email = user.Email;
+                        target.Password = "";
+                        target.Address = "123 Avenue";
+                        target.City = "Fullerton";
+                        target.State = "CA";
+                        target.ZipCode = "92832";
+                        target.Phone = "1114445555";
+                        target.SQAnwer1 = "yellow";
+                        target.SQAnswer2 = "black";
+                        target.SQAnswer3 = "red";
+                        target.DateOfBirth = DateTime.Now;
+                        target.MemberSince = DateTime.Now;
+
+                        ct.Users.Add(target);
+                        ct.SaveChanges();
+                    }
+                    
                 }
 
                 //Create Customer role
                 if (!roleManager.RoleExists("Customer"))
                 {
-                    var role = new RoleModel();
-                    role.Name = "Customer";
-                    role.RoleId = Guid.NewGuid().ToString();
-                    role.RoleName = role.Name;
+                    //var role = new RoleModel();
+                    //role.Name = "Customer";
+                    //role.RoleId = Guid.NewGuid().ToString();
+                    //role.RoleName = role.Name;
+                    IdentityRole role = new IdentityRole("Customer");
                     roleManager.Create(role);
                 }
 

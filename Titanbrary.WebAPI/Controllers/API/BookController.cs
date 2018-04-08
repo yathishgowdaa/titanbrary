@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Http;
+using System.Web.Http.Description;
 using Titanbrary.Common.Interfaces.BusinessObjects;
 using Titanbrary.Common.Models;
 
@@ -20,6 +21,7 @@ namespace Titanbrary.WebAPI.Controllers
 		#region Book
 
 		// POST api/<controller>
+        [AllowAnonymous]
 		[Route("GetAllBooks")]
 		[HttpPost]
 		public IHttpActionResult GetAllBooks()
@@ -39,22 +41,29 @@ namespace Titanbrary.WebAPI.Controllers
 
 		// POST api/<controller>
 		[Route("GetBookByBookID/{bookID}")]
-		[HttpPost]
+		[HttpGet]
+        [ResponseType(typeof(BookModel))]
 		public IHttpActionResult GetBookByBookID(Guid bookID)
 		{
-			var list = _Book.GetBookByBookID(bookID);
-			return Ok(list);
+			var book = _Book.GetBookByBookID(bookID);
+			return Ok(book);
 		}
 
 		// POST api/<controller>
+        [Authorize(Roles =("Admin, Manager"))]
 		[Route("CreateBook")]
 		[HttpPost]
 		public IHttpActionResult CreateBook([FromBody] BookModel book)
 		{
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid book");
+            }
 			var list = _Book.CreateBook(book);
-			if (list)
-				return Ok();
-			return BadRequest();
+            if (!list)
+                return BadRequest("Coudln't create the book");
+
+			return Ok();
 		}
 
 		// POST api/<controller>
@@ -104,8 +113,10 @@ namespace Titanbrary.WebAPI.Controllers
 		#region Genre
 
 		// POST api/<controller>
+        [AllowAnonymous]
 		[Route("GetAllGenres")]
 		[HttpPost]
+        [ResponseType(typeof(List<GenreModel>))]
 		public IHttpActionResult GetAllGenres()
 		{
 			var list = _Book.GetAllGenres();
@@ -130,15 +141,21 @@ namespace Titanbrary.WebAPI.Controllers
 			return Ok(list);
 		}
 
-		// POST api/<controller>
-		[Route("CreateGenre")]
+        // POST api/<controller>
+        [Authorize(Roles = "Admin, Manager")]
+        [Route("CreateGenre")]
 		[HttpPost]
 		public IHttpActionResult CreateGenre([FromBody] GenreModel genre)
 		{
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid genre");
+            }
 			var list = _Book.CreateGenre(genre);
-			if (list)
-				return Ok();
-			return BadRequest();
+			if (!list)
+				return BadRequest("Coudln't add the genre");
+
+			return Ok();
 		}
 
 		// POST api/<controller>

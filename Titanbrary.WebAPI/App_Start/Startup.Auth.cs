@@ -32,7 +32,15 @@ namespace Titanbrary.WebAPI
             app.CreatePerOwinContext<ApplicationSignInManager>(ApplicationSignInManager.Create);
             // Enable the application to use a cookie to store information for the signed in user
             // and to use a cookie to temporarily store information about a user logging in with a third party login provider
-            app.UseCookieAuthentication(new CookieAuthenticationOptions());
+            app.UseCookieAuthentication(new CookieAuthenticationOptions {
+
+                AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+                LoginPath = new PathString("/Home/SignIn"),
+                LogoutPath = new PathString("/Home/LogOff"),
+                //ExpireTimeSpan = TimeSpan.FromMinutes(5.0),
+                ReturnUrlParameter = "/Home/Index"
+
+            });
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
             // Configure the application for OAuth based flow

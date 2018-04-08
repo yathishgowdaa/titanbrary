@@ -9,7 +9,7 @@ namespace Titanbrary.WebAPI.Models
     public class RoleModel : IdentityRole
     {
 
-        public string RoleId { get; set; }
+        //public string RoleId { get; set; }
         
         public string RoleName { get; set; }
         

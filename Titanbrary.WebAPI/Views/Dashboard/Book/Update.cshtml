@@ -1,0 +1,139 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+
+<!-- Intro -->
+<section id="intro" class="wrapper style1 fullscreen fade-up">
+    <div class="inner">
+        <h1>Book</h1>
+        <div class="row uniform">
+            <table id="table" class="table table-responsive">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Book Title</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">Publisher</th>
+                        <th scope="col">Edition</th>
+                        <th scope="col">Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                   
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</section>
+<script type="text/javascript">
+    window.onload = function () {
+        //get all genre API
+        var listOfBook = {};
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+
+                var listOfBook = JSON.parse(this.responseText);
+                console.log(listOfBook)
+                toObject(listOfBook);
+            }
+        });
+
+        xhr.open("POST", "http://localhost:50799/api/Book/GetAllBooks");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("Cache-Control", "no-cache");
+        xhr.send();
+
+        function toObject(book) {
+            var rv = {};
+            for (var i = 0; i < book.length; ++i)
+                rv[i] = book[i];
+
+
+            $.each(rv, function (i, d) {
+                var bookId = rv[i].bookID;
+                var row = '<tr>';
+               // $.each(d, function (j, e) {
+                    //console.log(d)
+                row += '<th scope="row">' + i + '</th>' + '<td>' + rv[i].name + '</td>' + '<td>' + rv[i].author + '</td>'
+                + '<td>' + rv[i].publisher + '</td>' + '<td>' + rv[i].edition + '</td>' + '<td>' + '<a href="http://localhost:50799/Dashboard/UpdateBookById?bookId='+bookId+'">Update</a>' + '</td>'
+
+                ;
+                    // });
+                    row += '</tr>';
+                $('#table tbody').append(row);
+                });
+        }
+
+
+    }
+
+    function updateBookById(bookId){
+        console.log("Bookid =" + bookId);
+    }
+
+    function submitBookForm() {
+
+        //get authorization token
+        var cookie = document.cookie
+        console.log(cookie)
+        var authToken = cookie.split(":")
+        var token = authToken[1]
+
+        var date = Date.now();
+        var bookName = document.getElementById("bookName").value
+        var bookAuthor = document.getElementById("bookAuthor").value
+        var publisher = document.getElementById("publisher").value
+        var isbn =  document.getElementById("isbn").value
+        var edition = document.getElementById("edition").value
+        var year = document.getElementById("year").value
+        var quantity = document.getElementById("quantity").value
+        var language = document.getElementById("language").value
+        var picture = document.getElementById("picture").value
+        var keywords = document.getElementById("keywords").value
+        var active =  document.getElementById("active").value
+        var description = document.getElementById("description").value
+        var genre = document.getElementById("listGenre").value
+
+        var data = JSON.stringify({
+            "name": bookName,
+            "author": bookAuthor,
+            "publisher": publisher,
+            "isbn": isbn,
+            "edition": edition,
+            "year": year,
+            "quantity": quantity,
+            "language": language,
+            "picture": picture,
+            "keywords": keywords,
+            "active": active,
+            "description": description,
+            "genreID": genre
+        });
+
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+                console.log(this.responseText);
+                window.alert("Book Created!");
+            }
+        });
+
+        xhr.open("POST", "http://localhost:50799/api/Book/CreateBook");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("Cache-Control", "no-cache");
+        xhr.setRequestHeader("Authorization", "Bearer" + token)
+        xhr.send(data);
+
+    }
+
+
+
+</script>
+
+

@@ -25,15 +25,11 @@ namespace Titanbrary.Data
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Book> Books { get; set; }
         public virtual DbSet<Genre> Genres { get; set; }
-        public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
-        public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
-        public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
-        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<Cart> Carts { get; set; }
         public virtual DbSet<Waitlist> Waitlists { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<CartXBook> CartXBooks { get; set; }
+        public virtual DbSet<Book> Books { get; set; }
     }
 }
