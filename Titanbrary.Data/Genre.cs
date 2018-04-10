@@ -22,6 +22,7 @@ namespace Titanbrary.Data
     
         public System.Guid GenreID { get; set; }
         public string Title { get; set; }
+        public string Description { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Book> Books { get; set; }

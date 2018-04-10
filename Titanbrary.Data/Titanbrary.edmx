@@ -96,6 +96,7 @@
           <Property Name="UserID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+          <Property Name="Completed" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="CartXBook">
           <Key>
@@ -112,6 +113,7 @@
           </Key>
           <Property Name="GenreID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -154,6 +156,30 @@
             </Principal>
             <Dependent Role="BookXGenre">
               <PropertyRef Name="BookID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Book_CartXBook">
+          <End Role="Book" Type="Self.Book" Multiplicity="1" />
+          <End Role="CartXBook" Type="Self.CartXBook" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookID" />
+            </Principal>
+            <Dependent Role="CartXBook">
+              <PropertyRef Name="BookID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cart_BookXGenre">
+          <End Role="Cart" Type="Self.Cart" Multiplicity="1" />
+          <End Role="CartXBook" Type="Self.CartXBook" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cart">
+              <PropertyRef Name="CartID" />
+            </Principal>
+            <Dependent Role="CartXBook">
+              <PropertyRef Name="CartID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -213,30 +239,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Book_CartXBook">
-          <End Role="Book" Type="Self.Book" Multiplicity="1" />
-          <End Role="CartXBook" Type="Self.CartXBook" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Book">
-              <PropertyRef Name="BookID" />
-            </Principal>
-            <Dependent Role="CartXBook">
-              <PropertyRef Name="BookID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Cart_BookXGenre">
-          <End Role="Cart" Type="Self.Cart" Multiplicity="1" />
-          <End Role="CartXBook" Type="Self.CartXBook" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cart">
-              <PropertyRef Name="CartID" />
-            </Principal>
-            <Dependent Role="CartXBook">
-              <PropertyRef Name="CartID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Genre_BookXGenre">
           <End Role="Genre" Type="Self.Genre" Multiplicity="1" />
           <End Role="BookXGenre" Type="Self.BookXGenre" Multiplicity="*" />
@@ -266,6 +268,14 @@
             <End Role="Book" EntitySet="Book" />
             <End Role="BookXGenre" EntitySet="BookXGenre" />
           </AssociationSet>
+          <AssociationSet Name="FK_Book_CartXBook" Association="Self.FK_Book_CartXBook">
+            <End Role="Book" EntitySet="Book" />
+            <End Role="CartXBook" EntitySet="CartXBook" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cart_BookXGenre" Association="Self.FK_Cart_BookXGenre">
+            <End Role="Cart" EntitySet="Cart" />
+            <End Role="CartXBook" EntitySet="CartXBook" />
+          </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -281,14 +291,6 @@
           <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Book_CartXBook" Association="Self.FK_Book_CartXBook">
-            <End Role="Book" EntitySet="Book" />
-            <End Role="CartXBook" EntitySet="CartXBook" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Cart_BookXGenre" Association="Self.FK_Cart_BookXGenre">
-            <End Role="Cart" EntitySet="Cart" />
-            <End Role="CartXBook" EntitySet="CartXBook" />
           </AssociationSet>
           <AssociationSet Name="FK_Genre_BookXGenre" Association="Self.FK_Genre_BookXGenre">
             <End Role="Genre" EntitySet="Genre" />
@@ -327,6 +329,7 @@
           <Property Name="GenreID" Type="Guid" Nullable="false" />
           <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Books" Relationship="Self.BookXGenre" FromRole="Genre" ToRole="Book" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="BookXGenre">
           <End Role="Book" Type="Self.Book" Multiplicity="*" />
@@ -463,6 +466,7 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="CartXBooks" Relationship="TitanbraryModel.FK_Cart_BookXGenre" FromRole="Cart" ToRole="CartXBook" />
+          <Property Name="Completed" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Waitlist">
           <Key>
@@ -560,6 +564,7 @@
           <EntitySetMapping Name="Genres">
             <EntityTypeMapping TypeName="TitanbraryModel.Genre">
               <MappingFragment StoreEntitySet="Genre">
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="GenreID" ColumnName="GenreID" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
               </MappingFragment>
@@ -634,6 +639,7 @@
           <EntitySetMapping Name="Carts">
             <EntityTypeMapping TypeName="TitanbraryModel.Cart">
               <MappingFragment StoreEntitySet="Cart">
+                <ScalarProperty Name="Completed" ColumnName="Completed" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
