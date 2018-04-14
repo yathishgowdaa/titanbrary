@@ -12,5 +12,9 @@ namespace Titanbrary.Common.Interfaces.Data
 		bool CreateCart(CartModel cart);
 
 		CartModel GetCart(Guid cartID);
+
+        CartModel GetCartByUserID(Guid userID);
+
+        bool Checkout(Guid cartID);
 	}
 }

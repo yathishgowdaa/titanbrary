@@ -16,13 +16,21 @@ namespace Titanbrary.Common.Interfaces.BusinessObjects
 
 		bool CreateBook(BookModel book);
 
-		bool UpdateBook(BookModel book);
+		bool UpdateBook(BookModel book, ref bool isQuantityChanged);
 
 		List<BookModel> SearchBooks(string searchString);
 
 		bool AddBookToCart(Guid cartID, CartXBookModel cartXBook);
 
 		bool DeleteBookFromCart(Guid cartID, Guid bookID);
+
+        bool AddBookToWaitlist(Guid bookID, Guid userID);
+
+        bool IsBookInWaitlist(Guid bookID);
+
+        Guid GetUserInWaitlist(Guid bookID);
+
+        List<BookModel> FeaturedBooks();
 
 		#endregion
 

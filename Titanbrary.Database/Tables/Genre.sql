@@ -2,5 +2,6 @@
 (
 	[GenreID] UNIQUEIDENTIFIER NOT NULL,
     [Title]   NVARCHAR (50)    NOT NULL,
+    [Description] NVARCHAR(MAX) NULL, 
     CONSTRAINT [PK_Genre] PRIMARY KEY CLUSTERED ([GenreID] ASC)
 )

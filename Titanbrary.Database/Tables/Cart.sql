@@ -6,5 +6,6 @@
 	[CreatedDate]			DATETIME NOT NULL,
 	[ModifiedDate] DATETIME NOT NULL, 
 	
+    [Completed] BIT NOT NULL, 
     CONSTRAINT [PK_MainCartTable] PRIMARY KEY ([CartID])
 )
