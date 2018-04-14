@@ -1,0 +1,37 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+
+@model Titanbrary.Common.Models.UserInfoBookModel
+
+<section id="intro" class="wrapper style1 fullscreen fade-up">
+    <div class="inner">
+        <h1>Quick Search Result</h1><br />
+        <div class="row uniform">
+            <table id="table" class="table table-responsive">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Book Title</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">Publisher</th>
+                        <th scope="col">Edition</th>
+                        <th scope="col">Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                   <tr>
+                       <td>0</td>
+                       <td>Harry Potter and the Sorcerer's Stone</td>
+                       <td>J.K. Rowling</td>
+                       <td>Scholastic</td>
+                       <td>1</td>
+                       <td>@Html.ActionLink("Add to cart", "AddToCart", "Dashboard",null, new {@class = "button small special" })</td>
+                   </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+</section>

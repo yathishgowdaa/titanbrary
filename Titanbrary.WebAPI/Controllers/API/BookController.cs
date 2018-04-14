@@ -79,7 +79,7 @@ namespace Titanbrary.WebAPI.Controllers
 
 		// POST api/<controller>
 		[Route("SearchBooks/{searchString?}")]
-		[HttpPost]
+		[HttpGet]
 		public IHttpActionResult SearchBooks(string searchString)
 		{
 			var list = _Book.SearchBooks(searchString);

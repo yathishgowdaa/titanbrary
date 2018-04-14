@@ -20,7 +20,7 @@
           <Property Name="Picture" Type="image" />
           <Property Name="Keywords" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
-          <Property Name="Description" Type="nvarchar" MaxLength="100" />
+          <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="Timestamp" Type="datetime" Nullable="false" />
           <Property Name="BookID" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
@@ -193,7 +193,7 @@
             <End Role="Book" EntitySet="Books" />
             <End Role="Genre" EntitySet="Genres" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <EntityType Name="Cart">
           <Key>
             <PropertyRef Name="CartID" />
@@ -274,7 +274,7 @@
           <Property Name="Picture" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="Keywords" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="BookID" Type="Guid" Nullable="false" />
           <NavigationProperty Name="CartXBooks" Relationship="TitanbraryModel.FK_Book_CartXBook" FromRole="Book" ToRole="CartXBook" />
@@ -296,7 +296,7 @@
           <End Type="TitanbraryModel.Book" Role="Book" Multiplicity="*" />
           <End Type="TitanbraryModel.Genre" Role="Genre" Multiplicity="*" />
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -391,7 +391,7 @@
               <ScalarProperty Name="BookID" ColumnName="BookID" />
             </EndProperty>
           </AssociationSetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

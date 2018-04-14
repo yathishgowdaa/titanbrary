@@ -11,7 +11,7 @@
     [Picture]     IMAGE            NULL,
     [Keywords]    NVARCHAR (100)   NOT NULL,
     [Active]      BIT              NOT NULL,
-    [Description] NVARCHAR (100)   NULL,
+    [Description] NVARCHAR (MAX)   NULL,
     [Timestamp]   DATETIME         NOT NULL,
     [BookID]      UNIQUEIDENTIFIER NOT NULL,
     CONSTRAINT [PK_Book] PRIMARY KEY CLUSTERED ([BookID] ASC)

@@ -50,35 +50,26 @@ namespace Titanbrary.WebAPI.Controllers
                 var currentUser = UserManager.FindByEmail(User.Identity.Name);
                 var roles = UserManager.GetRoles(currentUser.Id);
                 UserModel userInfo = accountMgr.GetUserInfo(currentUser);
-
+                UserInfoBookModel model = new UserInfoBookModel();
+                model.user = userInfo;
                 //redirect to dashboard
                 foreach (var role in roles)
                 {
                     if (role == "Admin")
                     {
-                        return View("Admin", userInfo);
+                        return View("Admin", model);
 
                     }
                     else if (role == "Manager")
                     {
-                        return View("Manager", userInfo);
+                        return View("Manager", model);
 
                     }
                     else
                     {
-                        return View(userInfo);
+                        return View(model);
                     }
                 }
-
-                //if (currentUser != null)
-                //{
-                //    UserModel userInfo = accountMgr.GetUserInfo(currentUser);
-                //    if(userInfo == null)
-                //    {
-                //        return RedirectToAction("SignIp", "Home");
-                //    }
-                //   result = userInfo;              
-                //}     
             }
             catch
             {
@@ -100,7 +91,10 @@ namespace Titanbrary.WebAPI.Controllers
         {
             var currentUser = UserManager.FindByEmail(User.Identity.Name);
             UserModel userInfo = accountMgr.GetUserInfo(currentUser);
-            return View("Book/Index", userInfo);
+            UserInfoBookModel model = new UserInfoBookModel();
+            model.user = userInfo;
+
+            return View("Book/Index", model);
         }
 
         [Authorize(Roles = "Admin, Manager")]
@@ -108,7 +102,10 @@ namespace Titanbrary.WebAPI.Controllers
         {
             var currentUser = UserManager.FindByEmail(User.Identity.Name);
             UserModel userInfo = accountMgr.GetUserInfo(currentUser);
-            return View("Book/Create", userInfo);
+            UserInfoBookModel model = new UserInfoBookModel();
+            model.user = userInfo;
+
+            return View("Book/Create", model);
         }
 
         [Authorize(Roles = "Admin, Manager")]
@@ -116,14 +113,16 @@ namespace Titanbrary.WebAPI.Controllers
         {
             var currentUser = UserManager.FindByEmail(User.Identity.Name);
             UserModel userInfo = accountMgr.GetUserInfo(currentUser);
+            UserInfoBookModel model = new UserInfoBookModel();
+            model.user = userInfo;
 
-            return View("Book/Update", userInfo);
+            return View("Book/Update", model);
         }
 
         [Authorize(Roles = "Admin, Manager")]
         public ActionResult UpdateBookById(Guid bookId)
         {
-            
+
 
             //api call
             var data = new Dictionary<string, string>
@@ -131,7 +130,7 @@ namespace Titanbrary.WebAPI.Controllers
                        {"bookId", bookId.ToString()}
                    };
 
-            
+
             using (HttpClient httpClient = new HttpClient())
             {
                 var currentUser = UserManager.FindByEmail(User.Identity.Name);
@@ -142,22 +141,17 @@ namespace Titanbrary.WebAPI.Controllers
                 if (getTokenUrl.IsCompleted)
                 {
                     var response = getTokenUrl.Result.Content.ReadAsStringAsync().Result;
-                    
+
                     var model = new UserInfoBookModel();
                     model.book = JsonConvert.DeserializeObject<BookModel>(response);
                     model.user = userInfo;
 
                     return View("Book/BookProfile", model);
                 }
-                
             }
 
             //return back to book list
             return RedirectToAction("UpdateBook", "Dashboard");
-            
-            
-            
-            
         }
 
         [Authorize(Roles = "Admin, Manager")]
@@ -165,7 +159,9 @@ namespace Titanbrary.WebAPI.Controllers
         {
             var currentUser = UserManager.FindByEmail(User.Identity.Name);
             UserModel userInfo = accountMgr.GetUserInfo(currentUser);
-            return View("Genre/Create", userInfo);
+            UserInfoBookModel model = new UserInfoBookModel();
+            model.user = userInfo;
+            return View("Genre/Create", model);
         }
 
         [Authorize(Roles = "Admin, Manager")]
@@ -173,7 +169,67 @@ namespace Titanbrary.WebAPI.Controllers
         {
             var currentUser = UserManager.FindByEmail(User.Identity.Name);
             UserModel userInfo = accountMgr.GetUserInfo(currentUser);
-            return View("Genre/Update", userInfo);
+            UserInfoBookModel model = new UserInfoBookModel();
+            model.user = userInfo;
+            return View("Genre/Update", model);
+        }
+
+        [Authorize(Roles = "Admin, Manager, Customer")]
+        public ActionResult SearchView()
+        {
+            var currentUser = UserManager.FindByEmail(User.Identity.Name);
+            UserModel userInfo = accountMgr.GetUserInfo(currentUser);
+            UserInfoBookModel model = new UserInfoBookModel();
+            model.user = userInfo;
+
+            return View("Book/SearchOverview", model);
+        }
+
+        [Authorize(Roles = "Admin, Manager, Customer")]
+        public ActionResult QuickSearch(string keywords)
+        {
+
+            //api call
+            var data = new Dictionary<string, string>
+                   {
+                       {"keywords", keywords}
+                   };
+
+
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var currentUser = UserManager.FindByEmail(User.Identity.Name);
+                UserModel userInfo = accountMgr.GetUserInfo(currentUser);
+
+                var getTokenUrl = httpClient.GetAsync(String.Format("http://localhost:50799/api/Book/SearchBooks/{0}", keywords));
+                getTokenUrl.Wait(TimeSpan.FromSeconds(10));
+                if (getTokenUrl.IsCompleted)
+                {
+                    var response = getTokenUrl.Result.Content.ReadAsStringAsync().Result.ToList();
+
+                    //List<BookModel> second = response.Cast<BookModel>().ToList();
+
+                    var model = new UserInfoBookModel();
+                    //model.book = JsonConvert.DeserializeObject<List<BookModel>>(second);
+                    model.user = userInfo;
+
+                    return View("Book/Search/QuickSearch", model);
+                }
+
+                //return back to book list
+                return RedirectToAction("SearchView", "Dashboard");
+
+            }
+        }
+
+        [AllowAnonymous]
+        public ActionResult AddToCart()
+        {
+            var currentUser = UserManager.FindByEmail(User.Identity.Name);
+            UserModel userInfo = accountMgr.GetUserInfo(currentUser);
+            UserInfoBookModel model = new UserInfoBookModel();
+            model.user = userInfo;
+            return View("Cart/Checkout", model);
         }
     }
 }

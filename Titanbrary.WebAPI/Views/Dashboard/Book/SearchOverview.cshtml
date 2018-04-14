@@ -1,0 +1,81 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+
+@model Titanbrary.Common.Models.UserInfoBookModel
+
+<!-- Dashboard -->
+<section class="wrapper style3 fade-up">
+    <div class="inner">
+        <h2>Search Overview</h2>
+        <div class="features">
+            <section>
+                <span class="icon major fa-search"></span>
+                <h3>Quick Search</h3>
+                <p>Search by keywords</p>
+                @Html.TextBoxFor(Model => Model.book.Keywords, new { placeholder = "Enter keywords" })<br />
+                @Html.ActionLink("Quick Search", "QuickSearch", "Dashboard", new { keywords = "Harry"}, new { @class = "button special" })
+            </section>
+            <section>
+                <span class="icon major fa-search"></span>
+                <h3>Genre Search</h3>
+                <p>Search by genre</p>
+                <select id="listGenre"></select><br />
+                @Html.ActionLink("Genre Search", "GenreSearch", "Dashboard", null, new { @class = "button special" })
+            </section>
+            <section>
+                <span class="icon major fa-search "></span>
+                <h3>Advanced Search</h3>
+                <p>Search by unique identifier</p>
+                @Html.TextBoxFor(Model => Model.book.BookID, new { placeholder = "Enter Book ID" })<br />
+                @Html.ActionLink("Advanced Seach", "AdvancedSearch", "Dashboard", null, new { @class = "button special" })
+            </section>
+            <section>
+                <span class="icon major fa-search"></span>
+                <h3>Inventory</h3>
+                <p>Get all books</p>
+                <input type="text" style="visibility: hidden"/><br />
+                @Html.ActionLink("Search All", "UpdateBook", "Dashboard", null, new { @class = "button special" })
+            </section>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    window.onload = function () {
+        //get all genre API
+        var listOfGenre = {};
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+
+                var listOfGenre = JSON.parse(this.responseText);
+
+                toObject(listOfGenre);
+            }
+        });
+
+        xhr.open("POST", "http://localhost:50799/api/Book/GetAllGenres");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("Cache-Control", "no-cache");
+        xhr.send();
+
+        function toObject(genre) {
+            var rv = {};
+            for (var i = 0; i < genre.length; ++i)
+                rv[i] = genre[i];
+
+            $.each(rv, function (key, value) {
+                $('#listGenre')
+                    .append($("<option></option>")
+                               .attr("value", rv[key].genreID)
+                               .text(rv[key].title));
+            });
+
+        }
+
+
+    }
+</script>

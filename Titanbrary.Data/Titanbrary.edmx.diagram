@@ -11,10 +11,10 @@
         <EntityTypeShape EntityType="TitanbraryModel.User" Width="1.5" PointX="7.25" PointY="1" />
         <EntityTypeShape EntityType="TitanbraryModel.CartXBook" Width="1.5" PointX="5.625" PointY="9" />
         <AssociationConnector Association="TitanbraryModel.FK_Cart_BookXGenre" />
-        <EntityTypeShape EntityType="TitanbraryModel.Book" Width="1.5" PointX="0.75" PointY="7.5" />
+        <EntityTypeShape EntityType="TitanbraryModel.Book" Width="1.5" PointX="3.375" PointY="6" />
         <AssociationConnector Association="TitanbraryModel.FK_Book_CartXBook" />
         <AssociationConnector Association="TitanbraryModel.BookXGenre" />
-      </Diagram>
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>
