@@ -28,8 +28,9 @@
         <div class="inner">
             <nav>
                 <ul>
-                    @*<li>@Html.ActionLink("Welcome", "Index", "Home", new { area = ""}, null) </li>*@
+                    
                     <li>Welcome @Model.user.FirstName @Model.user.LastName</li>
+                    <li>@Html.ActionLink("Home", "Index", "Dashboard") </li>
                     <li>@Html.ActionLink("Search", "SearchView", "Dashboard")</li>                                 
                     <li>@Html.ActionLink("Books", "BookView", "Dashboard")</li>
                     <li>@Html.ActionLink("Users", "User", "Dashboard")</li>

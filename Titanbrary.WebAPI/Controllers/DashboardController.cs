@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using Titanbrary.BusinessObjects;
 using Titanbrary.Common.Interfaces.BusinessObjects;
+using Titanbrary.Common.Interfaces.Data;
 using Titanbrary.Common.Models;
 
 namespace Titanbrary.WebAPI.Controllers
@@ -18,8 +19,6 @@ namespace Titanbrary.WebAPI.Controllers
     {
         // GET: Dashboard
         private ApplicationUserManager _UserManager;
-        //private readonly IAccount _Account;
-
         private AccountManager accountMgr = new AccountManager();
         public DashboardController() { }
 
@@ -129,8 +128,7 @@ namespace Titanbrary.WebAPI.Controllers
                    {
                        {"bookId", bookId.ToString()}
                    };
-
-
+            
             using (HttpClient httpClient = new HttpClient())
             {
                 var currentUser = UserManager.FindByEmail(User.Identity.Name);
@@ -143,8 +141,23 @@ namespace Titanbrary.WebAPI.Controllers
                     var response = getTokenUrl.Result.Content.ReadAsStringAsync().Result;
 
                     var model = new UserInfoBookModel();
-                    model.book = JsonConvert.DeserializeObject<BookModel>(response);
                     model.user = userInfo;
+                    model.book = JsonConvert.DeserializeObject<BookModel>(response);
+                    //get list of genre
+                    StringContent queryString = new StringContent("");
+                    var getListGenres = httpClient.PostAsync("http://localhost:50799/api/Book/GetAllGenres",queryString);
+                    var responseGenre = getListGenres.Result.Content.ReadAsStringAsync().Result;
+                   
+                    var listOfGenre = JsonConvert.DeserializeObject<List<GenreModel>>(responseGenre);
+                    foreach(var genre in listOfGenre)
+                    {
+                        if(model.book.GenreID == genre.GenreID)
+                        {
+                            model.genre = genre;
+                            break;                            
+                        }
+                    }
+
 
                     return View("Book/BookProfile", model);
                 }

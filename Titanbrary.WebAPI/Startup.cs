@@ -22,13 +22,14 @@ namespace Titanbrary.WebAPI
     {
         public void Configuration(IAppBuilder app)
         {
-            GlobalConfiguration.Configuration
+            HttpConfiguration config = new HttpConfiguration();
+            Hangfire.GlobalConfiguration.Configuration
                 .UseSqlServerStorage("DefaultConnection");
 
             app.UseHangfireDashboard();
             app.UseHangfireServer();
 
-            RecurringJob.AddOrUpdate(() => deleteOldCarts(), Cron.Daily);
+            //RecurringJob.AddOrUpdate(() => deleteOldCarts(), Cron.Daily);
 
             ConfigureAuth(app);
             //WebApiConfig.Register(config);
@@ -89,7 +90,7 @@ namespace Titanbrary.WebAPI
                     {
                         var result = UserManager.AddToRole(user.Id, user.UserRoles);
                     }
-                    using (TitanbraryEntities ct = new TitanbraryEntities())
+                    using (TitanbraryContainer ct = new TitanbraryContainer())
                     {
                         //save to user account
                         var target = new User();
@@ -141,7 +142,7 @@ namespace Titanbrary.WebAPI
                         var result = UserManager.AddToRole(user.Id, user.UserRoles); 
                     }
 
-                    using (TitanbraryEntities ct = new TitanbraryEntities())
+                    using (TitanbraryContainer ct = new TitanbraryContainer())
                     {
                         //save to user account
                         var target = new User();
@@ -181,14 +182,12 @@ namespace Titanbrary.WebAPI
 
             }
             
-
-
             
         }
 
         private void deleteOldCarts()
         {
-            using (TitanbraryEntities ctx = new TitanbraryEntities())
+            using (TitanbraryContainer ctx = new TitanbraryContainer())
             {
                 var carts = ctx.Carts.Where(c => c.ModifiedDate <= DateTime.Now.AddDays(-7) && c.Completed == false);
                 foreach (var cart in carts)

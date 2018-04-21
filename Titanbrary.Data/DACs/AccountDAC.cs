@@ -19,7 +19,7 @@ namespace Titanbrary.Data.DACs
         public UserModel GetUserInfoDAC(ApplicationUser currentUser)
         {
             var result = new UserModel();
-            using (TitanbraryEntities ctx = new TitanbraryEntities())
+            using (TitanbraryContainer ctx = new TitanbraryContainer())
             {
                 var account = ctx.Users.Where(act => act.UserID == new Guid(currentUser.Id)).FirstOrDefault();
                 if(account != null)
@@ -43,7 +43,7 @@ namespace Titanbrary.Data.DACs
             var result = false;
             try
             {
-                using (TitanbraryEntities ctx = new TitanbraryEntities())
+                using (TitanbraryContainer ctx = new TitanbraryContainer())
                 {
                     target.UserID = new Guid(model.Id);
                     target.FirstName = model.FirstName;

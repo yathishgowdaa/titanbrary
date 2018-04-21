@@ -4,17 +4,17 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="1f59cb85c5f643cd82605d9de0a3548f" Name="Diagram1" ZoomLevel="98">
-        <EntityTypeShape EntityType="TitanbraryModel.Genre" Width="1.5" PointX="5.625" PointY="7.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="TitanbraryModel.Cart" Width="1.5" PointX="3.375" PointY="10.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="TitanbraryModel.Waitlist" Width="1.5" PointX="9" PointY="0.875" />
-        <EntityTypeShape EntityType="TitanbraryModel.User" Width="1.5" PointX="7.25" PointY="1" />
-        <EntityTypeShape EntityType="TitanbraryModel.CartXBook" Width="1.5" PointX="5.625" PointY="9" />
-        <AssociationConnector Association="TitanbraryModel.FK_Cart_BookXGenre" />
-        <EntityTypeShape EntityType="TitanbraryModel.Book" Width="1.5" PointX="3.375" PointY="6" />
-        <AssociationConnector Association="TitanbraryModel.FK_Book_CartXBook" />
-        <AssociationConnector Association="TitanbraryModel.BookXGenre" />
-        </Diagram>
+      <Diagram DiagramId="a416db50fea64f3eabe4faf6f5f81f44" Name="Diagram1" >
+        <EntityTypeShape EntityType="Titanbrary.Book" Width="1.5" PointX="0.75" PointY="1.25" />
+        <EntityTypeShape EntityType="Titanbrary.Cart" Width="1.5" PointX="0.75" PointY="7.25" />
+        <EntityTypeShape EntityType="Titanbrary.CartXBook" Width="1.5" PointX="3" PointY="2.375" />
+        <EntityTypeShape EntityType="Titanbrary.Genre" Width="1.5" PointX="3" PointY="5.125" />
+        <EntityTypeShape EntityType="Titanbrary.User" Width="1.5" PointX="5.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Titanbrary.Waitlist" Width="1.5" PointX="5.75" PointY="6.75" />
+        <AssociationConnector Association="Titanbrary.FK_Book_CartXBook" />
+        <AssociationConnector Association="Titanbrary.FK_Cart_BookXGenre" />
+        <AssociationConnector Association="Titanbrary.BookXGenre" />
+      </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

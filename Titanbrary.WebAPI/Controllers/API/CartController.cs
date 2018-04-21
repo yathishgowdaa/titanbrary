@@ -8,6 +8,7 @@ using System.Net.Mail;
 using Titanbrary.Common.Interfaces.BusinessObjects;
 using Titanbrary.Common.Models;
 using Microsoft.AspNet.Identity.Owin;
+using System.Threading.Tasks;
 
 namespace Titanbrary.WebAPI.Controllers
 {
@@ -69,7 +70,7 @@ namespace Titanbrary.WebAPI.Controllers
         // POST api/<controller>
         [Route("Checkout/{cartID}")]
         [HttpPost]
-        public IHttpActionResult Checkout(Guid cartID)
+        public async Task<IHttpActionResult> Checkout(Guid cartID)
         {
             var list = _Cart.Checkout(cartID);
 
@@ -82,7 +83,7 @@ namespace Titanbrary.WebAPI.Controllers
                 bookList.Add(_Book.GetBookByBookID(book.BookID));
             }
             
-            var currentUser = _UserManager.FindByIdAsync(userID.ToString());
+            var currentUser = await _UserManager.FindByIdAsync(userID.ToString());
             var user = _Account.GetUserInfo(currentUser);
             CheckoutEmail(user, bookList, cartXBookList);
 

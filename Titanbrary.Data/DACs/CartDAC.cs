@@ -12,7 +12,7 @@ namespace Titanbrary.Data.DACs
 	{
 		public virtual bool CreateCart(CartModel cart)
 		{
-			using (TitanbraryEntities ctx = new TitanbraryEntities())
+			using (TitanbraryContainer ctx = new TitanbraryContainer())
 			{
 				try
 				{
@@ -37,7 +37,7 @@ namespace Titanbrary.Data.DACs
 		public virtual CartModel GetCart(Guid cartID)
 		{
 			List<CartModel> result = new List<CartModel>();
-			using (TitanbraryEntities ctx = new TitanbraryEntities())
+			using (TitanbraryContainer ctx = new TitanbraryContainer())
 			{
 				result = ctx.Carts.Where(c => c.CartID == cartID && c.Completed == false).Select(c => new CartModel
 				{
@@ -58,7 +58,7 @@ namespace Titanbrary.Data.DACs
         public virtual CartModel GetCartByUserID(Guid userID)
         {
             List<CartModel> result = new List<CartModel>();
-            using (TitanbraryEntities ctx = new TitanbraryEntities())
+            using (TitanbraryContainer ctx = new TitanbraryContainer())
             {
                 result = ctx.Carts.Where(c => c.CartID == userID && c.Completed == false).Select(c => new CartModel
                 {
@@ -78,7 +78,7 @@ namespace Titanbrary.Data.DACs
 
         public virtual bool Checkout(Guid cartID)
         {
-            using (TitanbraryEntities ctx = new TitanbraryEntities())
+            using (TitanbraryContainer ctx = new TitanbraryContainer())
             {
                 try
                 {

@@ -4,5 +4,119 @@
 
 @model Titanbrary.Common.Models.UserInfoBookModel
 
-<h2>@Model.book.Name</h2>
+
+<!-- Intro -->
+<section id="intro" class="wrapper style1 fullscreen fade-up">
+    <div class="inner">
+        <h1>Book Name is @Model.book.Name</h1>
+        <h2>Genre is @Model.genre.Title</h2>
+        <form id="UpdateBookForm" action="">
+            <div class="row uniform">
+                <div class="6u 12u$(xsmall)">
+                    @*<input type="text" id="bookName" placeholder="Book Name" required />*@
+                    @Html.TextBoxFor(Model => Model.book.Name, new { id = "bookName", required = "required" })
+                </div>
+                <div class="6u 12u$(xsmall)">
+                    @*<input type="text" id="bookAuthor" placeholder="Book Author" required />*@
+                    @Html.TextBoxFor(Model => Model.book.Author, new { id = "bookAuthor" })
+                </div>
+                <div class="6u 12u$(xsmall)">
+                    @*<input type="text" id="publisher" placeholder="Publisher" required />*@
+                    @Html.TextBoxFor(Model => Model.book.Publisher, new { id = "bookPublisher" })
+                </div>
+                <div class="6u 12u$(xsmall)">
+                    @*<input type="text" id="year" placeholder="Year" required />*@
+                    @Html.TextBoxFor(Model => Model.book.Year, new { id = "bookYear" })
+                </div>
+                <div class="6u 12u$(xsmall)">
+                    @*<input type="text" id="isbn" placeholder="ISBN" required />*@
+                    @Html.TextBoxFor(Model => Model.book.ISBN, new { id = "bookIsbn" })
+                </div>
+                <div class="6u 12u$(xsmall)">
+                    @*<input type="text" id="edition" placeholder="Edition" required />*@
+                    @Html.TextBoxFor(Model => Model.book.Edition, new { id = "bookEdition" })
+                </div>
+
+                <div class="6u 12u$(xsmall)">
+                    @*<input type="text" id="language" placeholder="Language" required />*@
+                    @Html.TextBoxFor(Model => Model.book.Language, new { id = "bookLanguage" })
+                </div>
+                <div class="6u 12u$(xsmall)">
+                    @*<textarea rows="2" cols="20" id="description" placeholder="Description" required></textarea>*@
+                    @Html.TextAreaFor(Model => Model.book.Description, new { id = "bookDescription" })
+                </div>
+                <div class="6u 12u$(xsmall)">
+                    @*<input type="text" id="keywords" placeholder="keywords" required />*@
+                    @Html.TextBoxFor(Model => Model.book.Keywords, new { id = "bookKeywords" })
+                </div>
+                <div class="6u 12u$(xsmall)">
+                    @*<input type="text" id="quantity" placeholder="Quantity" style="background-color:#5e42a6" required />*@
+                    @Html.TextBoxFor(Model => Model.book.Quantity, new { id = "bookQuantity" })
+                </div>
+                <div class="6u 12u$(xsmall)">
+                    @*<select id="active">
+                        <option value="true">Active</option>
+                        <option value="false">Inactive</option>
+                    </select>*@
+                    @Html.DropDownListFor(Model => Model.book.Active, new SelectList(new string[] { "Active", "Inactive" }, Model.book.Active), new { id = "bookStatus" })
+                </div>
+                <div class="6u 12u$(xsmall)">
+                    <input type="file" id="picture" placeholder="Upload picture" />
+                </div>
+                <div class="6u 12u$(xsmall)">
+                    <select id="listGenre"></select>
+                </div>
+
+
+                <div class="12u$">
+                    <ul class="actions">
+                        <li><input type="submit" value="Submit" class="special" onclick="submitBookForm()" /></li>
+                        <li><input type="reset" value="Reset" /></li>
+                    </ul>
+                </div>
+            </div>
+
+        </form>
+
+
+    </div>
+</section>
+<script  type="text/javascript">
+    window.onload = function () {
+        //get all genre API
+        var listOfGenre = {};
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+
+                var listOfGenre = JSON.parse(this.responseText);
+
+                toObject(listOfGenre);
+            }
+        });
+
+        xhr.open("POST", "http://localhost:50799/api/Book/GetAllGenres");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("Cache-Control", "no-cache");
+        xhr.send();
+
+        function toObject(genre) {
+            var rv = {};
+            for (var i = 0; i < genre.length; ++i)
+                rv[i] = genre[i];
+
+            $.each(rv, function (key, value) {
+                $('#listGenre')
+                    .append($("<option></option>")
+                               .attr("value", rv[key].genreID)
+                               .text(rv[key].title));
+            });
+
+        }
+
+
+    }
+</script>
 

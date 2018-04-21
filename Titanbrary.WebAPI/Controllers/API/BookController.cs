@@ -9,6 +9,7 @@ using System.Net.Mail;
 using Hangfire;
 using Microsoft.AspNet.Identity.Owin;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Titanbrary.WebAPI.Controllers
 {
@@ -91,7 +92,7 @@ namespace Titanbrary.WebAPI.Controllers
 		// POST api/<controller>
 		[Route("UpdateBook")]
 		[HttpPost]
-		public IHttpActionResult UpdateBook([FromBody] BookModel book)
+		public async Task<IHttpActionResult> UpdateBook([FromBody] BookModel book)
 		{
             bool isQuantityChanged = false;
 			var list = _Book.UpdateBook(book, ref isQuantityChanged);
@@ -121,7 +122,7 @@ namespace Titanbrary.WebAPI.Controllers
                     });
                 }                
 
-                var currentUser = _UserManager.FindByIdAsync(userID.ToString());
+                var currentUser = await _UserManager.FindByIdAsync(userID.ToString());
                 var user = _Account.GetUserInfo(currentUser);
                 OutWaitlistEmail(user, book);
             }
@@ -165,13 +166,13 @@ namespace Titanbrary.WebAPI.Controllers
         // POST api/<controller>
         [Route("AddBookToWaitlist/{bookID}/{userID}")]
         [HttpPost]
-        public IHttpActionResult AddBookToWaitlist(Guid bookID, Guid userID)
+        public async Task<IHttpActionResult> AddBookToWaitlist(Guid bookID, Guid userID)
         {
             var list = _Book.AddBookToWaitlist(bookID, userID);
 
             var book = _Book.GetBookByBookID(bookID);
 
-            var currentUser = _UserManager.FindByIdAsync(userID.ToString());
+            var currentUser = await _UserManager.FindByIdAsync(userID.ToString());
             var user = _Account.GetUserInfo(currentUser);
             InWaitlistEmail(user, book);
 

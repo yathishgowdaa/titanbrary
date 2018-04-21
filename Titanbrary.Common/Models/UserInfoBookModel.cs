@@ -10,5 +10,6 @@ namespace Titanbrary.Common.Models
     {
         public UserModel user { get; set; }
         public BookModel book { get; set; }
+        public GenreModel genre { get; set; }
     }
 }

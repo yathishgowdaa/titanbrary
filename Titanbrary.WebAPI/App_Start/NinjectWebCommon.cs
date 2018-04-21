@@ -71,10 +71,12 @@ namespace Titanbrary.WebAPI.App_Start
             //Biz
             kernel.Bind<IBook>().To<BusinessObjects.BookManager>().InRequestScope();
             kernel.Bind<IAccount>().To<BusinessObjects.AccountManager>().InRequestScope();
+            kernel.Bind<ICart>().To<BusinessObjects.CartManager>().InRequestScope();
 
             //Dac
             kernel.Bind<IBookDAC>().To<Data.DACs.BookDAC>().InRequestScope();
             kernel.Bind<IAccountDAC>().To<Data.DACs.AccountDAC>().InRequestScope();
+            kernel.Bind<ICartDAC>().To<Data.DACs.CartDAC>().InRequestScope();
 
         }        
     }
