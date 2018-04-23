@@ -13,29 +13,42 @@
                 <span class="icon major fa-search"></span>
                 <h3>Quick Search</h3>
                 <p>Search by keywords</p>
-                @Html.TextBoxFor(Model => Model.book.Keywords, new { placeholder = "Enter keywords" })<br />
-                @Html.ActionLink("Quick Search", "QuickSearch", "Dashboard", new { keywords = "Harry"}, new { @class = "button special" })
+                @using (Html.BeginForm("QuickSearch", "Dashboard", FormMethod.Post)){ 
+
+
+                    @Html.TextBoxFor(Model => Model.book.Keywords, new { id = "quickSearch", placeholder = "Enter keywords" })<br />
+                    
+                    <input type="submit" class="button special" value="Quick Search" />
+                }
+                
             </section>
             <section>
                 <span class="icon major fa-search"></span>
                 <h3>Genre Search</h3>
                 <p>Search by genre</p>
-                <select id="listGenre"></select><br />
-                @Html.ActionLink("Genre Search", "GenreSearch", "Dashboard", null, new { @class = "button special" })
+                @using (Html.BeginForm("SearchByGenre", "Dashboard", FormMethod.Post))
+                {
+                    @Html.DropDownListFor(Model => Model.genreId, new SelectList(Model.genres.Select(g => new { Value = g.GenreID, Text = g.Title }), "Value", "Text"))<br />
+                    <input type="submit" class="button special" value="Genre Search" />
+                }
+                
             </section>
             <section>
                 <span class="icon major fa-search "></span>
                 <h3>Advanced Search</h3>
                 <p>Search by unique identifier</p>
-                @Html.TextBoxFor(Model => Model.book.BookID, new { placeholder = "Enter Book ID" })<br />
-                @Html.ActionLink("Advanced Seach", "AdvancedSearch", "Dashboard", null, new { @class = "button special" })
+                @using (Html.BeginForm("AdvancedSearch", "Dashboard", FormMethod.Post))
+                {
+                    @Html.TextBoxFor(Model => Model.bookId, new { id = "advancedSearch", placeholder = "Enter Book ID" })<br />
+                    <input type="submit" class="button special" value="Advanced Search" />
+                }
             </section>
             <section>
                 <span class="icon major fa-search"></span>
                 <h3>Inventory</h3>
                 <p>Get all books</p>
                 <input type="text" style="visibility: hidden"/><br />
-                @Html.ActionLink("Search All", "UpdateBook", "Dashboard", null, new { @class = "button special" })
+                @Html.ActionLink("Search All", "GetAllBook", "Dashboard", null, new { @class = "button special" })
             </section>
         </div>
     </div>

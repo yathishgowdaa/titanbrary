@@ -1,0 +1,12 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+
+
+<!-- Intro -->
+<section id="intro" class="wrapper style1 fullscreen fade-up">
+    <div class="inner">
+        <h1>Book added to your cart!</h1>
+        @Html.ActionLink("View Cart", "CartView", "Dashboard", null, new { @class = "button special"})
+    </div>
+</section>

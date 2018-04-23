@@ -6,8 +6,11 @@
 
 <section id="intro" class="wrapper style1 fullscreen fade-up">
     <div class="inner">
-        <h1>Quick Search Result</h1><br />
+        <h1>Get All Book Result</h1><br />
         <div class="row uniform">
+        @*@using (Html.BeginForm("AddToCart", "Dashboard", FormMethod.Post))
+        {*@
+
             <table id="table" class="table table-responsive">
                 <thead>
                     <tr>
@@ -15,25 +18,32 @@
                         <th scope="col">Author</th>
                         <th scope="col">Publisher</th>
                         <th scope="col">Edition</th>
+                        <th scope="col">Quantity</th>
                         <th scope="col">Options</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var book in Model.books)
                     {
-                        
+
                         <tr>
                             <td>@Html.DisplayFor(modelItem => book.Name)</td>
                             <td>@Html.DisplayFor(modelItem => book.Author)</td>
                             <td>@Html.DisplayFor(modelItem => book.Publisher)</td>
                             <td>@Html.DisplayFor(modelItem => book.Edition)</td>
-                            <td>Add to cart here</td>
+                            <td>@Html.DisplayFor(modelItem => book.Quantity)</td>
+                            <td>
+                                @Html.ActionLink("Add To Cart", "AddToCart", "Dashboard", new { bookToCart = book.BookID }, new { @class = "button special"})
+                            </td>
 
                         </tr>
                     }
                 </tbody>
 
             </table>
+
+        @*}*@
+            
         </div>
 
 

@@ -504,6 +504,11 @@
     <Content Include="Views\Dashboard\Book\SearchOverview.cshtml" />
     <Content Include="Views\Dashboard\Book\Search\QuickSearch.cshtml" />
     <Content Include="Views\Dashboard\Cart\Checkout.cshtml" />
+    <Content Include="Views\Dashboard\Book\Search\SearchByGenre.cshtml" />
+    <Content Include="Views\Dashboard\Book\Search\AdvancedSearch.cshtml" />
+    <Content Include="Views\Dashboard\Book\Search\GetAllBook.cshtml" />
+    <Content Include="Views\Dashboard\Cart\Index.cshtml" />
+    <Content Include="Views\Dashboard\Cart\AddedToCartMsg.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

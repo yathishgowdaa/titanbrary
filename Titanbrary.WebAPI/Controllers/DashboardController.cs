@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using Titanbrary.BusinessObjects;
@@ -128,9 +129,14 @@ namespace Titanbrary.WebAPI.Controllers
                    {
                        {"bookId", bookId.ToString()}
                    };
-            
+
             using (HttpClient httpClient = new HttpClient())
             {
+                var cookie = HttpContext.Request.Cookies.Get("AuthenticationToken");
+                var token = cookie.Value.Split(':');
+                var newToken = "Bearer" + token[1];
+                httpClient.DefaultRequestHeaders.Add("Authorization", newToken);
+
                 var currentUser = UserManager.FindByEmail(User.Identity.Name);
                 UserModel userInfo = accountMgr.GetUserInfo(currentUser);
 
@@ -145,16 +151,16 @@ namespace Titanbrary.WebAPI.Controllers
                     model.book = JsonConvert.DeserializeObject<BookModel>(response);
                     //get list of genre
                     StringContent queryString = new StringContent("");
-                    var getListGenres = httpClient.PostAsync("http://localhost:50799/api/Book/GetAllGenres",queryString);
+                    var getListGenres = httpClient.PostAsync("http://localhost:50799/api/Book/GetAllGenres", queryString);
                     var responseGenre = getListGenres.Result.Content.ReadAsStringAsync().Result;
-                   
+
                     var listOfGenre = JsonConvert.DeserializeObject<List<GenreModel>>(responseGenre);
-                    foreach(var genre in listOfGenre)
+                    foreach (var genre in listOfGenre)
                     {
-                        if(model.book.GenreID == genre.GenreID)
+                        if (model.book.GenreID == genre.GenreID)
                         {
                             model.genre = genre;
-                            break;                            
+                            break;
                         }
                     }
 
@@ -194,14 +200,36 @@ namespace Titanbrary.WebAPI.Controllers
             UserModel userInfo = accountMgr.GetUserInfo(currentUser);
             UserInfoBookModel model = new UserInfoBookModel();
             model.user = userInfo;
+            model.book = new BookModel();
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var cookie = HttpContext.Request.Cookies.Get("AuthenticationToken");
+                var token = cookie.Value.Split(':');
+                var newToken = "Bearer" + token[1];
+                httpClient.DefaultRequestHeaders.Add("Authorization", newToken);
 
-            return View("Book/SearchOverview", model);
+                StringContent queryString = new StringContent("");
+                var getTokenUrl = httpClient.PostAsync("http://localhost:50799/api/Book/GetAllGenres/", queryString);
+                getTokenUrl.Wait(TimeSpan.FromSeconds(10));
+                if (getTokenUrl.IsCompleted)
+                {
+                    var response = getTokenUrl.Result.Content.ReadAsStringAsync().Result;
+
+                    model.genres = JsonConvert.DeserializeObject<List<GenreModel>>(response);
+
+                    return View("Book/SearchOverview", model);
+                }
+
+            }
+            //return back to book list
+            return RedirectToAction("SearchView", "Dashboard");
         }
 
         [Authorize(Roles = "Admin, Manager, Customer")]
-        public ActionResult QuickSearch(string keywords)
+        [HttpPost]
+        public ActionResult QuickSearch(UserInfoBookModel Model)
         {
-
+            string keywords = Model.book.Keywords;
             //api call
             var data = new Dictionary<string, string>
                    {
@@ -211,6 +239,11 @@ namespace Titanbrary.WebAPI.Controllers
 
             using (HttpClient httpClient = new HttpClient())
             {
+                var cookie = HttpContext.Request.Cookies.Get("AuthenticationToken");
+                var token = cookie.Value.Split(':');
+                var newToken = "Bearer" + token[1];
+                httpClient.DefaultRequestHeaders.Add("Authorization", newToken);
+
                 var currentUser = UserManager.FindByEmail(User.Identity.Name);
                 UserModel userInfo = accountMgr.GetUserInfo(currentUser);
 
@@ -218,12 +251,10 @@ namespace Titanbrary.WebAPI.Controllers
                 getTokenUrl.Wait(TimeSpan.FromSeconds(10));
                 if (getTokenUrl.IsCompleted)
                 {
-                    var response = getTokenUrl.Result.Content.ReadAsStringAsync().Result.ToList();
-
-                    //List<BookModel> second = response.Cast<BookModel>().ToList();
-
+                    var response = getTokenUrl.Result.Content.ReadAsStringAsync().Result;
                     var model = new UserInfoBookModel();
-                    //model.book = JsonConvert.DeserializeObject<List<BookModel>>(second);
+                    model.book = new BookModel();
+                    model.books = JsonConvert.DeserializeObject<List<BookModel>>(response);
                     model.user = userInfo;
 
                     return View("Book/Search/QuickSearch", model);
@@ -235,14 +266,340 @@ namespace Titanbrary.WebAPI.Controllers
             }
         }
 
-        [AllowAnonymous]
-        public ActionResult AddToCart()
+        [Authorize(Roles = "Admin, Manager, Customer")]
+        [HttpPost]
+        public ActionResult SearchByGenre(Guid GenreID)
+        {
+            if (!ModelState.IsValid)
+            {
+                //return back to book list
+                return RedirectToAction("SearchView", "Dashboard");
+
+            }
+            string genreId = GenreID.ToString();
+            //api call
+            var data = new Dictionary<string, string>
+                   {
+                       {"genreId", genreId}
+                   };
+
+
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var cookie = HttpContext.Request.Cookies.Get("AuthenticationToken");
+                var token = cookie.Value.Split(':');
+                var newToken = "Bearer" + token[1];
+                httpClient.DefaultRequestHeaders.Add("Authorization", newToken);
+
+                var currentUser = UserManager.FindByEmail(User.Identity.Name);
+                UserModel userInfo = accountMgr.GetUserInfo(currentUser);
+
+                var getTokenUrl = httpClient.GetAsync(String.Format("http://localhost:50799/api/Book/GetBooksByGenreID/{0}", genreId));
+                getTokenUrl.Wait(TimeSpan.FromSeconds(10));
+                if (getTokenUrl.IsCompleted)
+                {
+                    var response = getTokenUrl.Result.Content.ReadAsStringAsync().Result;
+                    var model = new UserInfoBookModel();
+                    model.book = new BookModel();
+                    model.books = JsonConvert.DeserializeObject<List<BookModel>>(response);
+                    model.user = userInfo;
+
+                    return View("Book/Search/SearchByGenre", model);
+                }
+
+                //return back to book list
+                return RedirectToAction("SearchView", "Dashboard");
+
+            }
+        }
+
+        [Authorize(Roles = "Admin, Manager, Customer")]
+        [HttpPost]
+        public ActionResult AdvancedSearch(string bookId)
+        {
+            if (!ModelState.IsValid)
+            {
+                //return back to book list
+                return RedirectToAction("SearchView", "Dashboard");
+
+            }
+            //Guid bookID = Guid.Parse(bookId);
+            //api call
+            var data = new Dictionary<string, string>
+                   {
+                       {"bookId", bookId}
+                   };
+
+
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var cookie = HttpContext.Request.Cookies.Get("AuthenticationToken");
+                var token = cookie.Value.Split(':');
+                var newToken = "Bearer" + token[1];
+                httpClient.DefaultRequestHeaders.Add("Authorization", newToken);
+
+                var currentUser = UserManager.FindByEmail(User.Identity.Name);
+                UserModel userInfo = accountMgr.GetUserInfo(currentUser);
+
+                var getTokenUrl = httpClient.GetAsync(String.Format("http://localhost:50799/api/Book/GetBookByBookID/{0}", bookId));
+                getTokenUrl.Wait(TimeSpan.FromSeconds(10));
+                if (getTokenUrl.IsCompleted)
+                {
+                    var response = getTokenUrl.Result.Content.ReadAsStringAsync().Result;
+                    var model = new UserInfoBookModel();
+                    model.book = JsonConvert.DeserializeObject<BookModel>(response);
+                    model.books = new List<BookModel>();
+                    model.user = userInfo;
+
+                    return View("Book/Search/AdvancedSearch", model);
+                }
+
+                //return back to book list
+                return RedirectToAction("SearchView", "Dashboard");
+
+            }
+        }
+
+        [Authorize(Roles = "Admin, Manager, Customer")]
+
+        public ActionResult GetAllBook()
+        {
+
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var cookie = HttpContext.Request.Cookies.Get("AuthenticationToken");
+                var token = cookie.Value.Split(':');
+                var newToken = "Bearer" + token[1];
+                httpClient.DefaultRequestHeaders.Add("Authorization", newToken);
+
+                var currentUser = UserManager.FindByEmail(User.Identity.Name);
+                UserModel userInfo = accountMgr.GetUserInfo(currentUser);
+
+                StringContent queryString = new StringContent("");
+                var getTokenUrl = httpClient.PostAsync("http://localhost:50799/api/Book/GetAllBooks", queryString);
+                getTokenUrl.Wait(TimeSpan.FromSeconds(10));
+                if (getTokenUrl.IsCompleted)
+                {
+                    var response = getTokenUrl.Result.Content.ReadAsStringAsync().Result;
+                    var model = new UserInfoBookModel();
+                    model.book = new BookModel();
+                    model.books = JsonConvert.DeserializeObject<List<BookModel>>(response);
+                    model.user = userInfo;
+
+                    return View("Book/Search/GetAllBook", model);
+                }
+
+                //return back to book list
+                return RedirectToAction("SearchView", "Dashboard");
+
+            }
+        }
+
+        [Authorize(Roles = "Admin, Manager, Customer")]
+        public ActionResult CartView()
+        {
+            
+            //get the cart if existant
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var cookie = HttpContext.Request.Cookies.Get("AuthenticationToken");
+                var token = cookie.Value.Split(':');
+                var newToken = "Bearer" + token[1];
+                httpClient.DefaultRequestHeaders.Add("Authorization", newToken);
+
+                var currentUser = UserManager.FindByEmail(User.Identity.Name);
+                UserModel userInfo = accountMgr.GetUserInfo(currentUser);
+
+                string dataJson = JsonConvert.SerializeObject(userInfo.Id);
+                var queryString = new StringContent(dataJson, Encoding.UTF8, "application/json");
+                var getTokenUrl = httpClient.PostAsync("http://localhost:50799/api/Cart/GetCart", queryString);
+                getTokenUrl.Wait(TimeSpan.FromSeconds(20));
+                if (getTokenUrl.IsCompleted)
+                {
+                    var response = getTokenUrl.Result.Content.ReadAsStringAsync().Result;
+                    var jsonResponse = JsonConvert.DeserializeObject<CartModel>(response);
+                    var model = new UserInfoBookModel();
+                    model.book = new BookModel();
+                    model.books = jsonResponse.Books;
+                    model.user = userInfo;
+                    model.cart = jsonResponse;
+
+                    //get the book details
+                    //foreach(var book in model.cart.BookList)
+                    //{
+                    //    var getBookDetails = httpClient.GetAsync(String.Format("http://localhost:50799/api/Book/GetBookByBookID/{0}", book.BookID.ToString()));
+                    //    getBookDetails.Wait(TimeSpan.FromSeconds(10));
+                    //    if (getBookDetails.IsCompleted)
+                    //    {
+                    //        var res = getBookDetails.Result.Content.ReadAsStringAsync().Result;
+                    //        var bookDetails = JsonConvert.DeserializeObject<BookModel>(response);
+                    //        model.books.Add(bookDetails);
+                    //    }
+                        
+                    //}
+
+                    return View("Cart/Index", model);
+                }
+
+                //return back to book list
+                return RedirectToAction("SearchView", "Dashboard");
+
+            }
+
+
+            //return View("Cart/Index", model);
+        }
+
+        [Authorize(Roles = "Admin, Manager, Customer")]
+        public ActionResult AddToCart(string bookToCart)
+        {
+            if (!ModelState.IsValid)
+            {
+                //return back to book list
+                return RedirectToAction("SearchView", "Dashboard");
+            }
+            //get usesrinfo
+            //check if cart exist -> GetCart API
+            //return CartModel with book in the cart
+            //if 200 -> addBookToCart API(cart Id)
+            //if 200 null -> createCart with CartXBookModel
+            var currentUser = UserManager.FindByEmail(User.Identity.Name);
+            UserModel userInfo = accountMgr.GetUserInfo(currentUser);
+
+            //setup my cart
+            var body = new CartModel();
+            body.BookList = new List<CartXBookModel>();
+            body.BookList.Add(new CartXBookModel()
+            {
+                BookID = Guid.Parse(bookToCart),
+                Quantity = 1
+            });
+            body.UserID = Guid.Parse(userInfo.Id);
+            
+
+            var hasCart = getCartByUserId(userInfo.Id);
+            if(hasCart != null)
+            {
+                //add the book to the existing cart
+                //call addBookToCart API here
+                //return success view
+                //or home
+                body.CartID = hasCart.CartID;
+                if (!addBookToCart(body))
+                {
+                    //return back to book list
+                    return RedirectToAction("SearchView", "Dashboard");
+                }
+
+                return RedirectToAction("AddToCartSuccessView");
+            }
+
+            //create new cart 
+            //add book to the cart while creating cart
+            //return success view 
+            //or home
+            
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var cookie = HttpContext.Request.Cookies.Get("AuthenticationToken");
+                var token = cookie.Value.Split(':');
+                var newToken = "Bearer" + token[1];
+                httpClient.DefaultRequestHeaders.Add("Authorization", newToken);
+
+                
+                body.UserID = Guid.Parse(userInfo.Id);
+                string dataJson = JsonConvert.SerializeObject(body);
+                var queryString = new StringContent(dataJson, Encoding.UTF8, "application/json");
+                var getTokenUrl = httpClient.PostAsync("http://localhost:50799/api/Cart/CreateCart", queryString);
+                getTokenUrl.Wait(TimeSpan.FromSeconds(10));
+                if (getTokenUrl.IsCompleted)
+                {
+                    var response = getTokenUrl.Result.Content.ReadAsStringAsync().Result;
+                    var model = new UserInfoBookModel();
+                    model.book = new BookModel();
+                    model.books = JsonConvert.DeserializeObject<List<BookModel>>(response);
+                    model.user = userInfo;
+
+                    return RedirectToAction("AddToCartSuccessView");
+                }
+
+                //return back to book list
+                return RedirectToAction("SearchView", "Dashboard");
+
+            }
+        }
+
+        public ActionResult removeToCart(string bookToCart)
+        {
+
+            //return back to book list
+            return RedirectToAction("SearchView", "Dashboard");
+        }
+
+        private bool addBookToCart(CartModel book)
+        {
+            //add the book to the existing cart
+            var result = false;
+
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var cookie = HttpContext.Request.Cookies.Get("AuthenticationToken");
+                var token = cookie.Value.Split(':');
+                var newToken = "Bearer" + token[1];
+                httpClient.DefaultRequestHeaders.Add("Authorization", newToken);
+
+
+               
+                string dataJson = JsonConvert.SerializeObject(book);
+                var queryString = new StringContent(dataJson, Encoding.UTF8, "application/json");
+                var getTokenUrl = httpClient.PostAsync("http://localhost:50799/api/Book/AddBookToCart", queryString);
+                getTokenUrl.Wait(TimeSpan.FromSeconds(10));
+                if (getTokenUrl.IsCompleted)
+                {
+                    var response = getTokenUrl.Result.Content.ReadAsStringAsync().Result;
+                    return true;
+                }
+            }
+            
+            return result;
+        }
+
+        private CartModel getCartByUserId(string userId)
+        {
+            var result = new CartModel();
+            //get the cart from user and return cart
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var cookie = HttpContext.Request.Cookies.Get("AuthenticationToken");
+                var token = cookie.Value.Split(':');
+                var newToken = "Bearer" + token[1];
+                httpClient.DefaultRequestHeaders.Add("Authorization", newToken);
+                var body = Guid.Parse(userId);
+                string dataJson = JsonConvert.SerializeObject(body);
+                var queryString = new StringContent(dataJson, Encoding.UTF8, "application/json");
+                var getTokenUrl = httpClient.PostAsync("http://localhost:50799/api/Cart/GetCartByUserId", queryString);
+                getTokenUrl.Wait(TimeSpan.FromSeconds(10));
+                if (getTokenUrl.IsCompleted)
+                {
+                    var response = getTokenUrl.Result.Content.ReadAsStringAsync().Result;
+                    result = JsonConvert.DeserializeObject<CartModel>(response);
+
+                    return result;
+                }                            
+
+            }
+            return result;
+
+        }
+
+        public ActionResult AddToCartSuccessView()
         {
             var currentUser = UserManager.FindByEmail(User.Identity.Name);
             UserModel userInfo = accountMgr.GetUserInfo(currentUser);
             UserInfoBookModel model = new UserInfoBookModel();
             model.user = userInfo;
-            return View("Cart/Checkout", model);
+            return View("Cart/AddedToCartMsg", model);
         }
+
     }
 }

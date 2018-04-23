@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace Titanbrary.WebAPI.Controllers
 {
+    [RoutePrefix("api/Cart")]
     public class CartController : ApiController
     {
 		private readonly ICart _Cart;
@@ -38,16 +39,28 @@ namespace Titanbrary.WebAPI.Controllers
             _Account = _account;
 		}
 
-		// POST api/<controller>
-		[Route("GetCart/{cartID}")]
+        // POST api/<controller>
+        [Authorize(Roles = "Admin, Manager, Customer")]
+        [Route("GetCart")]
 		[HttpPost]
-		public IHttpActionResult GetCart(Guid cartID)
+		public IHttpActionResult GetCart([FromBody]Guid userId)
 		{
-			var list = _Cart.GetCart(cartID);
+			var list = _Cart.GetCart(userId);
 			return Ok(list);
 		}
 
-		// POST api/<controller>
+        // POST api/<controller>
+        [Authorize(Roles = "Admin, Manager, Customer")]
+        [Route("GetCartByUserId")]
+        [HttpPost]
+        public IHttpActionResult GetCartByUserId([FromBody]Guid userId)
+        {
+            var list = _Cart.GetCartByUserID(userId);
+            return Ok(list);
+        }
+
+        // POST api/<controller>
+        [Authorize(Roles = "Admin, Manager, Customer")]
 		[Route("GetBook/{bookID}")]
 		[HttpPost]
 		public IHttpActionResult GetBook(Guid bookID)
@@ -56,11 +69,14 @@ namespace Titanbrary.WebAPI.Controllers
 			return Ok(list);
 		}
 
-		// POST api/<controller>
-		[Route("CreateCart")]
+        // POST api/<controller>
+        [Authorize(Roles = "Admin, Manager, Customer")]
+        [Route("CreateCart")]
 		[HttpPost]
 		public IHttpActionResult CreateCart([FromBody] CartModel cart)
 		{
+            //check if the cart exist, if so don't create cart?
+            //
 			var list = _Cart.CreateCart(cart);
             if (list)
                 return Ok();
@@ -68,6 +84,7 @@ namespace Titanbrary.WebAPI.Controllers
 		}
 
         // POST api/<controller>
+        [Authorize(Roles = "Admin, Manager, Customer")]
         [Route("Checkout/{cartID}")]
         [HttpPost]
         public async Task<IHttpActionResult> Checkout(Guid cartID)

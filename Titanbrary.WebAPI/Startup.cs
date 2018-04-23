@@ -29,7 +29,7 @@ namespace Titanbrary.WebAPI
             app.UseHangfireDashboard();
             app.UseHangfireServer();
 
-            //RecurringJob.AddOrUpdate(() => deleteOldCarts(), Cron.Daily);
+            RecurringJob.AddOrUpdate(() => deleteOldCarts(), Cron.Daily);
 
             ConfigureAuth(app);
             //WebApiConfig.Register(config);
@@ -185,7 +185,7 @@ namespace Titanbrary.WebAPI
             
         }
 
-        private void deleteOldCarts()
+        public void deleteOldCarts()
         {
             using (TitanbraryContainer ctx = new TitanbraryContainer())
             {

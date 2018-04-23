@@ -6,7 +6,8 @@
 
 <section id="intro" class="wrapper style1 fullscreen fade-up">
     <div class="inner">
-        <h1>Quick Search Result</h1><br />
+        
+        <h1><span class="icon fa-shopping-cart"</span> Cart</h1><br />
         <div class="row uniform">
             <table id="table" class="table table-responsive">
                 <thead>
@@ -15,19 +16,21 @@
                         <th scope="col">Author</th>
                         <th scope="col">Publisher</th>
                         <th scope="col">Edition</th>
-                        <th scope="col">Options</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var book in Model.books)
                     {
-                        
+
                         <tr>
                             <td>@Html.DisplayFor(modelItem => book.Name)</td>
                             <td>@Html.DisplayFor(modelItem => book.Author)</td>
                             <td>@Html.DisplayFor(modelItem => book.Publisher)</td>
                             <td>@Html.DisplayFor(modelItem => book.Edition)</td>
-                            <td>Add to cart here</td>
+                            <td>@Html.DisplayFor(modelItem => book.Quantity)</td>
+                            <td>@Html.ActionLink(" ", "RemoveToCart", "Dashboard", new { bookToCart = book.BookID }, new { @class = "icon fa-times" })</td>
 
                         </tr>
                     }

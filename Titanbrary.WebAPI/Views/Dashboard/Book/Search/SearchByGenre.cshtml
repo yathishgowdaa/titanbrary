@@ -6,7 +6,7 @@
 
 <section id="intro" class="wrapper style1 fullscreen fade-up">
     <div class="inner">
-        <h1>Quick Search Result</h1><br />
+        <h1>Search by Genre Result</h1><br />
         <div class="row uniform">
             <table id="table" class="table table-responsive">
                 <thead>
@@ -21,7 +21,7 @@
                 <tbody>
                     @foreach (var book in Model.books)
                     {
-                        
+
                         <tr>
                             <td>@Html.DisplayFor(modelItem => book.Name)</td>
                             <td>@Html.DisplayFor(modelItem => book.Author)</td>

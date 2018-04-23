@@ -44,7 +44,7 @@ namespace Titanbrary.WebAPI.Controllers
 		#region Book
 
 		// POST api/<controller>
-        [AllowAnonymous]
+        [Authorize(Roles ="Admin, Manager, Customer")]
 		[Route("GetAllBooks")]
 		[HttpPost]
 		public IHttpActionResult GetAllBooks()
@@ -53,17 +53,19 @@ namespace Titanbrary.WebAPI.Controllers
 			return Ok(list);
 		}
 
-		// POST api/<controller>
-		[Route("GetBooksByGenreID/{genreID}")]
-		[HttpPost]
+        // POST api/<controller>
+        [Authorize(Roles = "Admin, Manager, Customer")]
+        [Route("GetBooksByGenreID/{genreID}")]
+		[HttpGet]
 		public IHttpActionResult GetBooksByGenreID(Guid genreID)
 		{
 			var list = _Book.GetBooksByGenreID(genreID);
 			return Ok(list);
 		}
 
-		// POST api/<controller>
-		[Route("GetBookByBookID/{bookID}")]
+        // POST api/<controller>
+        [Authorize(Roles = "Admin, Manager")]
+        [Route("GetBookByBookID/{bookID}")]
 		[HttpGet]
         [ResponseType(typeof(BookModel))]
 		public IHttpActionResult GetBookByBookID(Guid bookID)
@@ -89,8 +91,9 @@ namespace Titanbrary.WebAPI.Controllers
 			return Ok();
 		}
 
-		// POST api/<controller>
-		[Route("UpdateBook")]
+        // POST api/<controller>
+        [Authorize(Roles = "Admin, Manager")]
+        [Route("UpdateBook")]
 		[HttpPost]
 		public async Task<IHttpActionResult> UpdateBook([FromBody] BookModel book)
 		{
@@ -132,8 +135,9 @@ namespace Titanbrary.WebAPI.Controllers
 			return BadRequest();
 		}
 
-		// POST api/<controller>
-		[Route("SearchBooks/{searchString?}")]
+        // POST api/<controller>
+        [Authorize(Roles = "Admin, Manager, Customer")]
+        [Route("SearchBooks/{searchString?}")]
 		[HttpGet]
 		public IHttpActionResult SearchBooks(string searchString)
 		{
@@ -141,29 +145,40 @@ namespace Titanbrary.WebAPI.Controllers
 			return Ok(list);
 		}
 
-		// POST api/<controller>
-		[Route("AddBookToCart/{cartID}")]
+        // POST api/<controller>
+        [Authorize(Roles = "Admin, Manager, Customer")]
+        [Route("AddBookToCart")]
 		[HttpPost]
-		public IHttpActionResult AddBookToCart(Guid cartID, [FromBody] CartXBookModel cartXBook)
+		public IHttpActionResult AddBookToCart([FromBody]CartModel model)
 		{
-			var list = _Book.AddBookToCart(cartID, cartXBook);
-			if (list)
-				return Ok();
-			return BadRequest();
-		}
 
-		// POST api/<controller>
-		[Route("DeleteBookFromCart/{cartID}/{bookID}")]
-		[HttpPost]
-		public IHttpActionResult DeleteBookFromCart(Guid cartID, Guid bookID)
-		{
-			var list = _Book.DeleteBookFromCart(cartID, bookID);
+			var list = _Book.AddBookToCart(model.CartID, model.BookList[0]);
 			if (list)
 				return Ok();
 			return BadRequest();
 		}
 
         // POST api/<controller>
+        [Authorize(Roles = "Admin, Manager, Customer")]
+        [Route("DeleteBookFromCart")]
+		[HttpPost]
+		public IHttpActionResult DeleteBookFromCart([FromBody] CartModel model)
+		{
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            Guid cartID = model.CartID;
+            Guid bookID = model.BookId;
+
+            var list = _Book.DeleteBookFromCart(cartID, bookID);
+			if (list)
+				return Ok();
+			return BadRequest();
+		}
+
+        // POST api/<controller>
+        [Authorize(Roles = "Admin, Manager, Customer")]
         [Route("AddBookToWaitlist/{bookID}/{userID}")]
         [HttpPost]
         public async Task<IHttpActionResult> AddBookToWaitlist(Guid bookID, Guid userID)
@@ -182,6 +197,7 @@ namespace Titanbrary.WebAPI.Controllers
         }
 
         // POST api/<controller>
+        [AllowAnonymous]
         [Route("FeaturedBooks")]
 		[HttpPost]
 		public IHttpActionResult FeaturedBooks()
@@ -230,9 +246,9 @@ namespace Titanbrary.WebAPI.Controllers
 
         #region Genre
 
-		// POST api/<controller>
-        [AllowAnonymous]
-		[Route("GetAllGenres")]
+        // POST api/<controller>
+        [Authorize(Roles = "Admin, Manager, Customer")]
+        [Route("GetAllGenres")]
 		[HttpPost]
         [ResponseType(typeof(List<GenreModel>))]
 		public IHttpActionResult GetAllGenres()
@@ -241,8 +257,9 @@ namespace Titanbrary.WebAPI.Controllers
 			return Ok(list);
 		}
 
-		// POST api/<controller>
-		[Route("GetGenresByBookID/{bookID}")]
+        // POST api/<controller>
+        [Authorize(Roles = "Admin, Manager, Customer")]
+        [Route("GetGenresByBookID/{bookID}")]
 		[HttpPost]
 		public IHttpActionResult GetGenresByBookID(Guid bookID)
 		{
@@ -250,8 +267,9 @@ namespace Titanbrary.WebAPI.Controllers
 			return Ok(list);
 		}
 
-		// POST api/<controller>
-		[Route("GetGenreByGenreID/{genreID}")]
+        // POST api/<controller>
+        [Authorize(Roles = "Admin, Manager, Customer")]
+        [Route("GetGenreByGenreID/{genreID}")]
 		[HttpPost]
 		public IHttpActionResult GetGenreByGenreID(Guid genreID)
 		{
@@ -276,8 +294,9 @@ namespace Titanbrary.WebAPI.Controllers
 			return Ok();
 		}
 
-		// POST api/<controller>
-		[Route("UpdateGenre")]
+        // POST api/<controller>
+        [Authorize(Roles = "Admin, Manager")]
+        [Route("UpdateGenre")]
 		[HttpPost]
 		public IHttpActionResult UpdateGenre([FromBody] GenreModel genre)
 		{
