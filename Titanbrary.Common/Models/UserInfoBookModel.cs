@@ -16,5 +16,6 @@ namespace Titanbrary.Common.Models
         public Guid genreId { get; set; }
         public string bookId { get; set; }
         public CartModel cart { get; set; }
+        public int countItem { get; set; }
     }
 }

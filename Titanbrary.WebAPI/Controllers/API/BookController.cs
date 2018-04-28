@@ -214,13 +214,14 @@ namespace Titanbrary.WebAPI.Controllers
 
             SmtpClient mailClient = new SmtpClient("smtp.gmail.com", 587);
             mailClient.Credentials = new NetworkCredential("titanbrary.reminders@gmail.com", "titanbraryreminders");
+            mailClient.EnableSsl = true;
 
             MailMessage email = new MailMessage();
             email.From = new MailAddress("Titanbrary@gmail.com");
             email.To.Add(model.Email);
             email.Subject = "Waitlisted!";
             email.Body = string.Format("<p>Hello {0} {1}</p><p>Thank you for waitlisting! You will be notified as soon as it is available.</p><p>Here is a list of what you got:</p>{2}<p>Thanks,</p><p>Titanbrary Team</p>", model.FirstName, model.LastName, booksHTML);
-
+            email.IsBodyHtml = true;
             await mailClient.SendMailAsync(email);
         }
 
@@ -232,13 +233,13 @@ namespace Titanbrary.WebAPI.Controllers
 
             SmtpClient mailClient = new SmtpClient("smtp.gmail.com", 587);
             mailClient.Credentials = new NetworkCredential("titanbrary.reminders@gmail.com", "titanbraryreminders");
-
+            mailClient.EnableSsl = true;
             MailMessage email = new MailMessage();
             email.From = new MailAddress("Titanbrary@gmail.com");
             email.To.Add(model.Email);
             email.Subject = "Book Available!";
             email.Body = string.Format("<p>Hello {0} {1}</p><p>Thank you for waiting! Your book is now available to checkout and has already been placed in your cart. Please login to checkout the book.</p><p>Here is a list of what you got:</p>{2}<p>Thanks,</p><p>Titanbrary Team</p>", model.FirstName, model.LastName, booksHTML);
-
+            email.IsBodyHtml = true;
             await mailClient.SendMailAsync(email);
         }
 

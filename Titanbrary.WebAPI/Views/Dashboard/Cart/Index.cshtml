@@ -6,8 +6,23 @@
 
 <section id="intro" class="wrapper style1 fullscreen fade-up">
     <div class="inner">
-        
-        <h1><span class="icon fa-shopping-cart"</span> Cart</h1><br />
+        <h1><span class="fa fa-shopping-cart"></span> Cart</h1>
+        <p>Review of your <b>@Html.DisplayFor(modelItem => modelItem.countItem)</b> items</p>
+        <ul class="actions fit">
+            <li>
+                <h3>SECURE TRANSACTION</h3>
+                <span>We use the latest SSL security technology to encrypt all personal information.</span>
+            </li>
+            <li>
+                <h3>ALWAYS FREE</h3>
+                <span>We do not belive in payment when it comes to book.</span>
+            </li>
+            <li>
+                <h3>WAITING LIST</h3>
+                <span>Receive automated email or text notification when the book is available.</span>
+            </li>
+        </ul>
+        <br />
         <div class="row uniform">
             <table id="table" class="table table-responsive">
                 <thead>
@@ -30,13 +45,26 @@
                             <td>@Html.DisplayFor(modelItem => book.Publisher)</td>
                             <td>@Html.DisplayFor(modelItem => book.Edition)</td>
                             <td>@Html.DisplayFor(modelItem => book.Quantity)</td>
-                            <td>@Html.ActionLink(" ", "RemoveToCart", "Dashboard", new { bookToCart = book.BookID }, new { @class = "icon fa-times" })</td>
+                            <td>@Html.ActionLink(" ", "RemoveToCart", "Dashboard", new { cartId = Model.cart.CartID, bookToCart = book.BookID }, new { @class = "icon fa-times" })</td>
 
                         </tr>
                     }
                 </tbody>
 
             </table>
+        </div>
+        <div class="row uniform">
+            <div class="6u 12u$(xsmall)">
+                <h3>Estimation</h3>
+                <ul>
+                    <li><span class="fa fa-clock-o"></span> Same day shipping</li>
+                    <li><span class="fa fa-envelope-o"></span> Email notification</li>
+                    <li><span class="fa fa-dollar"></span> FREE</li>
+                </ul>
+            </div>
+            <div class="6u 12u$(xsmall)">
+                @Html.ActionLink("Submit Order", "checkOut", "Dashboard", new { cartId = Model.cart.CartID}, new { @class="button special"})
+            </div>
         </div>
 
 

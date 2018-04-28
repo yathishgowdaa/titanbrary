@@ -33,7 +33,17 @@
                             <td>@Html.DisplayFor(modelItem => book.Edition)</td>
                             <td>@Html.DisplayFor(modelItem => book.Quantity)</td>
                             <td>
-                                @Html.ActionLink("Add To Cart", "AddToCart", "Dashboard", new { bookToCart = book.BookID }, new { @class = "button special"})
+                                @* if quantity is less than 0 *@
+                                @if(book.Quantity <= 0)
+                                {
+                                    @Html.ActionLink("Add to waitlist", "AddToCart", "Dashboard", new { bookToCart = book.BookID }, new { @class = "button special" })
+
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Add To Cart", "AddToCart", "Dashboard", new { bookToCart = book.BookID }, new { @class = "button special" })
+
+                                }
                             </td>
 
                         </tr>

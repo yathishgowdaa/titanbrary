@@ -27,7 +27,9 @@
                             <td>@Html.DisplayFor(modelItem => book.Author)</td>
                             <td>@Html.DisplayFor(modelItem => book.Publisher)</td>
                             <td>@Html.DisplayFor(modelItem => book.Edition)</td>
-                            <td>Add to cart here</td>
+                            <td>
+                                @Html.ActionLink("Add To Cart", "AddToCart", "Dashboard", new { bookToCart = book.BookID }, new { @class = "button special" })
+                            </td>
 
                         </tr>
                     }

@@ -219,12 +219,18 @@ namespace Titanbrary.Data.DACs
 			{
 				try
 				{
-					ctx.CartXBooks.Remove(new CartXBook
-					{
-						BookID = bookID,
-						CartID = cartID
-					});
-					ctx.SaveChanges();
+                    //ctx.CartXBooks.Remove(new CartXBook
+                    //{
+                    //	BookID = bookID,
+                    //	CartID = cartID
+                    //});
+                    var result = ctx.CartXBooks.Where(c => c.CartID == cartID && c.BookID == bookID).FirstOrDefault();
+                    //ctx.Entry(industry).State = System.Data.Entity.EntityState.Deleted;
+                    ctx.Entry(result).State = System.Data.Entity.EntityState.Deleted;
+
+
+
+                    ctx.SaveChanges();
 				}
 				catch (Exception ex)
 				{

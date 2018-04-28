@@ -63,13 +63,13 @@ namespace Titanbrary.Data.DACs
 			return true;
 		}
 
-		public virtual CartModel GetCart(Guid userId)
+		public virtual CartModel GetCart(Guid cartId)
 		{
 			List<CartModel> result = new List<CartModel>();
            
 			using (TitanbraryContainer ctx = new TitanbraryContainer())
 			{
-				result = ctx.Carts.Where(c => c.UserID == userId && c.Completed == false).Select(c => new CartModel
+				result = ctx.Carts.Where(c => c.CartID == cartId && c.Completed == false).Select(c => new CartModel
 				{                  
 					CartID = c.CartID,
 					UserID = c.UserID,
@@ -81,6 +81,10 @@ namespace Titanbrary.Data.DACs
 						Quantity = cb.Quantity
 					}).ToList()                    
 				}).ToList();
+                if(result.Count() == 0)
+                {
+                    return null;
+                }
                 foreach(var books in result)
                 {
                     books.Books = new List<BookModel>();
@@ -125,6 +129,12 @@ namespace Titanbrary.Data.DACs
             using (TitanbraryContainer ctx = new TitanbraryContainer())
             {
                 var cart = ctx.Carts.Where(c => c.UserID == userID && c.Completed == false).FirstOrDefault();
+
+                if(cart == null)
+                {
+                    return null;
+                }
+
                 result.CartID = cart.CartID;
                 result.UserID = cart.UserID;
                 result.CreatedDate = cart.CreatedDate;

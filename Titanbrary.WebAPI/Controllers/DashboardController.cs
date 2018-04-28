@@ -361,7 +361,6 @@ namespace Titanbrary.WebAPI.Controllers
         }
 
         [Authorize(Roles = "Admin, Manager, Customer")]
-
         public ActionResult GetAllBook()
         {
 
@@ -398,7 +397,7 @@ namespace Titanbrary.WebAPI.Controllers
         [Authorize(Roles = "Admin, Manager, Customer")]
         public ActionResult CartView()
         {
-            
+
             //get the cart if existant
             using (HttpClient httpClient = new HttpClient())
             {
@@ -412,31 +411,35 @@ namespace Titanbrary.WebAPI.Controllers
 
                 string dataJson = JsonConvert.SerializeObject(userInfo.Id);
                 var queryString = new StringContent(dataJson, Encoding.UTF8, "application/json");
-                var getTokenUrl = httpClient.PostAsync("http://localhost:50799/api/Cart/GetCart", queryString);
+                var getTokenUrl = httpClient.PostAsync("http://localhost:50799/api/Cart/GetCartByUserId", queryString);
                 getTokenUrl.Wait(TimeSpan.FromSeconds(20));
                 if (getTokenUrl.IsCompleted)
                 {
                     var response = getTokenUrl.Result.Content.ReadAsStringAsync().Result;
+
+                    //if null means no cart
+                    //show cart is empty
+                    if (response == "null")
+                    {
+                        var result = new UserInfoBookModel();
+                        result.book = new BookModel();
+                        result.books = new List<BookModel>();
+                        result.user = userInfo;
+                        result.cart = new CartModel();
+                        result.countItem = 0;
+                        return View("cart/Index", result);
+
+
+                    }
+                    
                     var jsonResponse = JsonConvert.DeserializeObject<CartModel>(response);
                     var model = new UserInfoBookModel();
                     model.book = new BookModel();
                     model.books = jsonResponse.Books;
                     model.user = userInfo;
                     model.cart = jsonResponse;
-
-                    //get the book details
-                    //foreach(var book in model.cart.BookList)
-                    //{
-                    //    var getBookDetails = httpClient.GetAsync(String.Format("http://localhost:50799/api/Book/GetBookByBookID/{0}", book.BookID.ToString()));
-                    //    getBookDetails.Wait(TimeSpan.FromSeconds(10));
-                    //    if (getBookDetails.IsCompleted)
-                    //    {
-                    //        var res = getBookDetails.Result.Content.ReadAsStringAsync().Result;
-                    //        var bookDetails = JsonConvert.DeserializeObject<BookModel>(response);
-                    //        model.books.Add(bookDetails);
-                    //    }
-                        
-                    //}
+                    model.countItem = model.books.Count();
+                  
 
                     return View("Cart/Index", model);
                 }
@@ -475,10 +478,10 @@ namespace Titanbrary.WebAPI.Controllers
                 Quantity = 1
             });
             body.UserID = Guid.Parse(userInfo.Id);
-            
+
 
             var hasCart = getCartByUserId(userInfo.Id);
-            if(hasCart != null)
+            if (hasCart.CartID != Guid.Empty)
             {
                 //add the book to the existing cart
                 //call addBookToCart API here
@@ -498,7 +501,7 @@ namespace Titanbrary.WebAPI.Controllers
             //add book to the cart while creating cart
             //return success view 
             //or home
-            
+
             using (HttpClient httpClient = new HttpClient())
             {
                 var cookie = HttpContext.Request.Cookies.Get("AuthenticationToken");
@@ -506,7 +509,7 @@ namespace Titanbrary.WebAPI.Controllers
                 var newToken = "Bearer" + token[1];
                 httpClient.DefaultRequestHeaders.Add("Authorization", newToken);
 
-                
+
                 body.UserID = Guid.Parse(userInfo.Id);
                 string dataJson = JsonConvert.SerializeObject(body);
                 var queryString = new StringContent(dataJson, Encoding.UTF8, "application/json");
@@ -528,10 +531,80 @@ namespace Titanbrary.WebAPI.Controllers
 
             }
         }
-
-        public ActionResult removeToCart(string bookToCart)
+        [Authorize(Roles = "Admin, Manager, Customer")]
+        public ActionResult removeToCart(string cartId, string bookToCart)
         {
 
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var data = new Dictionary<string, string>
+                   {
+                       {"bookId", bookToCart},
+                       {"cartid", cartId }
+                   };
+
+
+                var cookie = HttpContext.Request.Cookies.Get("AuthenticationToken");
+                var token = cookie.Value.Split(':');
+                var newToken = "Bearer" + token[1];
+                httpClient.DefaultRequestHeaders.Add("Authorization", newToken);
+
+
+
+                string dataJson = JsonConvert.SerializeObject(data);
+                var queryString = new StringContent(dataJson, Encoding.UTF8, "application/json");
+                var getTokenUrl = httpClient.PostAsync("http://localhost:50799/api/Book/DeleteBookFromCart", queryString);
+                getTokenUrl.Wait(TimeSpan.FromSeconds(10));
+                if (getTokenUrl.IsCompleted)
+                {
+                    var response = getTokenUrl.Result.Content.ReadAsStringAsync().Result;
+                    return RedirectToAction("CartView", "Dashboard");
+                }
+            }
+            //return back to book list
+            return RedirectToAction("SearchView", "Dashboard");
+        }
+
+        [Authorize(Roles = "Admin, Manager, Customer")]
+        public ActionResult checkOut(string cartId)
+        {
+            if (!ModelState.IsValid)
+            {
+                //return back to book list
+                return RedirectToAction("SearchView", "Dashboard");
+            }
+
+            //call api
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var currentUser = UserManager.FindByEmail(User.Identity.Name);
+                UserModel userInfo = accountMgr.GetUserInfo(currentUser);
+                UserInfoBookModel model = new UserInfoBookModel();
+                model.user = userInfo;
+
+                var data = new Dictionary<string, string>
+                   {
+                       {"cartid", cartId }
+                   };
+
+
+                var cookie = HttpContext.Request.Cookies.Get("AuthenticationToken");
+                var token = cookie.Value.Split(':');
+                var newToken = "Bearer" + token[1];
+                httpClient.DefaultRequestHeaders.Add("Authorization", newToken);
+
+
+
+                string dataJson = JsonConvert.SerializeObject(cartId);
+                var queryString = new StringContent(dataJson, Encoding.UTF8, "application/json");
+                var getTokenUrl = httpClient.PostAsync("http://localhost:50799/api/Cart/Checkout", queryString);
+                getTokenUrl.Wait(TimeSpan.FromSeconds(10));
+                if (getTokenUrl.IsCompleted)
+                {
+                    var response = getTokenUrl.Result.Content.ReadAsStringAsync().Result;
+                    return View("Cart/AddedToCartMsg", model);
+                }
+            }
             //return back to book list
             return RedirectToAction("SearchView", "Dashboard");
         }
@@ -549,7 +622,7 @@ namespace Titanbrary.WebAPI.Controllers
                 httpClient.DefaultRequestHeaders.Add("Authorization", newToken);
 
 
-               
+
                 string dataJson = JsonConvert.SerializeObject(book);
                 var queryString = new StringContent(dataJson, Encoding.UTF8, "application/json");
                 var getTokenUrl = httpClient.PostAsync("http://localhost:50799/api/Book/AddBookToCart", queryString);
@@ -560,7 +633,7 @@ namespace Titanbrary.WebAPI.Controllers
                     return true;
                 }
             }
-            
+
             return result;
         }
 
@@ -585,7 +658,7 @@ namespace Titanbrary.WebAPI.Controllers
                     result = JsonConvert.DeserializeObject<CartModel>(response);
 
                     return result;
-                }                            
+                }
 
             }
             return result;

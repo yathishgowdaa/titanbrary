@@ -9,14 +9,15 @@ using Titanbrary.Common.Interfaces.BusinessObjects;
 using Titanbrary.Common.Models;
 using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
 
 namespace Titanbrary.WebAPI.Controllers
 {
     [RoutePrefix("api/Cart")]
     public class CartController : ApiController
     {
-		private readonly ICart _Cart;
-		private readonly IBook _Book;
+        private readonly ICart _Cart;
+        private readonly IBook _Book;
         private readonly IAccount _Account;
         private ApplicationUserManager _UserManager;
 
@@ -33,21 +34,22 @@ namespace Titanbrary.WebAPI.Controllers
         }
 
         public CartController(ICart _cart, IBook _book, IAccount _account)
-		{
-			_Cart = _cart;
-			_Book = _book;
+        {
+            _Cart = _cart;
+            _Book = _book;
             _Account = _account;
-		}
+        }
 
         // POST api/<controller>
         [Authorize(Roles = "Admin, Manager, Customer")]
         [Route("GetCart")]
-		[HttpPost]
-		public IHttpActionResult GetCart([FromBody]Guid userId)
-		{
-			var list = _Cart.GetCart(userId);
-			return Ok(list);
-		}
+        [HttpPost]
+        public IHttpActionResult GetCart([FromBody]Guid userId)
+        {
+            var list = _Cart.GetCart(userId);
+
+            return Ok(list);
+        }
 
         // POST api/<controller>
         [Authorize(Roles = "Admin, Manager, Customer")]
@@ -61,37 +63,37 @@ namespace Titanbrary.WebAPI.Controllers
 
         // POST api/<controller>
         [Authorize(Roles = "Admin, Manager, Customer")]
-		[Route("GetBook/{bookID}")]
-		[HttpPost]
-		public IHttpActionResult GetBook(Guid bookID)
-		{
-			var list = _Book.GetBookByBookID(bookID);
-			return Ok(list);
-		}
+        [Route("GetBook/{bookID}")]
+        [HttpPost]
+        public IHttpActionResult GetBook(Guid bookID)
+        {
+            var list = _Book.GetBookByBookID(bookID);
+            return Ok(list);
+        }
 
         // POST api/<controller>
         [Authorize(Roles = "Admin, Manager, Customer")]
         [Route("CreateCart")]
-		[HttpPost]
-		public IHttpActionResult CreateCart([FromBody] CartModel cart)
-		{
+        [HttpPost]
+        public IHttpActionResult CreateCart([FromBody] CartModel cart)
+        {
             //check if the cart exist, if so don't create cart?
             //
-			var list = _Cart.CreateCart(cart);
+            var list = _Cart.CreateCart(cart);
             if (list)
                 return Ok();
-			return BadRequest();
-		}
+            return BadRequest();
+        }
 
         // POST api/<controller>
         [Authorize(Roles = "Admin, Manager, Customer")]
-        [Route("Checkout/{cartID}")]
+        [Route("Checkout")]
         [HttpPost]
-        public async Task<IHttpActionResult> Checkout(Guid cartID)
+        public IHttpActionResult Checkout([FromBody]Guid cartID)
         {
-            var list = _Cart.Checkout(cartID);
-
+            //get the cart
             var cart = _Cart.GetCart(cartID);
+
             var userID = cart.UserID;
             var cartXBookList = cart.BookList;
             List<BookModel> bookList = new List<BookModel>();
@@ -99,10 +101,15 @@ namespace Titanbrary.WebAPI.Controllers
             {
                 bookList.Add(_Book.GetBookByBookID(book.BookID));
             }
-            
-            var currentUser = await _UserManager.FindByIdAsync(userID.ToString());
+
+            //var currentUser = await _UserManager.FindByIdAsync(userID.ToString());
+            var currentUser = UserManager.FindByEmail(User.Identity.Name);
             var user = _Account.GetUserInfo(currentUser);
+
+            //checkout the cart
+            var list = _Cart.Checkout(cartID);
             CheckoutEmail(user, bookList, cartXBookList);
+
 
             if (list)
                 return Ok();
@@ -121,13 +128,16 @@ namespace Titanbrary.WebAPI.Controllers
 
             SmtpClient mailClient = new SmtpClient("smtp.gmail.com", 587);
             mailClient.Credentials = new NetworkCredential("titanbrary.reminders@gmail.com", "titanbraryreminders");
+            mailClient.EnableSsl = true;
 
             MailMessage email = new MailMessage();
             email.From = new MailAddress("Titanbrary@gmail.com");
             email.To.Add(model.Email);
+            email.CC.Add("titanbrary.reminders@gmail.com");
             email.Subject = "Checkout!";
             email.Body = string.Format("<p>Hello {0} {1}</p><p>Thank you for checking out!</p><p>Here is a list of what you got:</p>{2}<p>Thanks,</p><p>Titanbrary Team</p>", model.FirstName, model.LastName, booksHTML);
-
+            email.IsBodyHtml = true;
+           
             await mailClient.SendMailAsync(email);
         }
     }
