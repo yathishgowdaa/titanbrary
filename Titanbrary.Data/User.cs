@@ -32,5 +32,8 @@ namespace Titanbrary.Data
         public string SQAnswer2 { get; set; }
         public string SQAnswer3 { get; set; }
         public int UserType { get; set; }
+    
+        public virtual Waitlist Waitlist { get; set; }
+        public virtual Cart Cart { get; set; }
     }
 }

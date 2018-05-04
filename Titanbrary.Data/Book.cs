@@ -17,8 +17,8 @@ namespace Titanbrary.Data
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Book()
         {
-            this.Genres = new HashSet<Genre>();
             this.CartXBooks = new HashSet<CartXBook>();
+            this.Genres = new HashSet<Genre>();
         }
     
         public string Name { get; set; }
@@ -35,10 +35,12 @@ namespace Titanbrary.Data
         public string Description { get; set; }
         public System.DateTime Timestamp { get; set; }
         public System.Guid BookID { get; set; }
+        public System.Guid WaitlistWaitlistID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Genre> Genres { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CartXBook> CartXBooks { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Genre> Genres { get; set; }
+        public virtual Waitlist Waitlist { get; set; }
     }
 }

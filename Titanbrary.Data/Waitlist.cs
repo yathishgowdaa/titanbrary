@@ -14,9 +14,21 @@ namespace Titanbrary.Data
     
     public partial class Waitlist
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Waitlist()
+        {
+            this.Books = new HashSet<Book>();
+            this.Users = new HashSet<User>();
+        }
+    
         public System.Guid BookID { get; set; }
         public System.Guid UserID { get; set; }
         public System.DateTime Date { get; set; }
         public System.Guid WaitlistID { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Book> Books { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<User> Users { get; set; }
     }
 }
