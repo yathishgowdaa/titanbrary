@@ -1,0 +1,51 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_Customer.cshtml";
+}
+
+@model Titanbrary.Common.Models.UserInfoBookModel
+
+<!-- Dashboard -->
+<section class="wrapper style3 fade-up">
+    <div class="inner">
+        <h2>Overview</h2>
+        @*<div class="row uniform">
+            <div class="6u 12u$(xsmall)">
+                <input type="text" id="searchBook" placeholder="Enter book name" />
+                <br />
+            </div>
+            <div class="6u 12u$(xsmall)">
+                <ul class="actions">
+                    <li><input type="submit" value="Search" class="special" /></li>
+                </ul>
+                <br />
+            </div>
+        </div>*@
+
+        <div class="features">
+            <section>
+                <span class="icon major fa-book "></span>
+                <h3>Search Books</h3>
+                <p>Browse our collections!</p>
+                @Html.ActionLink("Search", "SearchView", "Dashboard", null, new { @class = "button" })
+            </section>
+            <section>
+                <span class="icon major fa-book"></span>
+                <h3>Cart</h3>
+                <p>Check out your cart!</p>
+                @Html.ActionLink("Cart", "CartView", "Dashboard", null, new { @class = "button" })
+            </section>
+            @*<section>
+                <span class="icon major fa-book "></span>
+                <h3>Genre</h3>
+                <p>To be or not to be. That is the real story behind Titanbrary.</p>
+            </section>
+            <section>
+                <span class="icon major fa-book "></span>
+                <h3>Book</h3>
+                <p>The only thing better having Google at your fingertip, is Google plus a book.</p>
+            </section>*@
+        
+        </div>
+       
+    </div>
+</section>

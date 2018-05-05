@@ -16,6 +16,7 @@ using Microsoft.Owin.Security.OAuth;
 using Titanbrary.WebAPI.Models;
 using Titanbrary.WebAPI.Providers;
 using Titanbrary.WebAPI.Results;
+using Titanbrary.Common.Models;
 
 namespace Titanbrary.WebAPI.Controllers
 {

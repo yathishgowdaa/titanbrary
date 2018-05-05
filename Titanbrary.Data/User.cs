@@ -19,7 +19,7 @@ namespace Titanbrary.Data
         public string Password { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public System.DateTime DateOfBirth { get; set; }
+        public Nullable<System.DateTime> DateOfBirth { get; set; }
         public Nullable<System.DateTime> MemberSince { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
@@ -31,6 +31,6 @@ namespace Titanbrary.Data
         public string SQAnwer1 { get; set; }
         public string SQAnswer2 { get; set; }
         public string SQAnswer3 { get; set; }
-        public int UserType { get; set; }
+        public Nullable<int> UserType { get; set; }
     }
 }

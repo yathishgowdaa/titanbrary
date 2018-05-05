@@ -14,9 +14,11 @@ namespace Titanbrary.BusinessObjects
 			_BookDAC = _bookDAC;
 		}
 
-		#region Book
+     
 
-		public virtual List<BookModel> GetAllBooks()
+        #region Book
+
+        public virtual List<BookModel> GetAllBooks()
 		{
 			var list = _BookDAC.GetAllBooks();
 			return list;
@@ -40,9 +42,9 @@ namespace Titanbrary.BusinessObjects
 			return result;
 		}
 
-		public virtual bool UpdateBook(BookModel book)
+		public virtual bool UpdateBook(BookModel book, ref bool isQuantityChanged)
 		{
-			var result = _BookDAC.UpdateBook(book);
+			var result = _BookDAC.UpdateBook(book,ref isQuantityChanged);
 			return result;
 		}
 

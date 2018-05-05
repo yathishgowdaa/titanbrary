@@ -1,0 +1,52 @@
+﻿@{
+    Layout = Model.layout;
+}
+
+@model Titanbrary.Common.Models.UserInfoBookModel
+
+<section id="intro" class="wrapper style1 fullscreen fade-up">
+    <div class="inner">
+        <h1>Search by Genre Result</h1><br />
+        <div class="row uniform">
+            <table id="table" class="table table-responsive">
+                <thead>
+                    <tr>
+                        <th scope="col">Book Title</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">Publisher</th>
+                        <th scope="col">Edition</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var book in Model.books)
+                    {
+
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => book.Name)</td>
+                            <td>@Html.DisplayFor(modelItem => book.Author)</td>
+                            <td>@Html.DisplayFor(modelItem => book.Publisher)</td>
+                            <td>@Html.DisplayFor(modelItem => book.Edition)</td>
+                            <td>@Html.DisplayFor(modelItem => book.Quantity)</td>
+                            <td>@if (book.Quantity <= 0)
+                            {
+                                @*@Html.ActionLink("Add to waitlist", "AddToWaitList", "Dashboard", new { bookId = modelItem }, new { @class = "button special" })*@
+                                @Html.ActionLink("Add to waitlist", "AddToWaitList", "Dashboard", new { bookId = book.BookID }, new { @class = "button special" })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Add To Cart", "AddToCart", "Dashboard", new { bookToCart = book.BookID }, new { @class = "button special" })
+
+                            }</td>
+
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+
+
+    </div>
+</section>

@@ -14,7 +14,7 @@ namespace Titanbrary.Data.DACs
 		public virtual List<BookModel> GetAllBooks()
 		{
 			List<BookModel> result = new List<BookModel>();
-			using (TitanbraryEntities ctx = new TitanbraryEntities())
+			using (TitanbraryContainer ctx = new TitanbraryContainer())
 			{
                 result = ctx.Books.Select(b => new BookModel()
                 {
@@ -40,7 +40,7 @@ namespace Titanbrary.Data.DACs
 		public virtual List<BookModel> GetBooksByGenreID(Guid genreID)
 		{
 			List<BookModel> result = new List<BookModel>();
-			using (TitanbraryEntities ctx = new TitanbraryEntities())
+			using (TitanbraryContainer ctx = new TitanbraryContainer())
 			{
 				result = ctx.Books.Where(b => b.Genres.Any(g => g.GenreID == genreID)).Select(b => new BookModel()
 				{
@@ -66,7 +66,7 @@ namespace Titanbrary.Data.DACs
 		public virtual BookModel GetBookByBookID(Guid bookID)
 		{
 			List<BookModel> result = new List<BookModel>();
-			using (TitanbraryEntities ctx = new TitanbraryEntities())
+			using (TitanbraryContainer ctx = new TitanbraryContainer())
 			{
 				result = ctx.Books.Where(b => b.BookID == bookID).Select(b => new BookModel()
 				{
@@ -91,27 +91,32 @@ namespace Titanbrary.Data.DACs
 
 		public virtual bool CreateBook(BookModel book)
 		{
-			using (TitanbraryEntities ctx = new TitanbraryEntities())
+			using (TitanbraryContainer ctx = new TitanbraryContainer())
 			{
 				try
 				{
-					ctx.Books.Add(new Book
-					{
-						Name = book.Name,
-						Author = book.Author,
-						Publisher = book.Publisher,
-						ISBN = book.ISBN,
-						Edition = book.Edition,
-						Year = book.Year,
-						Quantity = book.Quantity,
-						Language = book.Language,
-						Picture = book.Picture,
-						Keywords = book.Keywords,
-						Active = book.Active,
-						Description = book.Description,
-						Timestamp = book.Timestamp,
-						BookID = book.BookID
+                    var genre = ctx.Genres.Where(g => g.GenreID == book.GenreID).ToList();
+
+                    ctx.Books.Add(new Book
+                    {
+                        Name = book.Name,
+                        Author = book.Author,
+                        Publisher = book.Publisher,
+                        ISBN = book.ISBN,
+                        Edition = book.Edition,
+                        Year = book.Year,
+                        Quantity = book.Quantity,
+                        Language = book.Language,
+                        Picture = book.Picture,
+                        Keywords = book.Keywords,
+                        Active = book.Active,
+                        Description = book.Description,
+                        Timestamp = DateTime.UtcNow,
+                        BookID = Guid.NewGuid(),
+                        Genres = genre
 					});
+                    
+
 					ctx.SaveChanges();
 				}
 				catch (Exception ex)
@@ -124,7 +129,7 @@ namespace Titanbrary.Data.DACs
 
 		public virtual bool UpdateBook(BookModel book, ref bool isQuantityChanged)
 		{
-			using (TitanbraryEntities ctx = new TitanbraryEntities())
+			using (TitanbraryContainer ctx = new TitanbraryContainer())
 			{
 				try
 				{
@@ -157,7 +162,7 @@ namespace Titanbrary.Data.DACs
 		public virtual List<BookModel> SearchBooks(string searchString)
 		{
 			List<BookModel> result = new List<BookModel>();
-			using (TitanbraryEntities ctx = new TitanbraryEntities())
+			using (TitanbraryContainer ctx = new TitanbraryContainer())
 			{
 				result = ctx.Books.Where(b => b.Author.Contains(searchString) ||
 											  b.Publisher.Contains(searchString) ||
@@ -188,7 +193,7 @@ namespace Titanbrary.Data.DACs
 
 		public virtual bool AddBookToCart(Guid cartID, CartXBookModel cartXBook)
 		{
-			using (TitanbraryEntities ctx = new TitanbraryEntities())
+			using (TitanbraryContainer ctx = new TitanbraryContainer())
 			{
 				try
 				{
@@ -210,16 +215,22 @@ namespace Titanbrary.Data.DACs
 
 		public virtual bool DeleteBookFromCart(Guid cartID, Guid bookID)
 		{
-			using (TitanbraryEntities ctx = new TitanbraryEntities())
+			using (TitanbraryContainer ctx = new TitanbraryContainer())
 			{
 				try
 				{
-					ctx.CartXBooks.Remove(new CartXBook
-					{
-						BookID = bookID,
-						CartID = cartID
-					});
-					ctx.SaveChanges();
+                    //ctx.CartXBooks.Remove(new CartXBook
+                    //{
+                    //	BookID = bookID,
+                    //	CartID = cartID
+                    //});
+                    var result = ctx.CartXBooks.Where(c => c.CartID == cartID && c.BookID == bookID).FirstOrDefault();
+                    //ctx.Entry(industry).State = System.Data.Entity.EntityState.Deleted;
+                    ctx.Entry(result).State = System.Data.Entity.EntityState.Deleted;
+
+
+
+                    ctx.SaveChanges();
 				}
 				catch (Exception ex)
 				{
@@ -231,7 +242,7 @@ namespace Titanbrary.Data.DACs
 
         public virtual bool AddBookToWaitlist(Guid bookID, Guid userID)
         {
-            using (TitanbraryEntities ctx = new TitanbraryEntities())
+            using (TitanbraryContainer ctx = new TitanbraryContainer())
             {
                 try
                 {
@@ -240,7 +251,7 @@ namespace Titanbrary.Data.DACs
                         BookID = bookID,
                         UserID = userID,
                         Date = DateTime.Now,
-                        WaitlistID = new Guid()
+                        WaitlistID = Guid.NewGuid()
                     });
                     ctx.SaveChanges();
                 }
@@ -254,7 +265,7 @@ namespace Titanbrary.Data.DACs
 
         public virtual bool IsBookInWaitlist(Guid bookID)
         {
-            using (TitanbraryEntities ctx = new TitanbraryEntities())
+            using (TitanbraryContainer ctx = new TitanbraryContainer())
             {
                 try
                 {
@@ -272,7 +283,7 @@ namespace Titanbrary.Data.DACs
 
         public virtual Guid GetUserInWaitlist(Guid bookID)
         {
-            using (TitanbraryEntities ctx = new TitanbraryEntities())
+            using (TitanbraryContainer ctx = new TitanbraryContainer())
             {
                 Guid userID = ctx.Waitlists.Where(w => w.BookID == bookID).OrderBy(w => w.Date).Select(w => w.UserID).FirstOrDefault();
                 return userID;
@@ -282,7 +293,7 @@ namespace Titanbrary.Data.DACs
         public virtual List<BookModel> FeaturedBooks()
 		{
 			List<BookModel> result = new List<BookModel>();
-			using (TitanbraryEntities ctx = new TitanbraryEntities())
+			using (TitanbraryContainer ctx = new TitanbraryContainer())
 			{
 				var bookXCart = ctx.CartXBooks.GroupBy(b => b.BookID).Select(c => new { BookID = c.Key, Total = c.Sum(d => d.Quantity) }).OrderByDescending(e => e.Total);
 				result = ctx.Books.GroupJoin(bookXCart, b => b.BookID, cb => cb.BookID, (b, cb) => new
@@ -330,7 +341,7 @@ namespace Titanbrary.Data.DACs
 		public virtual List<GenreModel> GetAllGenres()
 		{
 			List<GenreModel> result = new List<GenreModel>();
-			using (TitanbraryEntities ctx = new TitanbraryEntities())
+			using (TitanbraryContainer ctx = new TitanbraryContainer())
 			{
 				result = ctx.Genres.Select(g => new GenreModel()
 				{
@@ -345,7 +356,7 @@ namespace Titanbrary.Data.DACs
 		public virtual List<GenreModel> GetGenresByBookID(Guid bookID)
 		{
 			List<GenreModel> result = new List<GenreModel>();
-			using (TitanbraryEntities ctx = new TitanbraryEntities())
+			using (TitanbraryContainer ctx = new TitanbraryContainer())
 			{
 				result = ctx.Genres.Where(g => g.Books.Any(b => b.BookID == bookID)).Select(g => new GenreModel()
 				{
@@ -360,7 +371,7 @@ namespace Titanbrary.Data.DACs
 		public virtual GenreModel GetGenreByGenreID(Guid genreID)
 		{
 			List<GenreModel> result = new List<GenreModel>();
-			using (TitanbraryEntities ctx = new TitanbraryEntities())
+			using (TitanbraryContainer ctx = new TitanbraryContainer())
 			{
 				result = ctx.Genres.Where(g => g.GenreID == genreID).Select(g => new GenreModel()
 				{
@@ -374,14 +385,14 @@ namespace Titanbrary.Data.DACs
 
 		public virtual bool CreateGenre(GenreModel genre)
 		{
-			using (TitanbraryEntities ctx = new TitanbraryEntities())
+			using (TitanbraryContainer ctx = new TitanbraryContainer())
 			{
 				try
 				{
 					ctx.Genres.Add(new Genre
 					{
 						Title = genre.Title,
-						GenreID = genre.GenreID,
+						GenreID = Guid.NewGuid(),
 						Description = genre.Description
 					});
 					ctx.SaveChanges();
@@ -397,7 +408,7 @@ namespace Titanbrary.Data.DACs
 
 		public virtual bool UpdateGenre(GenreModel genre)
 		{
-			using (TitanbraryEntities ctx = new TitanbraryEntities())
+			using (TitanbraryContainer ctx = new TitanbraryContainer())
 			{
 				try
 				{

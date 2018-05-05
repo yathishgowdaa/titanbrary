@@ -1,54 +1,11 @@
-﻿@*<div class="jumbotron">
-        <h1>ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
-        <button type="submit" class="btn btn-primary" onclick="getAl    lBooks()">Get All Books</button>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <h2>Getting started</h2>
-            <p>ASP.NET Web API is a framework that makes it easy to build HTTP services that reach
-            a broad range of clients, including browsers and mobile devices. ASP.NET Web API
-            is an ideal platform for building RESTful applications on the .NET Framework.</p>
-            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301870">Learn more &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-            <h2>Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301871">Learn more &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-            <h2>Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301872">Learn more &raquo;</a></p>
-        </div>
-    </div>
-
-
-    <script>
-        function getAllBooks() {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    var myObj = JSON.parse(this.responseText);
-                    console.log(myObj);
-                    window.alert("Got books", myObj);
-                }
-            };
-            xhttp.open("POST", "http://localhost:50799/api/Book/GetAll", true);
-            xhttp.send();
-        }
-
-    </script>*@
-
-
-<!-- Intro -->
-<section id="intro" class="wrapper style1 fullscreen fade-up">
+﻿<!-- Intro -->
+<section id="home" class="wrapper style1 fullscreen fade-up">
     <div class="inner">
         <h1>@ViewBag.Title</h1>
         <p>
-            Given current day technology, the idea of books is slowly diminishing away due to e-books and pdfs. 
-            Titanbray aims to preserve the quality and experience of renting books by bringing it your fingertips. 
-            We allow for online checkouts, returns, extensions, and wait-listing. 
+            Given current day technology, the idea of books is slowly diminishing away due to e-books and pdfs.
+            Titanbray aims to preserve the quality and experience of renting books by bringing it your fingertips.
+            We allow for online checkouts, returns, extensions, and wait-listing.
             Think you are overdue on a book? Don't worry, we will send you automated reminders to make sure you always return or extend on time!
         </p>
         <ul class="actions">
@@ -61,38 +18,38 @@
 <!-- One -->
 <section id="one" class="wrapper style2 spotlights">
     <section>
-        <a href="#" class="image"><img src="~/Content/titanbrarytheme/images/pic01.jpg" alt="" data-position="center center" /></a>
+        <a href="#" class="image"><img src="https://prodimage.images-bn.com/pimages/9780553380163_p0_v1_s600x595.jpg" alt="" data-position="center center" /></a>
         <div class="content">
             <div class="inner">
-                <h2>Sed ipsum dolor</h2>
-                <p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada quis. Aliquam dapibus.</p>
-                <ul class="actions">
-                    <li><a href="#" class="button">Learn more</a></li>
-                </ul>
+                <h2>A Brief History of Time: From the Big Bang to Black Holes</h2>
+                <p>by Stephen Hawking</p>
+                @*<ul class="actions">
+                    <li><a href="#" class="button">Add to cart</a></li>
+                </ul>*@
             </div>
         </div>
     </section>
     <section>
-        <a href="#" class="image"><img src="~/Content/titanbrarytheme/images/pic02.jpg" alt="" data-position="top center" /></a>
+        <a href="#" class="image"><img src="https://prodimage.images-bn.com/pimages/9781250295446_p0_v5_s600x595.jpg" alt="" data-position="top center" /></a>
         <div class="content">
             <div class="inner">
-                <h2>Feugiat consequat</h2>
-                <p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada quis. Aliquam dapibus.</p>
-                <ul class="actions">
-                    <li><a href="#" class="button">Learn more</a></li>
-                </ul>
+                <h2>Children of Blood and Bone</h2>
+                <p>by Tomi Adeyemi</p>
+                @*<ul class="actions">
+                    <li><a href="#" class="button">Add to cart</a></li>
+                </ul>*@
             </div>
         </div>
     </section>
     <section>
-        <a href="#" class="image"><img src="~/Content/titanbrarytheme/images/pic03.jpg" alt="" data-position="25% 25%" /></a>
+        <a href="#" class="image"><img src="https://prodimage.images-bn.com/pimages/9780312367541_p0_v2_s600x595.jpg" alt="" data-position="25% 25%" /></a>
         <div class="content">
             <div class="inner">
-                <h2>Ultricies aliquam</h2>
-                <p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada quis. Aliquam dapibus.</p>
-                <ul class="actions">
-                    <li><a href="#" class="button">Learn more</a></li>
-                </ul>
+                <h2>A Wrinkle in Time</h2>
+                <p>by Madeleine L'Engle</p>
+                @*<ul class="actions">
+                    <li><a href="#" class="button">Add to cart</a></li>
+                </ul>*@
             </div>
         </div>
     </section>
@@ -102,41 +59,55 @@
 <section id="two" class="wrapper style3 fade-up">
     <div class="inner">
         <h2>Search Books</h2>
-        <p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada quis. Aliquam dapibus, lacus eget hendrerit bibendum, urna est aliquam sem, sit amet imperdiet est velit quis lorem.</p>
+        @*<div class="row uniform">
+            <div class="6u 12u$(xsmall)">
+                <input type="text" id="searchBook" placeholder="Enter book name" />
+                <br />
+            </div>
+            <div class="6u 12u$(xsmall)">
+                <ul class="actions">
+                    <li><input type="submit" value="Search" class="special" /></li>
+                </ul>
+                <br />
+            </div>
+          
+        </div>*@
+        
         <div class="features">
             <section>
-                <span class="icon major fa-code"></span>
-                <h3>Lorem ipsum amet</h3>
-                <p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
+                <span class="icon major fa-book "></span>
+                <h3>Action</h3>
+                <p>Get ready to go on an adventure with some of the greatest heroes in literary history!</p>
             </section>
             <section>
-                <span class="icon major fa-lock"></span>
-                <h3>Aliquam sed nullam</h3>
-                <p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
+                <span class="icon major fa-book"></span>
+                <h3>Comedy</h3>
+                <p>Looking for a laugh? or maybe two? Look no futher, check out our comedy selection.</p>
             </section>
             <section>
-                <span class="icon major fa-cog"></span>
-                <h3>Sed erat ullam corper</h3>
-                <p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
+                <span class="icon major fa-book "></span>
+                <h3>Drama</h3>
+                <p>To be or not to be. That is the real story behind Titanbrary.</p>
             </section>
             <section>
-                <span class="icon major fa-desktop"></span>
-                <h3>Veroeros quis lorem</h3>
-                <p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
+                <span class="icon major fa-book "></span>
+                <h3>Education</h3>
+                <p>The only thing better having Google at your fingertip, is Google plus a book.</p>
             </section>
             <section>
-                <span class="icon major fa-chain"></span>
-                <h3>Urna quis bibendum</h3>
-                <p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
+                <span class="icon major fa-book "></span>
+                <h3>Health</h3>
+                <p>Look no further, all your dietary needs in one big shop.</p>
             </section>
             <section>
-                <span class="icon major fa-diamond"></span>
-                <h3>Aliquam urna dapibus</h3>
-                <p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
+                <span class="icon major fa-book "></span>
+                <h3>Science Fiction</h3>
+                <p>Check out a book that will expand your imagination behind your wildest beliefs.</p>
             </section>
         </div>
         <ul class="actions">
-            <li><a href="#" class="button">Learn more</a></li>
+            <li>
+            <li>@Html.ActionLink("Learn More", "SignUp", "Home", new { area = "" }, new { @class = "button scrolly" })</li></li>
         </ul>
     </div>
 </section>
@@ -146,8 +117,8 @@
     <div class="inner">
         <h2>Get in touch</h2>
         <p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada quis. Aliquam dapibus, lacus eget hendrerit bibendum, urna est aliquam sem, sit amet imperdiet est velit quis lorem.</p>
-        <div class="split style1">
-            <section>
+        <div class="style1">
+            @*<section>
                 <form method="post" action="#">
                     <div class="field half first">
                         <label for="name">Name</label>
@@ -165,24 +136,24 @@
                         <li><a href="" class="button submit">Send Message</a></li>
                     </ul>
                 </form>
-            </section>
+            </section>*@
             <section>
                 <ul class="contact">
                     <li>
                         <h3>Address</h3>
                         <span>
                             12345 Somewhere Road #654<br />
-                            Nashville, TN 00000-0000<br />
+                            Fullerton, CA 92832<br />
                             USA
                         </span>
                     </li>
                     <li>
                         <h3>Email</h3>
-                        <a href="#">user@untitled.tld</a>
+                        <a href="mailto:hi@titanbrary.com">hi@titanbrary.com</a>
                     </li>
                     <li>
                         <h3>Phone</h3>
-                        <span>(000) 000-0000</span>
+                        <span>(714) 555-9827</span>
                     </li>
                     <li>
                         <h3>Social</h3>

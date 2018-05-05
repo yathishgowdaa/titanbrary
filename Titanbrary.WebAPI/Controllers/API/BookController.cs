@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Http;
+using System.Web.Http.Description;
 using Titanbrary.Common.Interfaces.BusinessObjects;
 using Titanbrary.Common.Models;
 using System.Net;
@@ -8,6 +9,8 @@ using System.Net.Mail;
 using Hangfire;
 using Microsoft.AspNet.Identity.Owin;
 using System.Net.Http;
+using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
 
 namespace Titanbrary.WebAPI.Controllers
 {
@@ -42,6 +45,7 @@ namespace Titanbrary.WebAPI.Controllers
 		#region Book
 
 		// POST api/<controller>
+        [Authorize(Roles ="Admin, Manager, Customer")]
 		[Route("GetAllBooks")]
 		[HttpPost]
 		public IHttpActionResult GetAllBooks()
@@ -50,39 +54,49 @@ namespace Titanbrary.WebAPI.Controllers
 			return Ok(list);
 		}
 
-		// POST api/<controller>
-		[Route("GetBooksByGenreID/{genreID}")]
-		[HttpPost]
+        // POST api/<controller>
+        [Authorize(Roles = "Admin, Manager, Customer")]
+        [Route("GetBooksByGenreID/{genreID}")]
+		[HttpGet]
 		public IHttpActionResult GetBooksByGenreID(Guid genreID)
 		{
 			var list = _Book.GetBooksByGenreID(genreID);
 			return Ok(list);
 		}
 
-		// POST api/<controller>
-		[Route("GetBookByBookID/{bookID}")]
-		[HttpPost]
+        // POST api/<controller>
+        [Authorize(Roles = "Admin, Manager, Customer")]
+        [Route("GetBookByBookID/{bookID}")]
+		[HttpGet]
+        [ResponseType(typeof(BookModel))]
 		public IHttpActionResult GetBookByBookID(Guid bookID)
 		{
-			var list = _Book.GetBookByBookID(bookID);
-			return Ok(list);
+			var book = _Book.GetBookByBookID(bookID);
+			return Ok(book);
 		}
 
 		// POST api/<controller>
+        [Authorize(Roles =("Admin, Manager"))]
 		[Route("CreateBook")]
 		[HttpPost]
 		public IHttpActionResult CreateBook([FromBody] BookModel book)
 		{
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid book");
+            }
 			var list = _Book.CreateBook(book);
-			if (list)
-				return Ok();
-			return BadRequest();
+            if (!list)
+                return BadRequest("Coudln't create the book");
+
+			return Ok();
 		}
 
-		// POST api/<controller>
-		[Route("UpdateBook")]
+        // POST api/<controller>
+        [Authorize(Roles = "Admin, Manager")]
+        [Route("UpdateBook")]
 		[HttpPost]
-		public IHttpActionResult UpdateBook([FromBody] BookModel book)
+		public async Task<IHttpActionResult> UpdateBook([FromBody] BookModel book)
 		{
             bool isQuantityChanged = false;
 			var list = _Book.UpdateBook(book, ref isQuantityChanged);
@@ -112,7 +126,7 @@ namespace Titanbrary.WebAPI.Controllers
                     });
                 }                
 
-                var currentUser = _UserManager.FindByIdAsync(userID.ToString());
+                var currentUser = await _UserManager.FindByIdAsync(userID.ToString());
                 var user = _Account.GetUserInfo(currentUser);
                 OutWaitlistEmail(user, book);
             }
@@ -122,48 +136,63 @@ namespace Titanbrary.WebAPI.Controllers
 			return BadRequest();
 		}
 
-		// POST api/<controller>
-		[Route("SearchBooks/{searchString?}")]
-		[HttpPost]
+        // POST api/<controller>
+        [Authorize(Roles = "Admin, Manager, Customer")]
+        [Route("SearchBooks/{searchString?}")]
+		[HttpGet]
 		public IHttpActionResult SearchBooks(string searchString)
 		{
 			var list = _Book.SearchBooks(searchString);
 			return Ok(list);
 		}
 
-		// POST api/<controller>
-		[Route("AddBookToCart/{cartID}")]
+        // POST api/<controller>
+        [Authorize(Roles = "Admin, Manager, Customer")]
+        [Route("AddBookToCart")]
 		[HttpPost]
-		public IHttpActionResult AddBookToCart(Guid cartID, [FromBody] CartXBookModel cartXBook)
+		public IHttpActionResult AddBookToCart([FromBody]CartModel model)
 		{
-			var list = _Book.AddBookToCart(cartID, cartXBook);
-			if (list)
-				return Ok();
-			return BadRequest();
-		}
 
-		// POST api/<controller>
-		[Route("DeleteBookFromCart/{cartID}/{bookID}")]
-		[HttpPost]
-		public IHttpActionResult DeleteBookFromCart(Guid cartID, Guid bookID)
-		{
-			var list = _Book.DeleteBookFromCart(cartID, bookID);
+			var list = _Book.AddBookToCart(model.CartID, model.BookList[0]);
 			if (list)
 				return Ok();
 			return BadRequest();
 		}
 
         // POST api/<controller>
-        [Route("AddBookToWaitlist/{bookID}/{userID}")]
+        [Authorize(Roles = "Admin, Manager, Customer")]
+        [Route("DeleteBookFromCart")]
+		[HttpPost]
+		public IHttpActionResult DeleteBookFromCart([FromBody] CartModel model)
+		{
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            Guid cartID = model.CartID;
+            Guid bookID = model.BookId;
+
+            var list = _Book.DeleteBookFromCart(cartID, bookID);
+			if (list)
+				return Ok();
+			return BadRequest();
+		}
+
+        // POST api/<controller>
+        [Authorize(Roles = "Admin, Manager, Customer")]
+        [Route("AddBookToWaitlist")]
         [HttpPost]
-        public IHttpActionResult AddBookToWaitlist(Guid bookID, Guid userID)
-        {
-            var list = _Book.AddBookToWaitlist(bookID, userID);
+        public IHttpActionResult AddBookToWaitlist([FromBody]CartModel model)
+        {           
 
-            var book = _Book.GetBookByBookID(bookID);
+            var book = _Book.GetBookByBookID(model.BookId);
+            var list = _Book.AddBookToWaitlist(model.BookId, model.UserID);
 
-            var currentUser = _UserManager.FindByIdAsync(userID.ToString());
+            var currentUser = UserManager.FindByEmail(User.Identity.Name);
             var user = _Account.GetUserInfo(currentUser);
+
+            //var currentUser = await _UserManager.FindByIdAsync(model.UserID.ToString());
+            //var user = _Account.GetUserInfo(currentUser);
             InWaitlistEmail(user, book);
 
             if (list)
@@ -172,6 +201,7 @@ namespace Titanbrary.WebAPI.Controllers
         }
 
         // POST api/<controller>
+        [AllowAnonymous]
         [Route("FeaturedBooks")]
 		[HttpPost]
 		public IHttpActionResult FeaturedBooks()
@@ -180,7 +210,7 @@ namespace Titanbrary.WebAPI.Controllers
 			return Ok(list);
 		}
 
-        public async void InWaitlistEmail(UserModel model, BookModel book)
+        public void InWaitlistEmail(UserModel model, BookModel book)
         {
             string booksHTML = "<table><tr><th>Title</th><th>Author</th></tr>";
             booksHTML += "<tr><td>" + book.Name + "</td>" + "<td>" + book.Author + "</td></tr>";
@@ -188,17 +218,19 @@ namespace Titanbrary.WebAPI.Controllers
 
             SmtpClient mailClient = new SmtpClient("smtp.gmail.com", 587);
             mailClient.Credentials = new NetworkCredential("titanbrary.reminders@gmail.com", "titanbraryreminders");
+            mailClient.EnableSsl = true;
 
             MailMessage email = new MailMessage();
             email.From = new MailAddress("Titanbrary@gmail.com");
             email.To.Add(model.Email);
             email.Subject = "Waitlisted!";
             email.Body = string.Format("<p>Hello {0} {1}</p><p>Thank you for waitlisting! You will be notified as soon as it is available.</p><p>Here is a list of what you got:</p>{2}<p>Thanks,</p><p>Titanbrary Team</p>", model.FirstName, model.LastName, booksHTML);
-
-            await mailClient.SendMailAsync(email);
+            email.IsBodyHtml = true;
+            //await mailClient.SendMailAsync(email);
+            mailClient.Send(email);
         }
 
-        public async void OutWaitlistEmail(UserModel model, BookModel book)
+        public void OutWaitlistEmail(UserModel model, BookModel book)
         {
             string booksHTML = "<table><tr><th>Title</th><th>Author</th></tr>";
             booksHTML += "<tr><td>" + book.Name + "</td>" + "<td>" + book.Author + "</td></tr>";
@@ -206,14 +238,15 @@ namespace Titanbrary.WebAPI.Controllers
 
             SmtpClient mailClient = new SmtpClient("smtp.gmail.com", 587);
             mailClient.Credentials = new NetworkCredential("titanbrary.reminders@gmail.com", "titanbraryreminders");
-
+            mailClient.EnableSsl = true;
             MailMessage email = new MailMessage();
             email.From = new MailAddress("Titanbrary@gmail.com");
             email.To.Add(model.Email);
             email.Subject = "Book Available!";
             email.Body = string.Format("<p>Hello {0} {1}</p><p>Thank you for waiting! Your book is now available to checkout and has already been placed in your cart. Please login to checkout the book.</p><p>Here is a list of what you got:</p>{2}<p>Thanks,</p><p>Titanbrary Team</p>", model.FirstName, model.LastName, booksHTML);
-
-            await mailClient.SendMailAsync(email);
+            email.IsBodyHtml = true;
+            mailClient.Send(email);
+            //await mailClient.SendMailAsync(email);
         }
 
         #endregion
@@ -221,16 +254,19 @@ namespace Titanbrary.WebAPI.Controllers
         #region Genre
 
         // POST api/<controller>
+        [Authorize(Roles = "Admin, Manager, Customer")]
         [Route("GetAllGenres")]
 		[HttpPost]
+        [ResponseType(typeof(List<GenreModel>))]
 		public IHttpActionResult GetAllGenres()
 		{
 			var list = _Book.GetAllGenres();
 			return Ok(list);
 		}
 
-		// POST api/<controller>
-		[Route("GetGenresByBookID/{bookID}")]
+        // POST api/<controller>
+        [Authorize(Roles = "Admin, Manager, Customer")]
+        [Route("GetGenresByBookID/{bookID}")]
 		[HttpPost]
 		public IHttpActionResult GetGenresByBookID(Guid bookID)
 		{
@@ -238,8 +274,9 @@ namespace Titanbrary.WebAPI.Controllers
 			return Ok(list);
 		}
 
-		// POST api/<controller>
-		[Route("GetGenreByGenreID/{genreID}")]
+        // POST api/<controller>
+        [Authorize(Roles = "Admin, Manager, Customer")]
+        [Route("GetGenreByGenreID/{genreID}")]
 		[HttpPost]
 		public IHttpActionResult GetGenreByGenreID(Guid genreID)
 		{
@@ -247,19 +284,26 @@ namespace Titanbrary.WebAPI.Controllers
 			return Ok(list);
 		}
 
-		// POST api/<controller>
-		[Route("CreateGenre")]
+        // POST api/<controller>
+        [Authorize(Roles = "Admin, Manager")]
+        [Route("CreateGenre")]
 		[HttpPost]
 		public IHttpActionResult CreateGenre([FromBody] GenreModel genre)
 		{
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid genre");
+            }
 			var list = _Book.CreateGenre(genre);
-			if (list)
-				return Ok();
-			return BadRequest();
+			if (!list)
+				return BadRequest("Coudln't add the genre");
+
+			return Ok();
 		}
 
-		// POST api/<controller>
-		[Route("UpdateGenre")]
+        // POST api/<controller>
+        [Authorize(Roles = "Admin, Manager")]
+        [Route("UpdateGenre")]
 		[HttpPost]
 		public IHttpActionResult UpdateGenre([FromBody] GenreModel genre)
 		{

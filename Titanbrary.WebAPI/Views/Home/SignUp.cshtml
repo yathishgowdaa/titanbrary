@@ -1,50 +1,85 @@
-﻿<!-- Intro -->
+﻿@{ 
+    Layout = "~/Views/Shared/_Layout_Signup.cshtml";
+}
+@model Titanbrary.Common.Models.UserModel
+
+<!-- Intro -->
 <section id="intro" class="wrapper style1 fullscreen fade-up">
     <div class="inner">
         <h1>@ViewBag.Title</h1>
-        <form id="registrationForm" action="/">
+        <p>@Html.ValidationMessage("Error")</p>
+
+        @using (Html.BeginForm("SignUp", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
             <div class="row uniform">
                 <div class="6u 12u$(xsmall)">
-                    <input type="text" id="firstName" placeholder="First Name" />
+                    @*<input type="text" id="firstName" placeholder="First Name" required />*@
+                    @Html.TextBoxFor(model => model.FirstName, new { placeholder = "First Name"})
+                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger"})
                 </div>
                 <div class="6u$ 12u$(xsmall)">
-                    <input type="text" id="lastName" placeholder="Last Name" />
+                    @*<input type="text" id="lastName" placeholder="Last Name" required />*@
+                    @Html.TextBoxFor(model => model.LastName, new { placeholder = "Last Name" })
+                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
                 </div>
                 <div class="6u 12u$(xsmall)">
-                    <input type="email" id="email" placeholder="Email" />
+                    @*<input type="email" id="email" placeholder="Email" required />*@
+                    @Html.TextBoxFor(model => model.Email, new { placeholder = "Email" })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                 </div>
                 <div class="6u$ 12u$(xsmall)">
-                    <input type="email" id="email2" placeholder="Re-enter Email" />
+                    @*<input type="email" id="email2" placeholder="Re-enter Email" required />*@
+                    @Html.TextBoxFor(model => model.Email2, new { placeholder = "Re Enter Email" })
+                    @Html.ValidationMessageFor(model => model.Email2, "", new { @class = "text-danger" })
                 </div>
                 <div class="6u 12u$(xsmall)">
-                    <input type="password" id="password" placeholder="Password" />
+                    @*<input type="password" id="password" placeholder="Password" required />*@
+                    @Html.PasswordFor(model => model.Password, new { placeholder = "Password" })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                 </div>
                 <div class="6u$ 12u$(xsmall)">
-                    <input type="password" id="password2" value="" placeholder="Password" />
+                    @*<input type="password" id="password2" value="" placeholder="Password" required />*@
+                    @Html.PasswordFor(model => model.Password2, new { placeholder = "Re Enter Password" })
+                    @Html.ValidationMessageFor(model => model.Password2, "", new { @class = "text-danger" })
                 </div>
 
                 <div class="12u$">
+                    <span>@Html.ValidationMessage("Passwords")<br /></span>
+                    <span>@Html.ValidationMessage("Emails")<br /></span>
                     <ul class="actions">
                         <li><input type="submit" value="Submit" class="special" /></li>
                         <li><input type="reset" value="Reset" /></li>
                     </ul>
                 </div>
             </div>
-        </form>
+        }
+
     </div>
 </section>
-<script type="text/javascript">
 
-    $("#registrationForm").submit(function () {
+@*<script type="text/javascript">
 
-        var obj = {
-            'FirstName': document.getElementById("firstName").value,
-            'LastName': document.getElementById("lastName").value,
-            'Email': document.getElementById("email").value,
-            'Password': document.getElementById("password").value
-        };
+    function validateForm() {
 
-        console.log(obj);
+       
+
+        var password = document.getElementById("password").value;
+        var password2 = document.getElementById("password2").value;
+        //console.log(password + '=' + password2);
+
+        var email = document.getElementById("email").value;
+        var email2 = document.getElementById("email2").value;
+        //console.log(password + '=' + password2);
+
+        
+        if (password !== password2) {
+            window.alert("Password doesn't match!");
+            return false;
+        } else if (email !== email2) {
+            window.alert("Email doesn't match!");
+            return false;
+        }
+
 
         var settings = {
             "async": true,
@@ -54,18 +89,123 @@
             "headers": {
                 "Content-Type": "application/json",
                 "Cache-Control": "no-cache",
-                "Postman-Token": "a70ac5c5-4a8e-45c7-99b8-9ce4a5e76dfb"
+                "Postman-Token": "35bdca1e-d729-db68-f697-3a627f4b6d47"
             },
-            "processData": false,
-            "data": JSON.stringify(obj)
+            "data": {
+                "FirstName": document.getElementById("firstName").value,
+                "LastName": document.getElementById("lastName").value,
+                "Email": document.getElementById("email").value,
+                "Password": document.getElementById("password").value
+            }
         }
 
-        $.ajax(settings).done(function (response) {
-            console.log(response);
+        //$.ajax(settings).done(function (response) {
+        //    console.log(response);
+        //});
+
+        $.ajax(settings, {
+            success: function (data) {
+                window.alert("ok");
+            },
+            error: function () {
+                window.alert("not ok");
+            }
         });
 
 
+        
+        //setTimeout(submitForm, 10000);
+        //submitForm();
+    }
 
-    });
+    function submitForm() {
 
-</script>
+        var obj = {
+            'FirstName': document.getElementById("firstName").value,
+            'LastName': document.getElementById("lastName").value,
+            'Email': document.getElementById("email").value,
+            'Password': document.getElementById("password").value
+        };
+
+        console.log(obj);
+        var data = JSON.stringify(obj);
+        console.log(data);
+
+        function readBody(xhr) {
+            var data;
+            if (!xhr.responseType || xhr.responseType === "text") {
+                data = xhr.responseText;
+            } else if (xhr.responseType === "document") {
+                data = xhr.responseXML;
+            } else {
+                data = xhr.response;
+            }
+            return data;
+        }
+        
+        var xhr = new XMLHttpRequest();
+        ////xhr.withCredentials = true;
+
+        xhr.open("POST", "http://localhost:50799/api/Registration/Register", true);
+
+        ////xhr.onprogress = function () {
+        ////    console.log('LOADING', xhr.readyState); // readyState will be 3
+        ////    console.log(xhr.status);
+        ////    console.log(xhr.responseText);
+        ////};
+
+        ////xhr.onload = function () {
+
+        ////    if (xhr.readyState == 4 && xhr.status !== 200) {
+        ////        console.log(xhr.status);
+        ////        window.alert("Something went wrong. Please try again!");
+        ////        location.reload();
+        ////    } else if (xhr.readyState == 4 && xhr.status == 200) {
+        ////        console.log('DONE', xhr.readyState); // readyState will be 4
+        ////        console.log(xhr.status);
+        ////        console.log(xhr.responseText);
+        ////        window.location.href = "/Home/SignIn";
+        ////    }
+           
+
+        ////};
+        
+        
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.send(data);
+
+        xhr.onreadystatechange = function () {
+
+            if (this.readyState === 4) {
+                if (xhr.status === 200) {
+                    console.log(xhr.response);
+                    console.log(xhr.responseText);
+                    window.alert("Success " + readBody(xhr));
+                    //window.location.href = "/Home/SignIn";
+
+                }
+
+                if (xhr.status !== 200) {
+                    console.log(xhr.response);
+                    console.log(xhr.responseText);
+                    window.alert("Failed " + readBody(xhr));
+                    //window.location.href = "/Home/SignUp";
+
+                }
+            }
+        };
+
+
+    }
+
+    function _redirect() {
+        window.location.href = "/Home/SignUp";
+    }
+
+    function _redirectSuccess() {
+        window.location.href = "/Home/SignIn";
+    }
+
+
+</script>*@

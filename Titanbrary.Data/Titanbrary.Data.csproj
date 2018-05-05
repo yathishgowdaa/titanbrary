@@ -37,6 +37,14 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -51,18 +59,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AspNetRole.cs">
-      <DependentUpon>Titanbrary.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AspNetUser.cs">
-      <DependentUpon>Titanbrary.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AspNetUserClaim.cs">
-      <DependentUpon>Titanbrary.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AspNetUserLogin.cs">
-      <DependentUpon>Titanbrary.tt</DependentUpon>
-    </Compile>
     <Compile Include="Book.cs">
       <DependentUpon>Titanbrary.tt</DependentUpon>
     </Compile>
@@ -128,12 +124,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Titanbrary.BusinessObjects\Titanbrary.BusinessObjects.csproj">
-      <Project>{42261777-c06e-4d25-a818-2cec44347ec9}</Project>
-      <Name>Titanbrary.BusinessObjects</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Titanbrary.Common\Titanbrary.Common.csproj">
-      <Project>{ff343914-a736-445c-9c4f-93e74ba782fa}</Project>
+      <Project>{FF343914-A736-445C-9C4F-93E74BA782FA}</Project>
       <Name>Titanbrary.Common</Name>
     </ProjectReference>
   </ItemGroup>

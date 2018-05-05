@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Titanbrary.Common.Models;
 using Titanbrary.WebAPI.Models;
 
 namespace Titanbrary.WebAPI.Controllers.API
@@ -47,7 +48,7 @@ namespace Titanbrary.WebAPI.Controllers.API
             {
                 return BadRequest(ModelState);
             }
-            var roleName = new ApplicationRole() { Name = model.RoleName };
+            var roleName = new ApplicationRole() { Name = model.Name };
             await RoleManager.CreateAsync(roleName);
            
 

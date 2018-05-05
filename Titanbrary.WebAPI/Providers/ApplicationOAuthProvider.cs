@@ -10,6 +10,7 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Titanbrary.WebAPI.Models;
+using Titanbrary.Common.Models;
 
 namespace Titanbrary.WebAPI.Providers
 {
@@ -32,6 +33,7 @@ namespace Titanbrary.WebAPI.Providers
             var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
 
             ApplicationUser user = await userManager.FindAsync(context.UserName, context.Password);
+            
 
             if (user == null)
             {

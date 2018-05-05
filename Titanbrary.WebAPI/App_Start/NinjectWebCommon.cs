@@ -69,12 +69,14 @@ namespace Titanbrary.WebAPI.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             //Biz
-            kernel.Bind<IBook>().To<BusinessObjects.BookManager>();
-            kernel.Bind<IAccount>().To<BusinessObjects.AccountManager>();
+            kernel.Bind<IBook>().To<BusinessObjects.BookManager>().InRequestScope();
+            kernel.Bind<IAccount>().To<BusinessObjects.AccountManager>().InRequestScope();
+            kernel.Bind<ICart>().To<BusinessObjects.CartManager>().InRequestScope();
 
             //Dac
-            kernel.Bind<IBookDAC>().To<Data.DACs.BookDAC>();
-            kernel.Bind<IAccountDAC>().To<Data.DACs.AccountDAC>();
+            kernel.Bind<IBookDAC>().To<Data.DACs.BookDAC>().InRequestScope();
+            kernel.Bind<IAccountDAC>().To<Data.DACs.AccountDAC>().InRequestScope();
+            kernel.Bind<ICartDAC>().To<Data.DACs.CartDAC>().InRequestScope();
 
         }        
     }

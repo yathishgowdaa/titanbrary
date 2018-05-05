@@ -7,3 +7,5 @@
     CONSTRAINT [FK_Genre_BookXGenre] FOREIGN KEY ([GenreID]) REFERENCES [dbo].[Genre] ([GenreID])
 
 )
+
+GO

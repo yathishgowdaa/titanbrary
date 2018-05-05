@@ -10,6 +10,7 @@ using Microsoft.Owin.Security.OAuth;
 using Owin;
 using Titanbrary.WebAPI.Providers;
 using Titanbrary.WebAPI.Models;
+using Titanbrary.Common.Models;
 
 namespace Titanbrary.WebAPI
 {
@@ -27,9 +28,19 @@ namespace Titanbrary.WebAPI
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
             //Configure Roles
             app.CreatePerOwinContext<ApplicationRoleManager>(ApplicationRoleManager.Create);
+            //Configure SignIn
+            app.CreatePerOwinContext<ApplicationSignInManager>(ApplicationSignInManager.Create);
             // Enable the application to use a cookie to store information for the signed in user
             // and to use a cookie to temporarily store information about a user logging in with a third party login provider
-            app.UseCookieAuthentication(new CookieAuthenticationOptions());
+            app.UseCookieAuthentication(new CookieAuthenticationOptions {
+
+                AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+                LoginPath = new PathString("/Home/SignIn"),
+                LogoutPath = new PathString("/Home/LogOff"),
+                //ExpireTimeSpan = TimeSpan.FromMinutes(5.0),
+                ReturnUrlParameter = "/Home/Index"
+
+            });
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
             // Configure the application for OAuth based flow
@@ -45,7 +56,9 @@ namespace Titanbrary.WebAPI
             };
 
             // Enable the application to use bearer tokens to authenticate users
-            app.UseOAuthBearerTokens(OAuthOptions);
+            //app.UseOAuthBearerTokens(OAuthOptions);
+            app.UseOAuthAuthorizationServer(OAuthOptions);
+            app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
 
             // Uncomment the following lines to enable logging in with third party login providers
             //app.UseMicrosoftAccountAuthentication(

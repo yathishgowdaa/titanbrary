@@ -13,6 +13,8 @@ namespace Titanbrary.Common.Models
 		public DateTime CreatedDate { get; set; }
 		public DateTime ModifiedDate { get; set; }
 		public List<CartXBookModel> BookList { get; set; }
+        public List<BookModel> Books { get; set; }
+        public Guid BookId { get; set; }
 	}
 
 	public class CartXBookModel
