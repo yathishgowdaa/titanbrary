@@ -38,7 +38,7 @@ namespace Titanbrary.WebAPI.Controllers
         [Authorize(Roles = "Admin, Manager, Customer")]
         public ActionResult Index()
         {
-            var result = new UserModel();
+            var result = new UserInfoBookModel();
             try
             {
                 //check if authenticated
@@ -51,7 +51,11 @@ namespace Titanbrary.WebAPI.Controllers
                 var roles = UserManager.GetRoles(currentUser.Id);
                 UserModel userInfo = accountMgr.GetUserInfo(currentUser);
                 UserInfoBookModel model = new UserInfoBookModel();
-                model.user = userInfo;
+                model.book = new BookModel();
+                model.books = new List<BookModel>();
+                model.cart = new CartModel();
+                model.genres = new List<GenreModel>();
+                model.user = accountMgr.GetUserInfo(currentUser);
                 //redirect to dashboard
                 foreach (var role in roles)
                 {
@@ -251,6 +255,23 @@ namespace Titanbrary.WebAPI.Controllers
             UserInfoBookModel model = new UserInfoBookModel();
             model.user = userInfo;
             model.book = new BookModel();
+            //get role
+            var roles = UserManager.GetRoles(userInfo.Id);
+            foreach(var role in roles)
+            {
+                if (role == "Admin")
+                {
+                    model.layout = "~/Views/Shared/_Layout_Admin.cshtml";
+                } else if (role == "Manager")
+                {
+                    model.layout = "~/Views/Shared/_Layout_Manager.cshtml";
+                }
+                else
+                {
+                    model.layout = "~/Views/Shared/_Layout_Customer.cshtml";
+                }
+            }
+
             using (HttpClient httpClient = new HttpClient())
             {
                 var cookie = HttpContext.Request.Cookies.Get("AuthenticationToken");
@@ -272,7 +293,7 @@ namespace Titanbrary.WebAPI.Controllers
 
             }
             //return back to book list
-            return RedirectToAction("SearchView", "Dashboard");
+            return RedirectToAction("Index", "Dashboard");
         }
 
         [Authorize(Roles = "Admin, Manager, Customer")]
@@ -306,6 +327,23 @@ namespace Titanbrary.WebAPI.Controllers
                     model.book = new BookModel();
                     model.books = JsonConvert.DeserializeObject<List<BookModel>>(response);
                     model.user = userInfo;
+                    //get role
+                    var roles = UserManager.GetRoles(userInfo.Id);
+                    foreach (var role in roles)
+                    {
+                        if (role == "Admin")
+                        {
+                            model.layout = "~/Views/Shared/_Layout_Admin.cshtml";
+                        }
+                        else if (role == "Manager")
+                        {
+                            model.layout = "~/Views/Shared/_Layout_Manager.cshtml";
+                        }
+                        else
+                        {
+                            model.layout = "~/Views/Shared/_Layout_Customer.cshtml";
+                        }
+                    }
 
                     return View("Book/Search/QuickSearch", model);
                 }
@@ -353,7 +391,23 @@ namespace Titanbrary.WebAPI.Controllers
                     model.book = new BookModel();
                     model.books = JsonConvert.DeserializeObject<List<BookModel>>(response);
                     model.user = userInfo;
-
+                    //get role
+                    var roles = UserManager.GetRoles(userInfo.Id);
+                    foreach (var role in roles)
+                    {
+                        if (role == "Admin")
+                        {
+                            model.layout = "~/Views/Shared/_Layout_Admin.cshtml";
+                        }
+                        else if (role == "Manager")
+                        {
+                            model.layout = "~/Views/Shared/_Layout_Manager.cshtml";
+                        }
+                        else
+                        {
+                            model.layout = "~/Views/Shared/_Layout_Customer.cshtml";
+                        }
+                    }
                     return View("Book/Search/SearchByGenre", model);
                 }
 
@@ -375,11 +429,7 @@ namespace Titanbrary.WebAPI.Controllers
             }
             //Guid bookID = Guid.Parse(bookId);
             //api call
-            var data = new Dictionary<string, string>
-                   {
-                       {"bookId", bookId}
-                   };
-
+            
 
             using (HttpClient httpClient = new HttpClient())
             {
@@ -391,7 +441,7 @@ namespace Titanbrary.WebAPI.Controllers
                 var currentUser = UserManager.FindByEmail(User.Identity.Name);
                 UserModel userInfo = accountMgr.GetUserInfo(currentUser);
 
-                var getTokenUrl = httpClient.GetAsync(String.Format("http://localhost:50799/api/Book/GetBookByBookID/{0}", bookId));
+                var getTokenUrl = httpClient.GetAsync(String.Format("http://localhost:50799/api/Book/GetBookByBookID/{0}", bookId.ToString()));
                 getTokenUrl.Wait(TimeSpan.FromSeconds(10));
                 if (getTokenUrl.IsCompleted)
                 {
@@ -400,6 +450,24 @@ namespace Titanbrary.WebAPI.Controllers
                     model.book = JsonConvert.DeserializeObject<BookModel>(response);
                     model.books = new List<BookModel>();
                     model.user = userInfo;
+                    //get role
+                    var roles = UserManager.GetRoles(userInfo.Id);
+                    foreach (var role in roles)
+                    {
+                        if (role == "Admin")
+                        {
+                            model.layout = "~/Views/Shared/_Layout_Admin.cshtml";
+                        }
+                        else if (role == "Manager")
+                        {
+                            model.layout = "~/Views/Shared/_Layout_Manager.cshtml";
+                        }
+                        else
+                        {
+                            model.layout = "~/Views/Shared/_Layout_Customer.cshtml";
+                        }
+                    }
+
 
                     return View("Book/Search/AdvancedSearch", model);
                 }
@@ -423,6 +491,24 @@ namespace Titanbrary.WebAPI.Controllers
 
                 var currentUser = UserManager.FindByEmail(User.Identity.Name);
                 UserModel userInfo = accountMgr.GetUserInfo(currentUser);
+                var model = new UserInfoBookModel();
+                //get role
+                var roles = UserManager.GetRoles(userInfo.Id);
+                foreach (var role in roles)
+                {
+                    if (role == "Admin")
+                    {
+                        model.layout = "~/Views/Shared/_Layout_Admin.cshtml";
+                    }
+                    else if (role == "Manager")
+                    {
+                        model.layout = "~/Views/Shared/_Layout_Manager.cshtml";
+                    }
+                    else
+                    {
+                        model.layout = "~/Views/Shared/_Layout_Customer.cshtml";
+                    }
+                }
 
                 StringContent queryString = new StringContent("");
                 var getTokenUrl = httpClient.PostAsync("http://localhost:50799/api/Book/GetAllBooks", queryString);
@@ -430,10 +516,11 @@ namespace Titanbrary.WebAPI.Controllers
                 if (getTokenUrl.IsCompleted)
                 {
                     var response = getTokenUrl.Result.Content.ReadAsStringAsync().Result;
-                    var model = new UserInfoBookModel();
+                    
                     model.book = new BookModel();
                     model.books = JsonConvert.DeserializeObject<List<BookModel>>(response);
                     model.user = userInfo;
+                    
 
                     return View("Book/Search/GetAllBook", model);
                 }
@@ -466,31 +553,51 @@ namespace Titanbrary.WebAPI.Controllers
                 if (getTokenUrl.IsCompleted)
                 {
                     var response = getTokenUrl.Result.Content.ReadAsStringAsync().Result;
+                    // 
+                    var model = new UserInfoBookModel();
+                    //get role
+                    var roles = UserManager.GetRoles(userInfo.Id);
+                    foreach (var role in roles)
+                    {
+                        if (role == "Admin")
+                        {
+                            model.layout = "~/Views/Shared/_Layout_Admin.cshtml";
+                        }
+                        else if (role == "Manager")
+                        {
+                            model.layout = "~/Views/Shared/_Layout_Manager.cshtml";
+                        }
+                        else
+                        {
+                            model.layout = "~/Views/Shared/_Layout_Customer.cshtml";
+                        }
+                    }
+
 
                     //if null means no cart
                     //show cart is empty
                     if (response == "null")
                     {
-                        var result = new UserInfoBookModel();
-                        result.book = new BookModel();
-                        result.books = new List<BookModel>();
-                        result.user = userInfo;
-                        result.cart = new CartModel();
-                        result.countItem = 0;
-                        return View("cart/Index", result);
+                       
+                        model.book = new BookModel();
+                        model.books = new List<BookModel>();
+                        model.user = userInfo;
+                        model.cart = new CartModel();
+                        model.countItem = 0;
+
+                        return View("cart/Index", model);
 
 
                     }
 
                     var jsonResponse = JsonConvert.DeserializeObject<CartModel>(response);
-                    var model = new UserInfoBookModel();
+                   
                     model.book = new BookModel();
                     model.books = jsonResponse.Books;
                     model.user = userInfo;
                     model.cart = jsonResponse;
                     model.countItem = model.books.Count();
-
-
+                   
                     return View("Cart/Index", model);
                 }
 
@@ -653,6 +760,23 @@ namespace Titanbrary.WebAPI.Controllers
                 {
                     var response = getTokenUrl.Result.Content.ReadAsStringAsync().Result;
                     model.msg = "You're all set! An email was sent for your record.";
+                    //get role
+                    var roles = UserManager.GetRoles(userInfo.Id);
+                    foreach (var role in roles)
+                    {
+                        if (role == "Admin")
+                        {
+                            model.layout = "~/Views/Shared/_Layout_Admin.cshtml";
+                        }
+                        else if (role == "Manager")
+                        {
+                            model.layout = "~/Views/Shared/_Layout_Manager.cshtml";
+                        }
+                        else
+                        {
+                            model.layout = "~/Views/Shared/_Layout_Customer.cshtml";
+                        }
+                    }
                     return View("Cart/AddedToCartMsg", model);
                 }
             }
@@ -727,6 +851,24 @@ namespace Titanbrary.WebAPI.Controllers
             UserInfoBookModel model = new UserInfoBookModel();
             model.user = userInfo;
             model.msg = "Book was added to your cart.";
+            //model.actionBtn = "View Cart";
+            //get role
+            var roles = UserManager.GetRoles(userInfo.Id);
+            foreach (var role in roles)
+            {
+                if (role == "Admin")
+                {
+                    model.layout = "~/Views/Shared/_Layout_Admin.cshtml";
+                }
+                else if (role == "Manager")
+                {
+                    model.layout = "~/Views/Shared/_Layout_Manager.cshtml";
+                }
+                else
+                {
+                    model.layout = "~/Views/Shared/_Layout_Customer.cshtml";
+                }
+            }
             return View("Cart/AddedToCartMsg", model);
         }
 
@@ -758,6 +900,23 @@ namespace Titanbrary.WebAPI.Controllers
                 if (getTokenUrl.IsCompleted)
                 {
                     model.msg = "Book was added to the waitlist. You will receive an email once it's available.";
+                    //get role
+                    var roles = UserManager.GetRoles(userInfo.Id);
+                    foreach (var role in roles)
+                    {
+                        if (role == "Admin")
+                        {
+                            model.layout = "~/Views/Shared/_Layout_Admin.cshtml";
+                        }
+                        else if (role == "Manager")
+                        {
+                            model.layout = "~/Views/Shared/_Layout_Manager.cshtml";
+                        }
+                        else
+                        {
+                            model.layout = "~/Views/Shared/_Layout_Customer.cshtml";
+                        }
+                    }
                     return View("Cart/AddedToCartMsg", model);
                 }
 

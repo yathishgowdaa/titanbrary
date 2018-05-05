@@ -1,4 +1,4 @@
-﻿@model Titanbrary.Common.Models.UserModel
+﻿@model Titanbrary.Common.Models.UserInfoBookModel
 
 <!DOCTYPE html>
 <html>
@@ -21,9 +21,10 @@
         <div class="inner">
             <nav>
                 <ul>
-                    @*<li>@Html.ActionLink("Welcome", "Index", "Home", new { area = ""}, null) </li>*@
-                    <li>Welcome @Model.FirstName @Model.LastName</li>
-                    <li>@Html.ActionLink("Search", "Search", "Home")</li>
+                    <li>Welcome @Model.user.FirstName @Model.user.LastName</li>
+                    <li>@Html.ActionLink("Home", "Index", "Dashboard", new { area = ""}, null) </li>
+                    <li>@Html.ActionLink("Search", "SearchView", "Dashboard")</li>  
+                    <li>@Html.ActionLink("Cart", "CartView", "Dashboard")</li>
                     <li>@Html.ActionLink("Log out", "Logout", "Home")</li>
                 </ul>
             </nav>

@@ -18,6 +18,8 @@ namespace Titanbrary.Common.Models
         public CartModel cart { get; set; }
         public int countItem { get; set; }
         public string msg { get; set; }
+        public string layout { get; set; }
+        public string actionBtn { get; set; }
     }
 
 }

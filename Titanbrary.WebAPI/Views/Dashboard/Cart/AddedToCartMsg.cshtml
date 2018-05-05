@@ -1,5 +1,5 @@
 ﻿@{
-    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+    Layout = Model.layout;
 }
 
 
@@ -9,6 +9,6 @@
 <section id="intro" class="wrapper style1 fullscreen fade-up">
     <div class="inner">
         <h2>@Html.DisplayFor(modelItem => modelItem.msg)</h2>
-        @Html.ActionLink("View Cart", "CartView", "Dashboard", null, new { @class = "button special"})
+        @Html.ActionLink("Home", "Index", "Dashboard", null, new { @class = "button special"})
     </div>
 </section>

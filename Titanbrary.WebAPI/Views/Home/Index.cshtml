@@ -23,9 +23,9 @@
             <div class="inner">
                 <h2>A Brief History of Time: From the Big Bang to Black Holes</h2>
                 <p>by Stephen Hawking</p>
-                <ul class="actions">
+                @*<ul class="actions">
                     <li><a href="#" class="button">Add to cart</a></li>
-                </ul>
+                </ul>*@
             </div>
         </div>
     </section>
@@ -35,9 +35,9 @@
             <div class="inner">
                 <h2>Children of Blood and Bone</h2>
                 <p>by Tomi Adeyemi</p>
-                <ul class="actions">
+                @*<ul class="actions">
                     <li><a href="#" class="button">Add to cart</a></li>
-                </ul>
+                </ul>*@
             </div>
         </div>
     </section>
@@ -47,9 +47,9 @@
             <div class="inner">
                 <h2>A Wrinkle in Time</h2>
                 <p>by Madeleine L'Engle</p>
-                <ul class="actions">
+                @*<ul class="actions">
                     <li><a href="#" class="button">Add to cart</a></li>
-                </ul>
+                </ul>*@
             </div>
         </div>
     </section>
@@ -59,7 +59,7 @@
 <section id="two" class="wrapper style3 fade-up">
     <div class="inner">
         <h2>Search Books</h2>
-        <div class="row uniform">
+        @*<div class="row uniform">
             <div class="6u 12u$(xsmall)">
                 <input type="text" id="searchBook" placeholder="Enter book name" />
                 <br />
@@ -71,7 +71,7 @@
                 <br />
             </div>
           
-        </div>
+        </div>*@
         
         <div class="features">
             <section>
@@ -106,7 +106,8 @@
             </section>
         </div>
         <ul class="actions">
-            <li><a href="#" class="button">Learn more</a></li>
+            <li>
+            <li>@Html.ActionLink("Learn More", "SignUp", "Home", new { area = "" }, new { @class = "button scrolly" })</li></li>
         </ul>
     </div>
 </section>
@@ -116,8 +117,8 @@
     <div class="inner">
         <h2>Get in touch</h2>
         <p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada quis. Aliquam dapibus, lacus eget hendrerit bibendum, urna est aliquam sem, sit amet imperdiet est velit quis lorem.</p>
-        <div class="split style1">
-            <section>
+        <div class="style1">
+            @*<section>
                 <form method="post" action="#">
                     <div class="field half first">
                         <label for="name">Name</label>
@@ -135,7 +136,7 @@
                         <li><a href="" class="button submit">Send Message</a></li>
                     </ul>
                 </form>
-            </section>
+            </section>*@
             <section>
                 <ul class="contact">
                     <li>
@@ -148,7 +149,7 @@
                     </li>
                     <li>
                         <h3>Email</h3>
-                        <a href="#">hi@titanbrary.com</a>
+                        <a href="mailto:hi@titanbrary.com">hi@titanbrary.com</a>
                     </li>
                     <li>
                         <h3>Phone</h3>

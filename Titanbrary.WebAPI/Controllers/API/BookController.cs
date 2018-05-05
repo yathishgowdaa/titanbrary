@@ -65,7 +65,7 @@ namespace Titanbrary.WebAPI.Controllers
 		}
 
         // POST api/<controller>
-        [Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Admin, Manager, Customer")]
         [Route("GetBookByBookID/{bookID}")]
 		[HttpGet]
         [ResponseType(typeof(BookModel))]

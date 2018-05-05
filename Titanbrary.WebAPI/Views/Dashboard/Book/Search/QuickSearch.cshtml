@@ -1,5 +1,5 @@
 ﻿@{
-    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+    Layout = Model.layout;
 }
 
 @model Titanbrary.Common.Models.UserInfoBookModel
@@ -15,6 +15,7 @@
                         <th scope="col">Author</th>
                         <th scope="col">Publisher</th>
                         <th scope="col">Edition</th>
+                        <th scope="col">Available</th>
                         <th scope="col">Options</th>
                     </tr>
                 </thead>
@@ -27,6 +28,7 @@
                             <td>@Html.DisplayFor(modelItem => book.Author)</td>
                             <td>@Html.DisplayFor(modelItem => book.Publisher)</td>
                             <td>@Html.DisplayFor(modelItem => book.Edition)</td>
+                            <td>@Html.DisplayFor(modelItem => book.Quantity)</td>
                             <td>
                                 @*@Html.ActionLink("Add To Cart", "AddToCart", "Dashboard", new { bookToCart = book.BookID }, new { @class = "button special" })*@
                                 @if (book.Quantity <= 0)

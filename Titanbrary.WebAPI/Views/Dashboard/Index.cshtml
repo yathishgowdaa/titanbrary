@@ -24,16 +24,17 @@
         <div class="features">
             <section>
                 <span class="icon major fa-book "></span>
-                <h3>Users</h3>
-                <p>Get ready to go on an adventure with some of the greatest heroes in literary history!</p>
-                @Html.ActionLink("Create User", "CreateUser", "Home", new { @class = "button" });
+                <h3>Search Books</h3>
+                <p>Browse our collections!</p>
+                @Html.ActionLink("Search", "SearchView", "Dashboard", null, new { @class = "button" })
             </section>
             <section>
                 <span class="icon major fa-book"></span>
-                <h3>Inventory</h3>
-                <p>Looking for a laugh? or maybe two? Look no futher, check out our comedy selection.</p>
+                <h3>Cart</h3>
+                <p>Check out your cart!</p>
+                @Html.ActionLink("Cart", "CartView", "Dashboard", null, new { @class = "button" })
             </section>
-            <section>
+            @*<section>
                 <span class="icon major fa-book "></span>
                 <h3>Genre</h3>
                 <p>To be or not to be. That is the real story behind Titanbrary.</p>
@@ -42,26 +43,9 @@
                 <span class="icon major fa-book "></span>
                 <h3>Book</h3>
                 <p>The only thing better having Google at your fingertip, is Google plus a book.</p>
-            </section>
-            <section>
-                <span class="icon major fa-book "></span>
-                <h3>Genre</h3>
-                <p>Look no further, all your dietary needs in one big shop.</p>
-            </section>
-            <section>
-                <span class="icon major fa-book "></span>
-                <h3>Science Fiction</h3>
-                <p>Check out a book that will expand your imagination behind your wildest beliefs.</p>
-            </section>
+            </section>*@
+        
         </div>
-        <ul class="actions">
-            <li><a href="#" class="button">Learn more</a></li>
-        </ul>
-    </div>
-</section>
-<section id="intro" class="wrapper style1 fullscreen fade-up">
-    <div class="inner">
-        <h1>@ViewBag.Title</h1>  
-
+       
     </div>
 </section>
