@@ -232,7 +232,7 @@ namespace Titanbrary.WebAPI.Controllers
             return View();
         }
 
-        public async void RegistrationEmail(UserModel model)
+        public void RegistrationEmail(UserModel model)
         {
             SmtpClient mailClient = new SmtpClient("smtp.gmail.com", 587);
             mailClient.Credentials = new NetworkCredential("titanbrary.reminders@gmail.com", "titanbraryreminders");
@@ -243,7 +243,8 @@ namespace Titanbrary.WebAPI.Controllers
             email.Subject = "Account Registered!";
             email.Body = string.Format("<p>Hello {0} {1}</p><p>Thank you for signing up!</p><p>Thanks,</p><p>Titanbrary Team</p>", model.FirstName, model.LastName);
             email.IsBodyHtml = true;
-            await mailClient.SendMailAsync(email);
+            mailClient.Send(email);
+            //await mailClient.SendMailAsync(email);
         }
     }
 }

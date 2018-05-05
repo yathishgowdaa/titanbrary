@@ -2,6 +2,7 @@
     Layout = "~/Views/Shared/_Layout_Admin.cshtml";
 }
 
+@model Titanbrary.Common.Models.UserInfoBookModel
 <!-- Intro -->
 <section id="intro" class="wrapper style1 fullscreen fade-up">
     <div class="inner">
@@ -49,10 +50,12 @@
                     <input type="file" id="picture" placeholder="Upload picture" />
                 </div>
                 <div class="6u 12u$(xsmall)">
-                   <select id="listGenre">
+                   @*<select id="listGenre">
 
-                   </select>
+                   </select>*@
+                    @Html.DropDownListFor(Model => Model.genreId, new SelectList(Model.genres.Select(g => new { Value = g.GenreID, Text = g.Title }), "Value", "Text"))<br />
                 </div>
+
                 
 
                 <div class="12u$">
@@ -64,6 +67,11 @@
             </div>
 
         </form>
+       
+
+
+
+
 
 
     </div>

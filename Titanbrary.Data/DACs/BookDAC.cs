@@ -251,7 +251,7 @@ namespace Titanbrary.Data.DACs
                         BookID = bookID,
                         UserID = userID,
                         Date = DateTime.Now,
-                        WaitlistID = new Guid()
+                        WaitlistID = Guid.NewGuid()
                     });
                     ctx.SaveChanges();
                 }

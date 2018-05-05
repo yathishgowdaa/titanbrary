@@ -17,5 +17,7 @@ namespace Titanbrary.Common.Models
         public string bookId { get; set; }
         public CartModel cart { get; set; }
         public int countItem { get; set; }
+        public string msg { get; set; }
     }
+
 }

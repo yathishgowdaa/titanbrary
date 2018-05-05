@@ -10,6 +10,7 @@ using Hangfire;
 using Microsoft.AspNet.Identity.Owin;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
 
 namespace Titanbrary.WebAPI.Controllers
 {
@@ -179,16 +180,19 @@ namespace Titanbrary.WebAPI.Controllers
 
         // POST api/<controller>
         [Authorize(Roles = "Admin, Manager, Customer")]
-        [Route("AddBookToWaitlist/{bookID}/{userID}")]
+        [Route("AddBookToWaitlist")]
         [HttpPost]
-        public async Task<IHttpActionResult> AddBookToWaitlist(Guid bookID, Guid userID)
-        {
-            var list = _Book.AddBookToWaitlist(bookID, userID);
+        public IHttpActionResult AddBookToWaitlist([FromBody]CartModel model)
+        {           
 
-            var book = _Book.GetBookByBookID(bookID);
+            var book = _Book.GetBookByBookID(model.BookId);
+            var list = _Book.AddBookToWaitlist(model.BookId, model.UserID);
 
-            var currentUser = await _UserManager.FindByIdAsync(userID.ToString());
+            var currentUser = UserManager.FindByEmail(User.Identity.Name);
             var user = _Account.GetUserInfo(currentUser);
+
+            //var currentUser = await _UserManager.FindByIdAsync(model.UserID.ToString());
+            //var user = _Account.GetUserInfo(currentUser);
             InWaitlistEmail(user, book);
 
             if (list)
@@ -206,7 +210,7 @@ namespace Titanbrary.WebAPI.Controllers
 			return Ok(list);
 		}
 
-        public async void InWaitlistEmail(UserModel model, BookModel book)
+        public void InWaitlistEmail(UserModel model, BookModel book)
         {
             string booksHTML = "<table><tr><th>Title</th><th>Author</th></tr>";
             booksHTML += "<tr><td>" + book.Name + "</td>" + "<td>" + book.Author + "</td></tr>";
@@ -222,10 +226,11 @@ namespace Titanbrary.WebAPI.Controllers
             email.Subject = "Waitlisted!";
             email.Body = string.Format("<p>Hello {0} {1}</p><p>Thank you for waitlisting! You will be notified as soon as it is available.</p><p>Here is a list of what you got:</p>{2}<p>Thanks,</p><p>Titanbrary Team</p>", model.FirstName, model.LastName, booksHTML);
             email.IsBodyHtml = true;
-            await mailClient.SendMailAsync(email);
+            //await mailClient.SendMailAsync(email);
+            mailClient.Send(email);
         }
 
-        public async void OutWaitlistEmail(UserModel model, BookModel book)
+        public void OutWaitlistEmail(UserModel model, BookModel book)
         {
             string booksHTML = "<table><tr><th>Title</th><th>Author</th></tr>";
             booksHTML += "<tr><td>" + book.Name + "</td>" + "<td>" + book.Author + "</td></tr>";
@@ -240,7 +245,8 @@ namespace Titanbrary.WebAPI.Controllers
             email.Subject = "Book Available!";
             email.Body = string.Format("<p>Hello {0} {1}</p><p>Thank you for waiting! Your book is now available to checkout and has already been placed in your cart. Please login to checkout the book.</p><p>Here is a list of what you got:</p>{2}<p>Thanks,</p><p>Titanbrary Team</p>", model.FirstName, model.LastName, booksHTML);
             email.IsBodyHtml = true;
-            await mailClient.SendMailAsync(email);
+            mailClient.Send(email);
+            //await mailClient.SendMailAsync(email);
         }
 
         #endregion

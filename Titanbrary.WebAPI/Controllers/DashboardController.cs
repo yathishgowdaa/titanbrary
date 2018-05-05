@@ -104,19 +104,69 @@ namespace Titanbrary.WebAPI.Controllers
             UserModel userInfo = accountMgr.GetUserInfo(currentUser);
             UserInfoBookModel model = new UserInfoBookModel();
             model.user = userInfo;
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var cookie = HttpContext.Request.Cookies.Get("AuthenticationToken");
+                var token = cookie.Value.Split(':');
+                var newToken = "Bearer" + token[1];
+                httpClient.DefaultRequestHeaders.Add("Authorization", newToken);
 
-            return View("Book/Create", model);
+                StringContent queryString = new StringContent("");
+                var getTokenUrl = httpClient.PostAsync("http://localhost:50799/api/Book/GetAllGenres/", queryString);
+                getTokenUrl.Wait(TimeSpan.FromSeconds(10));
+                if (getTokenUrl.IsCompleted)
+                {
+                    var response = getTokenUrl.Result.Content.ReadAsStringAsync().Result;
+
+                    model.genres = JsonConvert.DeserializeObject<List<GenreModel>>(response);
+
+                    //return View("Book/SearchOverview", model);
+                    return View("Book/Create", model);
+                }
+
+            }
+
+            return View("Book/SearchOverview", model);
         }
 
         [Authorize(Roles = "Admin, Manager")]
         public ActionResult UpdateBook()
         {
-            var currentUser = UserManager.FindByEmail(User.Identity.Name);
-            UserModel userInfo = accountMgr.GetUserInfo(currentUser);
-            UserInfoBookModel model = new UserInfoBookModel();
-            model.user = userInfo;
+            //var currentUser = UserManager.FindByEmail(User.Identity.Name);
+            //UserModel userInfo = accountMgr.GetUserInfo(currentUser);
+            //UserInfoBookModel model = new UserInfoBookModel();
+            //model.user = userInfo;
 
-            return View("Book/Update", model);
+
+            //return View("Book/Update", model);
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var cookie = HttpContext.Request.Cookies.Get("AuthenticationToken");
+                var token = cookie.Value.Split(':');
+                var newToken = "Bearer" + token[1];
+                httpClient.DefaultRequestHeaders.Add("Authorization", newToken);
+
+                var currentUser = UserManager.FindByEmail(User.Identity.Name);
+                UserModel userInfo = accountMgr.GetUserInfo(currentUser);
+
+                StringContent queryString = new StringContent("");
+                var getTokenUrl = httpClient.PostAsync("http://localhost:50799/api/Book/GetAllBooks", queryString);
+                getTokenUrl.Wait(TimeSpan.FromSeconds(10));
+                if (getTokenUrl.IsCompleted)
+                {
+                    var response = getTokenUrl.Result.Content.ReadAsStringAsync().Result;
+                    var model = new UserInfoBookModel();
+                    model.book = new BookModel();
+                    model.books = JsonConvert.DeserializeObject<List<BookModel>>(response);
+                    model.user = userInfo;
+
+                    return View("Book/Update", model);
+                }
+
+                //return back to book list
+                return RedirectToAction("SearchView", "Dashboard");
+
+            }
         }
 
         [Authorize(Roles = "Admin, Manager")]
@@ -431,7 +481,7 @@ namespace Titanbrary.WebAPI.Controllers
 
 
                     }
-                    
+
                     var jsonResponse = JsonConvert.DeserializeObject<CartModel>(response);
                     var model = new UserInfoBookModel();
                     model.book = new BookModel();
@@ -439,7 +489,7 @@ namespace Titanbrary.WebAPI.Controllers
                     model.user = userInfo;
                     model.cart = jsonResponse;
                     model.countItem = model.books.Count();
-                  
+
 
                     return View("Cart/Index", model);
                 }
@@ -602,6 +652,7 @@ namespace Titanbrary.WebAPI.Controllers
                 if (getTokenUrl.IsCompleted)
                 {
                     var response = getTokenUrl.Result.Content.ReadAsStringAsync().Result;
+                    model.msg = "You're all set! An email was sent for your record.";
                     return View("Cart/AddedToCartMsg", model);
                 }
             }
@@ -655,8 +706,12 @@ namespace Titanbrary.WebAPI.Controllers
                 if (getTokenUrl.IsCompleted)
                 {
                     var response = getTokenUrl.Result.Content.ReadAsStringAsync().Result;
+                    if(response == "null")
+                    {
+                        result = new CartModel();
+                        return result;                        
+                    }
                     result = JsonConvert.DeserializeObject<CartModel>(response);
-
                     return result;
                 }
 
@@ -671,6 +726,53 @@ namespace Titanbrary.WebAPI.Controllers
             UserModel userInfo = accountMgr.GetUserInfo(currentUser);
             UserInfoBookModel model = new UserInfoBookModel();
             model.user = userInfo;
+            model.msg = "Book was added to your cart.";
+            return View("Cart/AddedToCartMsg", model);
+        }
+
+        [Authorize(Roles = ("Admin, Manager, Customer"))]
+        public ActionResult AddToWaitList(string bookId)
+        {
+            var currentUser = UserManager.FindByEmail(User.Identity.Name);
+            UserModel userInfo = accountMgr.GetUserInfo(currentUser);
+            UserInfoBookModel model = new UserInfoBookModel();
+            model.user = userInfo;
+
+            var data = new Dictionary<string, string>
+                   {
+                       {"bookId", bookId },
+                       {"userId", userInfo.Id }
+                   };
+
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var cookie = HttpContext.Request.Cookies.Get("AuthenticationToken");
+                var token = cookie.Value.Split(':');
+                var newToken = "Bearer" + token[1];
+                httpClient.DefaultRequestHeaders.Add("Authorization", newToken);
+               
+                string dataJson = JsonConvert.SerializeObject(data);
+                var queryString = new StringContent(dataJson, Encoding.UTF8, "application/json");
+                var getTokenUrl = httpClient.PostAsync("http://localhost:50799/api/Book/AddBookToWaitlist", queryString);
+                getTokenUrl.Wait(TimeSpan.FromSeconds(10));
+                if (getTokenUrl.IsCompleted)
+                {
+                    model.msg = "Book was added to the waitlist. You will receive an email once it's available.";
+                    return View("Cart/AddedToCartMsg", model);
+                }
+
+            }
+            return View();
+        }
+
+        //send msg to user
+        public ActionResult updateBookSuccess()
+        {
+            var currentUser = UserManager.FindByEmail(User.Identity.Name);
+            UserModel userInfo = accountMgr.GetUserInfo(currentUser);
+            UserInfoBookModel model = new UserInfoBookModel();
+            model.user = userInfo;
+            model.msg = "Book updated!";
             return View("Cart/AddedToCartMsg", model);
         }
 

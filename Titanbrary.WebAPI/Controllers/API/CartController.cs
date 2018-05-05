@@ -116,7 +116,7 @@ namespace Titanbrary.WebAPI.Controllers
             return BadRequest();
         }
 
-        public async void CheckoutEmail(UserModel model, List<BookModel> bookList, List<CartXBookModel> cartXBookList)
+        public void CheckoutEmail(UserModel model, List<BookModel> bookList, List<CartXBookModel> cartXBookList)
         {
             string booksHTML = "<table><tr><th>Title</th><th>Author</th><th>Quantity</th></tr>";
             foreach (var book in bookList)
@@ -137,8 +137,8 @@ namespace Titanbrary.WebAPI.Controllers
             email.Subject = "Checkout!";
             email.Body = string.Format("<p>Hello {0} {1}</p><p>Thank you for checking out!</p><p>Here is a list of what you got:</p>{2}<p>Thanks,</p><p>Titanbrary Team</p>", model.FirstName, model.LastName, booksHTML);
             email.IsBodyHtml = true;
-           
-            await mailClient.SendMailAsync(email);
+            mailClient.Send(email);
+            //await mailClient.SendMailAsync(email);
         }
     }
 }

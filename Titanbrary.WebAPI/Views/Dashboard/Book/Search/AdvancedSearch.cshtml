@@ -28,7 +28,18 @@
                         <td>@Html.DisplayFor(modelItem => modelItem.book.Edition)</td>
                         <td>@Html.DisplayFor(modelItem => modelItem.book.ISBN)</td>
                         <td>@Html.DisplayFor(modelItem => modelItem.book.Quantity)</td>
-                        <td>Add to cart here</td>
+                        <td>
+                            @if (Model.book.Quantity <= 0)
+                            {
+                                @*@Html.ActionLink("Add to waitlist", "AddToWaitList", "Dashboard", new { bookId = modelItem }, new { @class = "button special" })*@
+                                @Html.ActionLink("Add to waitlist", "AddToWaitList", "Dashboard", new { bookId = Model.book.BookID }, new {@class = "button special" })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Add To Cart", "AddToCart", "Dashboard", new { bookToCart = Model.book.BookID }, new { @class = "button special" })
+
+                            }
+                        </td>
                     </tr>
                 </tbody>
 
