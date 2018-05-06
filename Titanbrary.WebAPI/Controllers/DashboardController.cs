@@ -133,6 +133,45 @@ namespace Titanbrary.WebAPI.Controllers
             return View("Book/SearchOverview", model);
         }
 
+
+        [Authorize(Roles = "Admin, Manager")]
+        public ActionResult CreateNewBook(BookModel book)
+        {
+            if (!ModelState.IsValid)
+            {
+                //return back to book list
+                return RedirectToAction("SearchView", "Dashboard");
+            }
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var cookie = HttpContext.Request.Cookies.Get("AuthenticationToken");
+                var token = cookie.Value.Split(':');
+                var newToken = "Bearer" + token[1];
+                httpClient.DefaultRequestHeaders.Add("Authorization", newToken);
+
+                var currentUser = UserManager.FindByEmail(User.Identity.Name);
+                UserModel userInfo = accountMgr.GetUserInfo(currentUser);
+
+                
+                string dataJson = JsonConvert.SerializeObject(book);
+                var queryString = new StringContent(dataJson, Encoding.UTF8, "application/json");   
+                
+
+                var getTokenUrl = httpClient.PostAsync("http://localhost:50799/api/Book/CreateBook", queryString);
+                getTokenUrl.Wait(TimeSpan.FromSeconds(10));
+                if (getTokenUrl.IsCompleted)
+                {
+                    var response = getTokenUrl.Result.Content.ReadAsStringAsync().Result;
+                   
+                    return RedirectToAction("CreateBookSuccessView");
+                }
+
+                //return back to book list
+                return RedirectToAction("SearchView", "Dashboard");
+
+            }
+        }
+
         [Authorize(Roles = "Admin, Manager")]
         public ActionResult UpdateBook()
         {
@@ -851,6 +890,34 @@ namespace Titanbrary.WebAPI.Controllers
             UserInfoBookModel model = new UserInfoBookModel();
             model.user = userInfo;
             model.msg = "Book was added to your cart.";
+            //model.actionBtn = "View Cart";
+            //get role
+            var roles = UserManager.GetRoles(userInfo.Id);
+            foreach (var role in roles)
+            {
+                if (role == "Admin")
+                {
+                    model.layout = "~/Views/Shared/_Layout_Admin.cshtml";
+                }
+                else if (role == "Manager")
+                {
+                    model.layout = "~/Views/Shared/_Layout_Manager.cshtml";
+                }
+                else
+                {
+                    model.layout = "~/Views/Shared/_Layout_Customer.cshtml";
+                }
+            }
+            return View("Cart/AddedToCartMsg", model);
+        }
+
+        public ActionResult CreateBookSuccessView()
+        {
+            var currentUser = UserManager.FindByEmail(User.Identity.Name);
+            UserModel userInfo = accountMgr.GetUserInfo(currentUser);
+            UserInfoBookModel model = new UserInfoBookModel();
+            model.user = userInfo;
+            model.msg = "Book was created.";
             //model.actionBtn = "View Cart";
             //get role
             var roles = UserManager.GetRoles(userInfo.Id);
