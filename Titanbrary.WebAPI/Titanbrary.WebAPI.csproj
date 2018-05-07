@@ -509,11 +509,11 @@
     <Content Include="Views\Dashboard\Book\Search\GetAllBook.cshtml" />
     <Content Include="Views\Dashboard\Cart\Index.cshtml" />
     <Content Include="Views\Dashboard\Cart\AddedToCartMsg.cshtml" />
+    <Content Include="Views\Dashboard\User\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Dashboard\Role\" />
-    <Folder Include="Views\Dashboard\User\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

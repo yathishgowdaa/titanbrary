@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Titanbrary.BusinessObjects;
@@ -56,6 +57,7 @@ namespace Titanbrary.WebAPI.Controllers
                 model.cart = new CartModel();
                 model.genres = new List<GenreModel>();
                 model.user = accountMgr.GetUserInfo(currentUser);
+                model.newUser = new UserModel();
                 //redirect to dashboard
                 foreach (var role in roles)
                 {
@@ -97,6 +99,23 @@ namespace Titanbrary.WebAPI.Controllers
             UserModel userInfo = accountMgr.GetUserInfo(currentUser);
             UserInfoBookModel model = new UserInfoBookModel();
             model.user = userInfo;
+            //get role
+            var roles = UserManager.GetRoles(userInfo.Id);
+            foreach (var role in roles)
+            {
+                if (role == "Admin")
+                {
+                    model.layout = "~/Views/Shared/_Layout_Admin.cshtml";
+                }
+                else if (role == "Manager")
+                {
+                    model.layout = "~/Views/Shared/_Layout_Manager.cshtml";
+                }
+                else
+                {
+                    model.layout = "~/Views/Shared/_Layout_Customer.cshtml";
+                }
+            }
 
             return View("Book/Index", model);
         }
@@ -131,6 +150,45 @@ namespace Titanbrary.WebAPI.Controllers
             }
 
             return View("Book/SearchOverview", model);
+        }
+
+
+        [Authorize(Roles = "Admin, Manager")]
+        public ActionResult CreateNewBook(BookModel book)
+        {
+            if (!ModelState.IsValid)
+            {
+                //return back to book list
+                return RedirectToAction("SearchView", "Dashboard");
+            }
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var cookie = HttpContext.Request.Cookies.Get("AuthenticationToken");
+                var token = cookie.Value.Split(':');
+                var newToken = "Bearer" + token[1];
+                httpClient.DefaultRequestHeaders.Add("Authorization", newToken);
+
+                var currentUser = UserManager.FindByEmail(User.Identity.Name);
+                UserModel userInfo = accountMgr.GetUserInfo(currentUser);
+
+                
+                string dataJson = JsonConvert.SerializeObject(book);
+                var queryString = new StringContent(dataJson, Encoding.UTF8, "application/json");   
+                
+
+                var getTokenUrl = httpClient.PostAsync("http://localhost:50799/api/Book/CreateBook", queryString);
+                getTokenUrl.Wait(TimeSpan.FromSeconds(10));
+                if (getTokenUrl.IsCompleted)
+                {
+                    var response = getTokenUrl.Result.Content.ReadAsStringAsync().Result;
+                   
+                    return RedirectToAction("CreateBookSuccessView");
+                }
+
+                //return back to book list
+                return RedirectToAction("SearchView", "Dashboard");
+
+            }
         }
 
         [Authorize(Roles = "Admin, Manager")]
@@ -209,6 +267,7 @@ namespace Titanbrary.WebAPI.Controllers
                     var responseGenre = getListGenres.Result.Content.ReadAsStringAsync().Result;
 
                     var listOfGenre = JsonConvert.DeserializeObject<List<GenreModel>>(responseGenre);
+                    model.genres = listOfGenre;
                     foreach (var genre in listOfGenre)
                     {
                         if (model.book.GenreID == genre.GenreID)
@@ -872,6 +931,34 @@ namespace Titanbrary.WebAPI.Controllers
             return View("Cart/AddedToCartMsg", model);
         }
 
+        public ActionResult CreateBookSuccessView()
+        {
+            var currentUser = UserManager.FindByEmail(User.Identity.Name);
+            UserModel userInfo = accountMgr.GetUserInfo(currentUser);
+            UserInfoBookModel model = new UserInfoBookModel();
+            model.user = userInfo;
+            model.msg = "Book was created.";
+            //model.actionBtn = "View Cart";
+            //get role
+            var roles = UserManager.GetRoles(userInfo.Id);
+            foreach (var role in roles)
+            {
+                if (role == "Admin")
+                {
+                    model.layout = "~/Views/Shared/_Layout_Admin.cshtml";
+                }
+                else if (role == "Manager")
+                {
+                    model.layout = "~/Views/Shared/_Layout_Manager.cshtml";
+                }
+                else
+                {
+                    model.layout = "~/Views/Shared/_Layout_Customer.cshtml";
+                }
+            }
+            return View("Cart/AddedToCartMsg", model);
+        }
+
         [Authorize(Roles = ("Admin, Manager, Customer"))]
         public ActionResult AddToWaitList(string bookId)
         {
@@ -923,17 +1010,125 @@ namespace Titanbrary.WebAPI.Controllers
             }
             return View();
         }
+        [Authorize(Roles = ("Admin, Manager"))]
+        public ActionResult EditBook(UserInfoBookModel model)
+        {
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var cookie = HttpContext.Request.Cookies.Get("AuthenticationToken");
+                var token = cookie.Value.Split(':');
+                var newToken = "Bearer" + token[1];
+                httpClient.DefaultRequestHeaders.Add("Authorization", newToken);
+
+                var currentUser = UserManager.FindByEmail(User.Identity.Name);
+                UserModel userInfo = accountMgr.GetUserInfo(currentUser);
+
+                string dataJson = JsonConvert.SerializeObject(model.book);
+                var queryString = new StringContent(dataJson, Encoding.UTF8, "application/json");
+                var getTokenUrl = httpClient.PostAsync("http://localhost:50799/api/Book/UpdateBook", queryString);
+                getTokenUrl.Wait(TimeSpan.FromSeconds(20));
+                if (getTokenUrl.IsCompleted)
+                {
+                    var response = getTokenUrl.Result.Content.ReadAsStringAsync().Result;
+
+
+                  
+                    UserInfoBookModel result = new UserInfoBookModel();
+                    result.user = userInfo;
+                    result.msg = "Book updated!";
+                    result.layout = "~/Views/Shared/_Layout_Admin.cshtml";
+                    
+                    return View("Cart/AddedToCartMsg", result);                  
+                }
+            }
+
+            return RedirectToAction("UpdateBook");
+        }
 
         //send msg to user
-        public ActionResult updateBookSuccess()
+        //public ActionResult updateBookSuccess()
+        //{
+        //    var currentUser = UserManager.FindByEmail(User.Identity.Name);
+        //    UserModel userInfo = accountMgr.GetUserInfo(currentUser);
+        //    UserInfoBookModel model = new UserInfoBookModel();
+        //    model.user = userInfo;
+        //    model.msg = "Book updated!";
+        //    model.layout = "~/Views/Shared/_Layout_Admin.cshtml";
+        //    return View("Cart/AddedToCartMsg", model);
+        //}
+
+        [Authorize(Roles = ("Admin"))]
+        public ActionResult UserView()
         {
             var currentUser = UserManager.FindByEmail(User.Identity.Name);
             UserModel userInfo = accountMgr.GetUserInfo(currentUser);
             UserInfoBookModel model = new UserInfoBookModel();
             model.user = userInfo;
-            model.msg = "Book updated!";
+            model.layout = "~/Views/Shared/_Layout_Admin.cshtml";
+            model.newUser = new UserModel();
+            return View("User/Index", model);
+        }
+
+        [Authorize(Roles = ("Admin"))]
+        public async Task<ActionResult> CreateManager(UserInfoBookModel model)
+        {
+            //create ASP.NET USER
+            var user = new ApplicationUser()
+            {
+                UserName = model.newUser.Email,
+                Email = model.newUser.Email,
+                //Password = model.Password,
+                UserRoles = "Manager"
+            };
+
+            var result = await UserManager.CreateAsync(user, model.newUser.Password);
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("Error", "Account could not be created. Please try again");
+                return View();
+            }
+
+            var userInfo = await UserManager.FindByEmailAsync(model.newUser.Email);
+            var addRole = await UserManager.AddToRoleAsync(userInfo.Id, user.UserRoles);
+            if (!addRole.Succeeded)
+            {
+                ModelState.AddModelError("Error", "Account could not be created. Please try again");
+                return View();
+            }
+            //Save to UserAccount Table
+            model.newUser.Id = userInfo.Id;
+            var acc = accountMgr.SaveAccount(model.newUser);
+            if (!acc)
+            {
+                return RedirectToAction("FailedAccountCreation");
+            }
+
+            return RedirectToAction("SuccessAccountCreation");
+        }
+
+        public ActionResult FailedAccountCreation()
+        {
+            var currentUser = UserManager.FindByEmail(User.Identity.Name);
+            UserModel userInfo = accountMgr.GetUserInfo(currentUser);
+            UserInfoBookModel model = new UserInfoBookModel();
+            model.user = userInfo;
+            model.msg = "Cannot create the account!";
+            model.layout = "~/Views/Shared/_Layout_Admin.cshtml";
             return View("Cart/AddedToCartMsg", model);
         }
+
+        public ActionResult SuccessAccountCreation()
+        {
+            var currentUser = UserManager.FindByEmail(User.Identity.Name);
+            UserModel userInfo = accountMgr.GetUserInfo(currentUser);
+            UserInfoBookModel model = new UserInfoBookModel();
+            model.user = userInfo;
+            model.msg = "Account created!";
+            model.layout = "~/Views/Shared/_Layout_Admin.cshtml";
+            return View("Cart/AddedToCartMsg", model);
+        }
+
+
 
     }
 }

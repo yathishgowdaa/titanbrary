@@ -1,0 +1,50 @@
+﻿@{
+    Layout = Model.layout;
+}
+
+
+@model Titanbrary.Common.Models.UserInfoBookModel
+
+
+<!-- Intro -->
+<section id="intro" class="wrapper style1 fullscreen fade-up">
+    <div class="inner">
+        <h2>Create a new Manager</h2>
+        @using (Html.BeginForm("CreateManager", "Dashboard", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="row uniform">
+                <div class="6u 12u$(xsmall)">
+                    @*<input type="text" id="firstName" placeholder="First Name" required />*@
+                    @Html.TextBoxFor(model => model.newUser.FirstName, new { placeholder = "First Name" })
+                    @*@Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })*@
+                </div>
+                <div class="6u$ 12u$(xsmall)">
+                    @*<input type="text" id="lastName" placeholder="Last Name" required />*@
+                    @Html.TextBoxFor(model => model.newUser.LastName, new { placeholder = "Last Name" })
+                    @*@Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })*@
+                </div>
+                <div class="6u 12u$(xsmall)">
+                    @*<input type="email" id="email" placeholder="Email" required />*@
+                    @Html.TextBoxFor(model => model.newUser.Email, new { placeholder = "Email" })
+                    @*@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })*@
+                </div>
+               
+                <div class="6u 12u$(xsmall)">
+                    @*<input type="password" id="password" placeholder="Password" required />*@
+                    @Html.PasswordFor(model => model.newUser.Password, new { placeholder = "Password" })
+                    @*@Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })*@
+                </div>
+               
+
+                <div class="12u$">
+                    <span>@Html.ValidationMessage("Passwords")<br /></span>
+                    <span>@Html.ValidationMessage("Emails")<br /></span>
+                    <ul class="actions">
+                        <li><input type="submit" value="Submit" class="special" /></li>
+                        <li><input type="reset" value="Reset" /></li>
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
+</section>
