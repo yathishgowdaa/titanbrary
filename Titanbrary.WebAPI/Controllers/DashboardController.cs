@@ -248,6 +248,7 @@ namespace Titanbrary.WebAPI.Controllers
                     var responseGenre = getListGenres.Result.Content.ReadAsStringAsync().Result;
 
                     var listOfGenre = JsonConvert.DeserializeObject<List<GenreModel>>(responseGenre);
+                    model.genres = listOfGenre;
                     foreach (var genre in listOfGenre)
                     {
                         if (model.book.GenreID == genre.GenreID)
@@ -989,6 +990,40 @@ namespace Titanbrary.WebAPI.Controllers
 
             }
             return View();
+        }
+        [Authorize(Roles = ("Admin, Manager"))]
+        public ActionResult EditBook(UserInfoBookModel model)
+        {
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var cookie = HttpContext.Request.Cookies.Get("AuthenticationToken");
+                var token = cookie.Value.Split(':');
+                var newToken = "Bearer" + token[1];
+                httpClient.DefaultRequestHeaders.Add("Authorization", newToken);
+
+                var currentUser = UserManager.FindByEmail(User.Identity.Name);
+                UserModel userInfo = accountMgr.GetUserInfo(currentUser);
+
+                string dataJson = JsonConvert.SerializeObject(model.book);
+                var queryString = new StringContent(dataJson, Encoding.UTF8, "application/json");
+                var getTokenUrl = httpClient.PostAsync("http://localhost:50799/api/Book/UpdateBook", queryString);
+                getTokenUrl.Wait(TimeSpan.FromSeconds(20));
+                if (getTokenUrl.IsCompleted)
+                {
+                    var response = getTokenUrl.Result.Content.ReadAsStringAsync().Result;
+
+
+                  
+                    UserInfoBookModel result = new UserInfoBookModel();
+                    result.user = userInfo;
+                    result.msg = "Book updated!";
+                    result.layout = "~/Views/Shared/_Layout_Admin.cshtml";
+                    //return RedirectToAction("updateBookSuccess");
+                    return View("Cart/AddedToCartMsg", result);                  
+                }
+            }
+
+            return RedirectToAction("UpdateBook");
         }
 
         //send msg to user

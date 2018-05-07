@@ -133,7 +133,7 @@ namespace Titanbrary.Data.DACs
 			{
 				try
 				{
-					var oldBook = ctx.Books.SingleOrDefault(b => b.BookID == book.BookID);
+					var oldBook = ctx.Books.Where(b => b.BookID == book.BookID).FirstOrDefault();
                     if (oldBook.Quantity < book.Quantity)
                         isQuantityChanged = true;
 					oldBook.Active = book.Active;
@@ -147,7 +147,7 @@ namespace Titanbrary.Data.DACs
 					oldBook.Picture = book.Picture;
 					oldBook.Publisher = book.Publisher;
 					oldBook.Quantity = book.Quantity;
-					oldBook.Timestamp = book.Timestamp;
+					oldBook.Timestamp = DateTime.UtcNow;
 					oldBook.Year = book.Year;
 					ctx.SaveChanges();
 				}

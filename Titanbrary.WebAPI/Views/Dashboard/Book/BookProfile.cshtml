@@ -8,9 +8,11 @@
 <!-- Intro -->
 <section id="intro" class="wrapper style1 fullscreen fade-up">
     <div class="inner">
-        <h1>Book Name is @Model.book.Name</h1>
+        <h1>Update Book: @Model.book.Name</h1>
         <h2>Genre is @Model.genre.Title</h2>
-        <form id="UpdateBookForm" action="">
+        @using (Html.BeginForm("EditBook", "Dashboard", FormMethod.Post))
+        {
+            @Html.HiddenFor(Model => Model.book.BookID);
             <div class="row uniform">
                 <div class="6u 12u$(xsmall)">
                     @*<input type="text" id="bookName" placeholder="Book Name" required />*@
@@ -55,68 +57,32 @@
                 </div>
                 <div class="6u 12u$(xsmall)">
                     @*<select id="active">
-                        <option value="true">Active</option>
-                        <option value="false">Inactive</option>
-                    </select>*@
+                            <option value="true">Active</option>
+                            <option value="false">Inactive</option>
+                        </select>*@
                     @Html.DropDownListFor(Model => Model.book.Active, new SelectList(new string[] { "Active", "Inactive" }, Model.book.Active), new { id = "bookStatus" })
                 </div>
                 <div class="6u 12u$(xsmall)">
                     <input type="file" id="picture" placeholder="Upload picture" />
                 </div>
                 <div class="6u 12u$(xsmall)">
-                    <select id="listGenre"></select>
+                    @*<select id="listGenre"></select>*@
+                    @Html.DropDownListFor(Model => Model.book.GenreID, new SelectList(Model.genres.Select(g => new { Value = g.GenreID, Text = g.Title }), "Value", "Text"))<br />
+
                 </div>
 
 
                 <div class="12u$">
                     <ul class="actions">
-                        <li>@Html.ActionLink("Update", "updateBookSuccess", "Dashboard", new { @class = "button special" })</li>
+                        <li><input type="submit" value="Submit" class="special" /></li>
                         <li><input type="reset" value="Reset" /></li>
                     </ul>
                 </div>
             </div>
-
-        </form>
+        }
 
 
     </div>
 </section>
-<script  type="text/javascript">
-    window.onload = function () {
-        //get all genre API
-        var listOfGenre = {};
-        var xhr = new XMLHttpRequest();
-        xhr.withCredentials = true;
 
-        xhr.addEventListener("readystatechange", function () {
-            if (this.readyState === 4) {
-
-                var listOfGenre = JSON.parse(this.responseText);
-
-                toObject(listOfGenre);
-            }
-        });
-
-        xhr.open("POST", "http://localhost:50799/api/Book/GetAllGenres");
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.setRequestHeader("Cache-Control", "no-cache");
-        xhr.send();
-
-        function toObject(genre) {
-            var rv = {};
-            for (var i = 0; i < genre.length; ++i)
-                rv[i] = genre[i];
-
-            $.each(rv, function (key, value) {
-                $('#listGenre')
-                    .append($("<option></option>")
-                               .attr("value", rv[key].genreID)
-                               .text(rv[key].title));
-            });
-
-        }
-
-
-    }
-</script>
 
