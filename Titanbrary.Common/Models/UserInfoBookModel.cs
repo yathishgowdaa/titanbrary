@@ -20,6 +20,7 @@ namespace Titanbrary.Common.Models
         public string msg { get; set; }
         public string layout { get; set; }
         public string actionBtn { get; set; }
+        public UserModel newUser { get; set; }
     }
 
 }

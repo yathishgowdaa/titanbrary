@@ -1,8 +1,11 @@
 ﻿
 @{
     ViewBag.Title = "Book Overview";
-    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+    Layout = Model.layout;
 }
+
+
+@model Titanbrary.Common.Models.UserInfoBookModel
 
 <!-- Dashboard -->
 <section class="wrapper style3 fade-up">

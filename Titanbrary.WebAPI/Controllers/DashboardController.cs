@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Titanbrary.BusinessObjects;
@@ -56,6 +57,7 @@ namespace Titanbrary.WebAPI.Controllers
                 model.cart = new CartModel();
                 model.genres = new List<GenreModel>();
                 model.user = accountMgr.GetUserInfo(currentUser);
+                model.newUser = new UserModel();
                 //redirect to dashboard
                 foreach (var role in roles)
                 {
@@ -97,6 +99,23 @@ namespace Titanbrary.WebAPI.Controllers
             UserModel userInfo = accountMgr.GetUserInfo(currentUser);
             UserInfoBookModel model = new UserInfoBookModel();
             model.user = userInfo;
+            //get role
+            var roles = UserManager.GetRoles(userInfo.Id);
+            foreach (var role in roles)
+            {
+                if (role == "Admin")
+                {
+                    model.layout = "~/Views/Shared/_Layout_Admin.cshtml";
+                }
+                else if (role == "Manager")
+                {
+                    model.layout = "~/Views/Shared/_Layout_Manager.cshtml";
+                }
+                else
+                {
+                    model.layout = "~/Views/Shared/_Layout_Customer.cshtml";
+                }
+            }
 
             return View("Book/Index", model);
         }
@@ -1018,7 +1037,7 @@ namespace Titanbrary.WebAPI.Controllers
                     result.user = userInfo;
                     result.msg = "Book updated!";
                     result.layout = "~/Views/Shared/_Layout_Admin.cshtml";
-                    //return RedirectToAction("updateBookSuccess");
+                    
                     return View("Cart/AddedToCartMsg", result);                  
                 }
             }
@@ -1027,15 +1046,89 @@ namespace Titanbrary.WebAPI.Controllers
         }
 
         //send msg to user
-        public ActionResult updateBookSuccess()
+        //public ActionResult updateBookSuccess()
+        //{
+        //    var currentUser = UserManager.FindByEmail(User.Identity.Name);
+        //    UserModel userInfo = accountMgr.GetUserInfo(currentUser);
+        //    UserInfoBookModel model = new UserInfoBookModel();
+        //    model.user = userInfo;
+        //    model.msg = "Book updated!";
+        //    model.layout = "~/Views/Shared/_Layout_Admin.cshtml";
+        //    return View("Cart/AddedToCartMsg", model);
+        //}
+
+        [Authorize(Roles = ("Admin"))]
+        public ActionResult UserView()
         {
             var currentUser = UserManager.FindByEmail(User.Identity.Name);
             UserModel userInfo = accountMgr.GetUserInfo(currentUser);
             UserInfoBookModel model = new UserInfoBookModel();
             model.user = userInfo;
-            model.msg = "Book updated!";
+            model.layout = "~/Views/Shared/_Layout_Admin.cshtml";
+            model.newUser = new UserModel();
+            return View("User/Index", model);
+        }
+
+        [Authorize(Roles = ("Admin"))]
+        public async Task<ActionResult> CreateManager(UserInfoBookModel model)
+        {
+            //create ASP.NET USER
+            var user = new ApplicationUser()
+            {
+                UserName = model.newUser.Email,
+                Email = model.newUser.Email,
+                //Password = model.Password,
+                UserRoles = "Manager"
+            };
+
+            var result = await UserManager.CreateAsync(user, model.newUser.Password);
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("Error", "Account could not be created. Please try again");
+                return View();
+            }
+
+            var userInfo = await UserManager.FindByEmailAsync(model.newUser.Email);
+            var addRole = await UserManager.AddToRoleAsync(userInfo.Id, user.UserRoles);
+            if (!addRole.Succeeded)
+            {
+                ModelState.AddModelError("Error", "Account could not be created. Please try again");
+                return View();
+            }
+            //Save to UserAccount Table
+            model.newUser.Id = userInfo.Id;
+            var acc = accountMgr.SaveAccount(model.newUser);
+            if (!acc)
+            {
+                return RedirectToAction("FailedAccountCreation");
+            }
+
+            return RedirectToAction("SuccessAccountCreation");
+        }
+
+        public ActionResult FailedAccountCreation()
+        {
+            var currentUser = UserManager.FindByEmail(User.Identity.Name);
+            UserModel userInfo = accountMgr.GetUserInfo(currentUser);
+            UserInfoBookModel model = new UserInfoBookModel();
+            model.user = userInfo;
+            model.msg = "Cannot create the account!";
+            model.layout = "~/Views/Shared/_Layout_Admin.cshtml";
             return View("Cart/AddedToCartMsg", model);
         }
+
+        public ActionResult SuccessAccountCreation()
+        {
+            var currentUser = UserManager.FindByEmail(User.Identity.Name);
+            UserModel userInfo = accountMgr.GetUserInfo(currentUser);
+            UserInfoBookModel model = new UserInfoBookModel();
+            model.user = userInfo;
+            model.msg = "Account created!";
+            model.layout = "~/Views/Shared/_Layout_Admin.cshtml";
+            return View("Cart/AddedToCartMsg", model);
+        }
+
+
 
     }
 }
